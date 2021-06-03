@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Page</title>
+</head>
+
+<body>
+    {% for ques in queslist %}
+    <h3>{{ques.question_text}}</h3>
+    <input type="radio" class="inputlabel" name="{{ques.question_id}}" id="{{ques.op1_id}}"
+        value="{{ques.op1_id}}"><label for="{{ques.op1_id}}">{{ques.op1}}</label><br>
+    <input type="radio" class="inputlabel" name="{{ques.question_id}}" id="{{ques.op2_id}}"
+        value="{{ques.op2_id}}"><label for="{{ques.op2_id}}">{{ques.op2}}</label><br>
+    <input type="radio" class="inputlabel" name="{{ques.question_id}}" id="{{ques.op3_id}}"
+        value="{{ques.op3_id}}"><label for="{{ques.op3_id}}">{{ques.op3}}</label><br>
+    <input type="radio" class="inputlabel" name="{{ques.question_id}}" id="{{ques.op4_id}}"
+        value="{{ques.op4_id}}"><label for="{{ques.op4_id}}">{{ques.op4}}</label><br>
+    <button>Mark For Review</button>
+    <button onclick="clear_resp('{{ques.question_id}}');">Clear Response</button>
+    {% endfor %}
+
+    <!-- jQuery JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <!-- Custom JS -->
+    <script>
+        function clear_resp(id) {
+            $('input[name='+id+']').prop('checked', false);
+        }
+    </script>
+</body>
+
+</html>
