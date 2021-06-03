@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Question, Choice
+from .models import Question, Choice, User, QuestionAnswer
 
 class ChoiceInline(admin.StackedInline):
     model = Choice
@@ -17,4 +17,18 @@ class QuestionAdmin(admin.ModelAdmin):
     list_filter = ['exam_id']
     search_fields = ['exam_id', 'question_text']
 
+class QuestionAnswerInline(admin.StackedInline):
+    model = QuestionAnswer
+    extra = 1
+
+class UserAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('User Description', {'fields': ['user_name', 'user_id']}),
+    ]
+    inlines = [QuestionAnswerInline]
+    list_display = ('user_name', 'user_id')
+    list_filter = ['user_id']
+    search_fields = ['user_id', 'user_name']
+
 admin.site.register(Question, QuestionAdmin)
+admin.site.register(User, UserAdmin)

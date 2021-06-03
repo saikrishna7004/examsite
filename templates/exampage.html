@@ -19,7 +19,7 @@
         value="{{ques.op3_id}}"><label for="{{ques.op3_id}}">{{ques.op3}}</label><br>
     <input type="radio" class="inputlabel" name="{{ques.question_id}}" id="{{ques.op4_id}}"
         value="{{ques.op4_id}}"><label for="{{ques.op4_id}}">{{ques.op4}}</label><br>
-    <button onclick="answer_post('{{ques.question_id}}', '{{ques.op4_id}}');">Mark For Review</button>
+    <button onclick="answer_post('{{ques.question_id}}', '{{ques.question_id}}');">Mark For Review</button>
     <button onclick="clear_resp('{{ques.question_id}}');">Clear Response</button>
     {% endfor %}
 
@@ -31,9 +31,11 @@
         function clear_resp(id) {
             $('input[name='+id+']').prop('checked', false);
         }
-        function answer_post(question_id, answer_id) {
+        function answer_post(question_id, input_name) {
             var exam_id = '{{exam_id}}';
+            var answer_id = $('input[name='+input_name+']:checked').val();
             console.log(exam_id);
+            console.log(answer_id);
             var user_id = '191030001';
             $.ajax({
                 type: 'POST',

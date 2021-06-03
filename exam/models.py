@@ -27,3 +27,28 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
+
+class User(models.Model):
+
+    user_name = models.CharField(max_length=50)
+    user_id = models.IntegerField()
+
+    class Meta:
+        verbose_name = "User"
+        verbose_name_plural = "Users"
+
+    def __str__(self):
+        return self.user_name
+
+    def get_absolute_url(self):
+        return reverse("User_detail", kwargs={"pk": self.pk})
+
+class QuestionAnswer(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    question_id = models.IntegerField()
+    answer_id = models.IntegerField()
+    exam_id = models.IntegerField()
+
+    def __str__(self):
+        return "Question id: "+str(self.question_id)+", Answer_id: "+str(self.answer_id)
