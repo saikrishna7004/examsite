@@ -648,7 +648,50 @@
 	
     <!-- W3Schools icons pack -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
+
+    <!-- Page load -->
+    <script>
+        function chdiv12() {
+            $(".mainsets").hide();
+            $("#id2").show();
+            examstart = false;
+        }
+        function chdiv21() {
+            $(".mainsets").hide();
+            $("#id1").show();
+            examstart = false;
+        }
+        function chdiv23() {
+            $(".alldiv").hide();
+            showLoader();
+            setTimeout(hideLoader, 3 * 1000);
+            $("#main").show();
+            document.addEventListener('visibilitychange',vis);
+            examstart = true;
+        }
+        $(".mainsets").hide();
+        $("#loading").hide();
+        
+        function showLoader() {
+            $("#loading").show();
+        }
+        function hideLoader() {
+            $("#loading").hide();
+            fiveMinutes = 60 * 180;
+			display2 = document.querySelector("#time");
+			startTimer(fiveMinutes, display2);
+        }
+        
+        function toBottom() {
+        	palette.scrollTop = 0;
+        }
+        
+        function toTop() {
+        	palette.scrollTop = palette.scrollHeight;
+        }
+    </script>
+    <!-- End page load -->
+ 
     <!-- Question Formatting -->
 	<script>
             queslist = []
@@ -860,7 +903,7 @@
             tempBtn1.style.color = "white";
     </script>
     <!-- End Question Formatting -->
-	
+
     <!-- Custom JS -->
     <script>
         var btn_qid = ques.question_id
@@ -975,6 +1018,39 @@
     </script>
     <!-- End custom JS -->
 	
+	<!-- Page load 2 -->
+	<script>
+		window.onload = function () {
+            ele = document.documentElement;
+            $("#main").click(function () {
+                try{
+                	openFullscreen(ele);
+                }
+                catch(e){
+                	console.log(e)
+                }
+            })
+            $("#id1").show();
+            
+    		for(let xx = 0; xx < queslist.length; xx++){
+    			ttemp = queslist[xx]
+            	if(ttemp.ans_status=="aamfr"){
+            		qcolor_mfr.push(xx)
+            		let tempBtn = document.getElementById("a"+xx);
+                	tempBtn.style.backgroundPosition = "-9px -87px";
+                	tempBtn.style.color = "white";
+            	}
+            	else if(ttemp.ans_status=="ans"){
+            		qcolor_mfr.push(xx)
+            		let tempBtn = document.getElementById("a"+xx);
+                	tempBtn.style.backgroundPosition = "-7px -55px";
+                	tempBtn.style.color = "white";
+            	}
+        	}
+        }
+	</script>
+	<!-- End page load 2 -->
+	
     <!-- To prevent cheating -->
     <script>
         var num = 0;
@@ -1012,76 +1088,6 @@
         }
     </script>
     <!-- End prevent cheating -->
-
-    <!-- Page load -->
-    <script>
-        function chdiv12() {
-            $(".mainsets").hide();
-            $("#id2").show();
-            examstart = false;
-        }
-        function chdiv21() {
-            $(".mainsets").hide();
-            $("#id1").show();
-            examstart = false;
-        }
-        function chdiv23() {
-            $(".alldiv").hide();
-            showLoader();
-            setTimeout(hideLoader, 3 * 1000);
-            $("#main").show();
-            document.addEventListener('visibilitychange',vis);
-            examstart = true;
-        }
-        $(".mainsets").hide();
-        $("#loading").hide();
-        window.onload = function () {
-            ele = document.documentElement;
-            $("#main").click(function () {
-                try{
-                	openFullscreen(ele);
-                }
-                catch(e){
-                	console.log(e)
-                }
-            })
-            $("#id1").show();
-            
-    		for(let xx = 0; xx < queslist.length; xx++){
-    			ttemp = queslist[xx]
-            	if(ttemp.ans_status=="aamfr"){
-            		qcolor_mfr.push(xx)
-            		let tempBtn = document.getElementById("a"+xx);
-                	tempBtn.style.backgroundPosition = "-9px -87px";
-                	tempBtn.style.color = "white";
-            	}
-            	else if(ttemp.ans_status=="ans"){
-            		qcolor_mfr.push(xx)
-            		let tempBtn = document.getElementById("a"+xx);
-                	tempBtn.style.backgroundPosition = "-7px -55px";
-                	tempBtn.style.color = "white";
-            	}
-        	}
-        }
-        function showLoader() {
-            $("#loading").show();
-        }
-        function hideLoader() {
-            $("#loading").hide();
-            fiveMinutes = 60 * 180;
-			display2 = document.querySelector("#time");
-			startTimer(fiveMinutes, display2);
-        }
-        
-        function toBottom() {
-        	palette.scrollTop = 0;
-        }
-        
-        function toTop() {
-        	palette.scrollTop = palette.scrollHeight;
-        }
-    </script>
-    <!-- End page load -->
     
     <!-- Timer for time remaining -->
 	<script type="text/javascript">
