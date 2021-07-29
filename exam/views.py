@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse, redirect
 import json, time, os
 from .models import Question, UserData
 from django.db import transaction
-from examproject.settings import STATIC_DIR
+from examproject.settings import STATICFILES_DIR
 
 # Create your views here.
 
