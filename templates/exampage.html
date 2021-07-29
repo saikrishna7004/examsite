@@ -6,9 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exam Page</title>
-	<script src="//cdn.jsdelivr.net/npm/eruda" onload="eruda.init()"></script>
+	<script async src="//cdn.jsdelivr.net/npm/eruda" onload="eruda.init()"></script>
+    
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/static/bootstrap-5.0.1/css/bootstrap.min.css">
+    <link async rel="stylesheet" href="/static/bootstrap-5.0.1/css/bootstrap.min.css">
+
+    <!-- jQuery JS -->
+    <script src="/static/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -176,7 +180,7 @@
             </div>
 
         </div>
-        <div id="id2" class="mainsets container-fluid border">
+        <div id="id2" class="mainsets container-fluid border" style="display: none">
             <div class="container-fluid border my-2 px-4">
                 <div>
                     <h4><u>General Instructions:</u></h4>
@@ -325,7 +329,7 @@
         </div>
     </div>
 
-    <div id="main" class="mainsets px-1 container-fluid" style="overflow: hidden;">
+    <div id="main" class="mainsets px-1 container-fluid" style="overflow: hidden; display: none;">
 		
         <!-- Blue Bar -->
 		<div style="width:100%; font-size: large; border-bottom: 0.75px solid black; background: url('/static/bluebar.jpg') no-repeat; background-size: cover; color: white;"><h6>{{ ourExam.title |safe }}</h6></div>
@@ -423,7 +427,7 @@
         <!-- End Two in one div -->
     </div>
     
-    <div id="loading"></div>
+    <div id="loading" style="display: none;"></div>
 
     <style>
     
@@ -635,22 +639,10 @@
         }
 
     </style>
-    
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="/static/bootstrap-5.0.1/js/bootstrap.bundle.min.js"></script>
-
-    <!-- jQuery JS -->
-    <script src="/static/jquery-3.6.0.min.js"></script>
-	
-	<!-- Sweet Alert -->
-	<link href="/static/sweetalert2/minimal.css" rel="stylesheet">
-	<script src="/static/sweetalert2/sweetalert2.min.js"></script>
-	
-    <!-- W3Schools icons pack -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- Page load -->
     <script>
+        
         function chdiv12() {
             $(".mainsets").hide();
             $("#id2").show();
@@ -669,8 +661,6 @@
             document.addEventListener('visibilitychange',vis);
             examstart = true;
         }
-        $(".mainsets").hide();
-        $("#loading").hide();
         
         function showLoader() {
             $("#loading").show();
@@ -682,16 +672,19 @@
 			startTimer(fiveMinutes, display2);
         }
         
-        function toBottom() {
-        	palette.scrollTop = 0;
-        }
-        
-        function toTop() {
-        	palette.scrollTop = palette.scrollHeight;
-        }
     </script>
     <!-- End page load -->
- 
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script async src="/static/bootstrap-5.0.1/js/bootstrap.bundle.min.js"></script>
+	
+	<!-- Sweet Alert -->
+	<link async href="/static/sweetalert2/minimal.css" rel="stylesheet">
+	<script async src="/static/sweetalert2/sweetalert2.min.js"></script>
+	
+    <!-- W3Schools icons pack -->
+    <link async rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <!-- Question Formatting -->
 	<script>
             queslist = []
@@ -1030,7 +1023,6 @@
                 	console.log(e)
                 }
             })
-            $("#id1").show();
             
     		for(let xx = 0; xx < queslist.length; xx++){
     			ttemp = queslist[xx]
@@ -1047,6 +1039,14 @@
                 	tempBtn.style.color = "white";
             	}
         	}
+        }
+        
+        function toBottom() {
+        	palette.scrollTop = 0;
+        }
+        
+        function toTop() {
+        	palette.scrollTop = palette.scrollHeight;
         }
 	</script>
 	<!-- End page load 2 -->
@@ -1127,7 +1127,7 @@
 		});
   
 	</script>
-	<script src="/static/polyfill.min.js?features=es6"></script>
+	<script async src="/static/polyfill.min.js?features=es6"></script>
 	<script id="MathJax-script" async src="/static/mathjax/tex-mml-chtml.js"></script>
 	
 </body>
