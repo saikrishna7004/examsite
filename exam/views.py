@@ -31,6 +31,7 @@ def examInstructions(request):
 		ourExam = request.POST.get("ourExam")
 		test = Question
 		qlist = test.objects.filter(exam_id=scheduleVal)  # [0].question_id
+		print(qlist)		
 		queslist = []
 		for ques in qlist:
 			choi = ques.choice_set.all()
