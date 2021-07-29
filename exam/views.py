@@ -34,7 +34,7 @@ def examInstructions(request):
 		print(qlist)		
 		queslist = []
 		for ques in qlist:
-			choi = ques.choice_set.all()
+			choi = ques.choice_set.all().order_by("choice_id")
 			y=5
 			current_ans_status = ""
 			if UserData.objects.filter(user_id=request.user.username)[0].questionanswer_set.filter(question_id=ques.question_id).exists():
