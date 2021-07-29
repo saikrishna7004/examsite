@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maths Editor</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/static/bootstrap-5.0.1/css/bootstrap.min.css">
+</head>
+<body>
+	
+	<div class="container my-3">
+		<h1>MathLive Math Editor</h1><br><br>
+		<math-field id="formula" virtual-keyboard-mode=manual>
+			x=\frac{-b\pm \sqrt{b^2-4ac}}{2a}
+		</math-field><br><br>
+		<textarea class="form-control" id="latex" rows="2"></textarea>
+	</div>
+	
+	<script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>
+
+	<!-- jQuery JS -->
+	<script src="/static/jquery-3.6.0.min.js"></script>
+
+	<script>
+
+		var formula = document.getElementById('formula');
+		var latex = document.getElementById('latex');
+
+		$('#latex').on('input', function() { 
+			formula.value=latex.value
+		});
+
+		$('#formula').on('input', function() { 
+			latex.value=formula.value
+		});
+
+		udl();
+
+		function udl() {
+			latex.value = formula.value;
+		}
+
+	</script>
+
+</body>
+
+</html>

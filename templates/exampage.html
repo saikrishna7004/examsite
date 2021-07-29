@@ -6,45 +6,1120 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exam Page</title>
+	<script src="//cdn.jsdelivr.net/npm/eruda" onload="eruda.init()"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/static/bootstrap-5.0.1/css/bootstrap.min.css">
 </head>
 
 <body>
-    {% for ques in queslist %}
-    <h3>{{ques.question_text}}</h3>
-    <input type="radio" class="inputlabel" name="{{ques.question_id}}" id="{{ques.op1_id}}"
-        value="{{ques.op1_id}}"><label for="{{ques.op1_id}}">{{ques.op1}}</label><br>
-    <input type="radio" class="inputlabel" name="{{ques.question_id}}" id="{{ques.op2_id}}"
-        value="{{ques.op2_id}}"><label for="{{ques.op2_id}}">{{ques.op2}}</label><br>
-    <input type="radio" class="inputlabel" name="{{ques.question_id}}" id="{{ques.op3_id}}"
-        value="{{ques.op3_id}}"><label for="{{ques.op3_id}}">{{ques.op3}}</label><br>
-    <input type="radio" class="inputlabel" name="{{ques.question_id}}" id="{{ques.op4_id}}"
-        value="{{ques.op4_id}}"><label for="{{ques.op4_id}}">{{ques.op4}}</label><br>
-    <button onclick="answer_post('{{ques.question_id}}', '{{ques.question_id}}');">Mark For Review</button>
-    <button onclick="clear_resp('{{ques.question_id}}');">Clear Response</button>
-    {% endfor %}
+
+    <div class="container-fluid my-3 alldiv">
+        <div class="container-fluid py-2 border" style="background-color: #f5f5f5;">
+            <h5>JEE Advanced Exam Instructions</h5>
+        </div>
+        <div id="id1" class="mainsets container-fluid border">
+            <div class="container-fluid border my-2 px-4">
+                <h1 class="text-center">JEE-ADVANCE-2017-P2-Model</h1>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Time: 2:00PM to 5:30PM</th>
+                        <th>Max Marks: 183</th>
+                    </tr>
+                </table>
+                <!-- Physics -->
+                <h5 class="text-center"><u>Physics:</u></h5>
+                <table class="table table-bordered border-secondary">
+                    <thead class="table-active">
+                        <tr>
+                            <th scope="col">Section</th>
+                            <th scope="col">Question Type</th>
+                            <th scope="col">+Ve Marks</th>
+                            <th scope="col">-Ve Marks</th>
+                            <th scope="col">No. Of Qs</th>
+                            <th scope="col">Total Marks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sec -1(Q:1-7)</td>
+                            <td>Questions with Single answer type</td>
+                            <td>+3</td>
+                            <td>-1</td>
+                            <td>7</td>
+                            <td>21</td>
+                        </tr>
+                        <tr>
+                            <td>Sec -1(Q:1-7)</td>
+                            <td>Questions with Single answer type</td>
+                            <td>+3</td>
+                            <td>-1</td>
+                            <td>7</td>
+                            <td>21</td>
+                        </tr>
+                        <tr>
+                            <td>Sec -1(Q:1-7)</td>
+                            <td>Questions with Single answer type</td>
+                            <td>+3</td>
+                            <td>-1</td>
+                            <td>7</td>
+                            <td>21</td>
+                        </tr>
+                        <tr class="table-active">
+                            <td colspan="4">Total</td>
+                            <td>18</td>
+                            <td>61</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- End Physics -->
+                <!-- Chemistry -->
+                <h5 class="text-center"><u>Chemistry:</u></h5>
+                <table class="table table-bordered border-secondary">
+                    <thead class="table-active">
+                        <tr>
+                            <th scope="col">Section</th>
+                            <th scope="col">Question Type</th>
+                            <th scope="col">+Ve Marks</th>
+                            <th scope="col">-Ve Marks</th>
+                            <th scope="col">No. Of Qs</th>
+                            <th scope="col">Total Marks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sec -1(Q:1-7)</td>
+                            <td>Questions with Single answer type</td>
+                            <td>+3</td>
+                            <td>-1</td>
+                            <td>7</td>
+                            <td>21</td>
+                        </tr>
+                        <tr>
+                            <td>Sec -1(Q:1-7)</td>
+                            <td>Questions with Single answer type</td>
+                            <td>+3</td>
+                            <td>-1</td>
+                            <td>7</td>
+                            <td>21</td>
+                        </tr>
+                        <tr>
+                            <td>Sec -1(Q:1-7)</td>
+                            <td>Questions with Single answer type</td>
+                            <td>+3</td>
+                            <td>-1</td>
+                            <td>7</td>
+                            <td>21</td>
+                        </tr>
+                        <tr class="table-active">
+                            <td colspan="4">Total</td>
+                            <td>18</td>
+                            <td>61</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- End Chemistry -->
+                <!-- Maths -->
+                <h5 class="text-center"><u>Maths:</u></h5>
+                <table class="table table-bordered border-secondary">
+                    <thead class="table-active">
+                        <tr>
+                            <th scope="col">Section</th>
+                            <th scope="col">Question Type</th>
+                            <th scope="col">+Ve Marks</th>
+                            <th scope="col">-Ve Marks</th>
+                            <th scope="col">No. Of Qs</th>
+                            <th scope="col">Total Marks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sec -1(Q:1-7)</td>
+                            <td>Questions with Single answer type</td>
+                            <td>+3</td>
+                            <td>-1</td>
+                            <td>7</td>
+                            <td>21</td>
+                        </tr>
+                        <tr>
+                            <td>Sec -1(Q:1-7)</td>
+                            <td>Questions with Single answer type</td>
+                            <td>+3</td>
+                            <td>-1</td>
+                            <td>7</td>
+                            <td>21</td>
+                        </tr>
+                        <tr>
+                            <td>Sec -1(Q:1-7)</td>
+                            <td>Questions with Single answer type</td>
+                            <td>+3</td>
+                            <td>-1</td>
+                            <td>7</td>
+                            <td>21</td>
+                        </tr>
+                        <tr class="table-active">
+                            <td colspan="4">Total</td>
+                            <td>18</td>
+                            <td>61</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- End Maths -->
+                <div class="row">
+                    <div class="col"></div>
+                    <button class="btn col my-3" onclick="chdiv12();"
+                        style="width: 50%; background-color: #347ab7; color: white; border-radius: 0; border-color: #cccccc; font-size: small">Next></button>
+                </div>
+            </div>
+            <div class="container-fluid border my-3 p-3 text-center">
+                <img class="my-3 myimg" src="/static/person.jpg" alt="User Image" width="50px" height="50px">
+                <h5 class="my-3">{{ request.user.first_name }} {{ request.user.last_name }}</h5>
+            </div>
+
+        </div>
+        <div id="id2" class="mainsets container-fluid border">
+            <div class="container-fluid border my-2 px-4">
+                <div>
+                    <h4><u>General Instructions:</u></h4>
+                    <ol>
+                        <li>
+                            Total duration of examination is 180 minutes.
+                        </li>
+                        <li>
+                            The clock will be set at the server. The countdown timer in the top right comer of screen
+                            will display the remaining time available for you to complete the examination. When the timer reaches zero, the examination will end by itself. You will not be required to end or submit your examination.
+                        </li>
+                        <li>
+                            The Question Palette displayed on the right side of screen will show the status of each
+                            question using one of the following symbols
+                            <ul>
+                                <li>
+                                    "Not Visited"- You have not visited the question yet.
+                                </li>
+                                <li>
+                                    "Not Answered" - You have not answered the question.
+                                </li>
+                                <li>
+                                    "Answered" You have answered the question.
+                                </li>
+                                <li>
+                                    "Marked for Review" - You have NOT answered the question, but have marked the
+                                    question for review.
+                                </li>
+                                <li>
+                                    "Answered and Marked for Review" - The question(s) Answered and Marked for Review"
+                                    will be considered for evaluation.
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            The Marked for Review status for a question simply indicates that you would like to look at
+                            that question again.
+                        </li>
+                        <li>
+                            You can click on the arrow which appears to the left of question palette to collapse the
+                            question palette thereby maximizing the question window. To view the question palette again, you can
+                            click on " " which appears on the right side of question window.
+                        </li>
+                        <li>
+                            You can click on your "Profile" image on top right comer of your screen to change the
+                            language during the exam for entire question paper. On clicking of Profile image you will get a drop down to
+                            change the question content to the desired language.
+                        </li>
+                        <li>
+                            You can click on to navigate to the bottom and to navigate to the top of the question area,
+                            without scrolling
+                        </li>
+                    </ol>
+                    <h4><u>Navigating to a Question:</u></h4>
+                    <ol start="8">
+                        <li>
+                            To answer a question, do the following:
+                            <ol type="a">
+                                <li>
+                                    Click on the question number in the Question Palette at the right of your screen to
+                                    go to that numbered question directly. Note that using this option does NOT save your answer to the current question.
+                                </li>
+                                <li>
+                                    Click on Save & Next to save your answer for the current question and then go to the
+                                    next question.
+                                </li>
+                                <li>
+                                    Click on Mark for Review & Next to save your answer for the current question, mark it for review,
+                                    and then go to the next question.
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+                    <h4><u>Answering a Question:</u></h4>
+                    <ol start="9">
+                        <li>
+                            Procedure for answering a multiple choice type question:
+                        </li>
+                        <ol type="a">
+                            <li>
+                                To select your answer, click on the button of one of the options
+                            </li>
+                            <li>
+                                To deselect your chosen answer, click on the button of the chosen option again or click
+                                on the Clear Response button
+                            </li>
+                            <li>
+                                To change your chosen answer. click on the button of another option
+                            </li>
+                            <li>
+                                To save your answer, you MUST click on the Save & Next button
+                            </li>
+                            <li>
+                                To mark the question for review, click on the Mark for Review & Next button.
+                            </li>
+                            <li>
+                                To change your answer to a question that has already been answered, first select that
+                                question for answering and then follow the procedure for answering that type of question.
+                                <br>
+                            </li>
+                        </ol>
+                        </li>
+                    </ol>
+                    <h4><u>Navigating through sections:</u></h4>
+                    <ol start="10">
+                        <li>
+                            Sections in this question paper are displayed on the top bar of the
+                            screen. Questions in a section can be viewed by clicking on the section name. The section
+                            you are currently viewing is highlighted.
+                        </li>
+                        <li>
+                            After clicking the Save & Next button on the last question for a section, your
+                            will automatically be taken to the first question of the next section.
+                        </li>
+                        <li>
+                            You can shuffle between sections and questions anytime during the examination as per your convenience only during the time stipulated.
+                        </li>
+                        <li>
+                            Candidate can view the corresponding section summary as part of the legend that appears in
+                            every section above the question palette.
+                        </li>
+                    </ol>
+                </div>
+                <div>
+                    <input id="agree" type="checkbox"
+                        onchange="document.getElementById('buttonid3').disabled = !this.checked;" />
+                    <label for="agree">I have read and understood the instructions. All computer hardware allotted to me
+                        are in proper working condition. I declare that I am not in possession of / not wearing / not
+                        carrying any prohibited gadget like mobile phone, bluetooth devices etc. /any prohibited material with me into the
+                        Examination Hall. I agree that in case of not adhering to the instructions, I shall be liable to be
+                        debarred from this Test and / or to disciplinary action, which may include ban from future Tests /
+                        Examinations. </label>
+                    <hr class="mt-4 mb-2">
+                    <div class="row justify-content-between">
+                        <button class="btn col-4 my-3 px-1 py-2" id="buttonid2" onclick="chdiv21();"
+                            style="width: 48%; background-color: #347ab7; color: white; border-radius: 0; border-color: #cccccc; font-size: small">Previous</button>
+                        <button class="btn col-4 my-3 px-0 py-2" id="buttonid3" onclick="chdiv23();"
+                            style="width: 48%; background-color: #347ab7; color: white; border-radius: 0; border-color: #cccccc; font-size: small" disabled>I am ready to begin</button>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid border my-3 p-3 text-center">
+                <img class="my-3 myimg" src="/static/person.jpg" alt="User Image" width="50px" height="50px">
+                <h5 class="my-3">{{ request.user.first_name }} {{ request.user.last_name }}</h5>
+            </div>
+        </div>
+    </div>
+
+    <div id="main" class="mainsets px-1 container-fluid" style="overflow: hidden;">
+		
+        <!-- Blue Bar -->
+		<div style="width:100%; font-size: large; border-bottom: 0.75px solid black; background: url('/static/bluebar.jpg') no-repeat; background-size: cover; color: white;"><h6>{{ ourExam.title |safe }}</h6></div>
+        <!-- End Blue Bar -->
+    	
+        <!-- Top Black Bar -->
+        <div id="blackBar" class="px-3" style="background-color: #4d4d4d; width: 100%; height: 35px; display: flex;">
+            <div style="width: 50%;">
+                <a href="#" style="text-decoration: none; color: white;">
+                    Question Paper 
+                </a>
+                <span style="background: url(/static/Icon-sprite.png) -188px -3px; height: 70px; width: 70px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            </div>
+            <div style="width: 50%; text-align: right;">
+                <span style="background: url(/static/Icon-sprite.png) -140px -3px; height: 70px; width: 70px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <a href="#" style="text-decoration: none; color: white;">
+                    Instructions 
+                </a>
+            </div>
+        </div>
+        <!-- End Top Black Bar -->
+
+        <!-- Two in one div -->
+    	<div class="container-fluid p-0">
+            
+            <!-- First -->
+            <div id="pleft" class="container-fluid p-3 mt-1">
+				
+				<!-- Subjects Bar -->
+            	<div class="container-fluid p-0 m-0 row">
+                	<div class="col-md-auto p-0">
+                		<button id="bt1" class="btn sub px-2 py-1">PHYSICS <i class="fa fa-info-circle"></i></button>
+                		<button id="bt2" class="btn sub px-2 py-1">CHEMISTRY <i class="fa fa-info-circle"></i></button>
+                		<button id="bt3" class="btn sub px-2 py-1">MATHEMATICS <i class="fa fa-info-circle"></i></button>
+            		</div>
+                	<div class="col"> </div>
+                	<div class="col-md-auto p-1 timesDiv">
+                		Exam End Time: <span style="color: red">{{ ourExam.etime }} &nbsp</span> 
+                	</div>
+                    <div class="timesDiv">
+                        Duration: <span style="color: green">{{ ourExam.ttime }} &nbsp</span>
+                        Time Left: <span style="color: red" id="time"> </span>
+                    </div>
+                </div>            
+            	<!-- End Subjects Bar -->
+
+            	<hr class="mt-1 mb-0">
+
+				<div style="display: block; text-align:right;">
+					<img onclick="toTop()" src="/static/Down.png" id="upBtn" alt="Up">
+				</div>
+				<div style="overflow-y: scroll; overflow-x: scroll;" id="palette" class="container-fluid p-1"></div>
+                <div style="display: block; text-align:right;">
+					<img onclick="toBottom()" src="/static/Up.png" id="downBtn" alt="Down">
+				</div>
+				<button id="mfr" class="btn col-4 mt-1 px-0" onclick="mfrcheck(btn_qid); answer_post_mfr(btn_qid, btn_qid); next_ques();">Mark For Review & Next</button>
+        		<button id="cr" class="btn col-4 mt-1 px-2" onclick="notans(); clear_resp(btn_qid); answer_delete(btn_qid, btn_qid);">Clear Response</button>
+                <span id="sandiv"></span>
+                <button id="san" class="btn col-4 mt-1 px-2" onclick="sancheck(btn_qid); answer_post_san(btn_qid, btn_qid); next_ques();">Save & Next</button>
+                <button id="subFinal" class="btn col-4 mt-1 px-2" onclick="">Submit</button>
+                
+    		</div>
+            <!-- End First -->
+            
+            <!-- Second -->
+			<div id="pright" class="container-fluid p-0 my-1" style="position: relative;">
+                
+                <div id="collapsebar"></div>
+                
+                <div class="container-fluid p-0" id="sideinst" style="position: relative;">
+                    <div id="center" class="container-fluid p-2">
+                        <img class="my-3 myimg" src="/static/person.jpg" alt="User Image" width="100px" height="100px"><br>
+                        <h5 class="my-3">{{ request.user.first_name }} {{ request.user.last_name }}</h5>
+                    </div>
+                    <hr style="opacity: 1;">
+                    <div class="container-fluid p-2">
+                        <div><img class="my-2 myimg py-0" src="/static/questions.png" width="30px" height="32px"> - Answered </div>
+                        <div><img class="my-2 myimg py-0" src="/static/questions.png" width="30px" height="32px"> - Not Answered </div>
+                        <div><img class="my-2 myimg py-0" src="/static/questions.png" width="30px" height="32px"> - Not Visited </div>
+                        <div><img class="my-2 myimg py-0" src="/static/questions.png" width="30px" height="32px"> - Marked For Review </div>
+                        <div><img class="my-2 myimg py-0" src="/static/questions.png" width="30px" height="32px"> - Answered & Marked for Review (will be considered for evaluation) </div>
+                    </div>
+                </div>
+                <div id="subheadbar">CHEMISTRY</div>
+    			<div style="border: 0.75px solid black; min-height: 200px; max-height: 250px;" id="palette2">
+    				<div id="sub1_btnset"></div>
+    				<div id="sub2_btnset" hidden></div>
+    				<div id="sub3_btnset" hidden></div>
+                    <div style="text-align: center;"><button id="subFinal2" class="btn col-4 mt-1 px-2" onclick="">Submit</button></div>
+    			</div>
+                
+    		</div>
+            <!-- End Second -->
+    	</div>
+        <!-- End Two in one div -->
+    </div>
+    
+    <div id="loading"></div>
+
+    <style>
+    
+    	.timesDiv {
+    		font-weight: bold; 
+    		font-size: 14px; 
+    		line-height:150%; 
+    		text-align: right;
+    	}
+    	
+    	#subheadbar {
+    		width:100%; 
+    		border: 0.75px solid black; 
+    		background: url('/static/bluebar.jpg'); 
+    		background-size: 100% 16px; 
+    		color: white; 
+    		text-align: center;
+    	}
+    	
+    	#collapsebar {
+    		background: url("/static/Icon-sprite.png") -5px -63px no-repeat; 
+    		position: absolute;
+    		top: 50%;
+    		left: -7%;
+    		height: 48px;
+    		width: 17px;
+    		cursor: pointer;
+    	}
+    	
+    	#collapsebar.toggled {
+    		background: url("/static/Icon-sprite.png") -30px -63px no-repeat; 
+    		left: -11% ! important;
+    	}
+    
+    	.sub {
+    		background-color: #347ab7;
+    		border-radius: 0;
+    		font-size: 12px;
+    		font-weight: bold;
+    		color: white;
+    	}
+    	
+    	#bt1, #bt2 {
+    		background-color: white;
+    		color: #347ab7;
+    	}
+    	
+    	#mfr, #cr {
+    		width: 48%; 
+    		background-color: white; 
+    		border-radius: 0; 
+    		border-color: #cccccc;
+    		font-size: 80%;
+    	}
+    	
+    	#mfr:hover, #cr:hover, #san:hover, #subFinal:hover {
+    		background-color: #347ab7;
+    		color: white;
+    		outline: none;
+			box-shadow: none;
+    	}
+    	
+    	#san {
+    		width: 48%; 
+    		background-color: white; 
+    		border-radius: 0; 
+    		border-color: #cccccc;
+    		font-size: 80%;
+    		background-color: #347ab7;
+    		color: white;
+    	}
+    	
+    	#subFinal, #subFinal2 {
+    		width: 48%; 
+    		background-color: white; 
+    		border-radius: 0; 
+    		border-color: #cccccc;
+    		font-size: 80%;
+    		background-color: #38aae9;
+    		color: white;
+    	}
+    
+        #loading {
+            background: url('/static/loading.gif');
+            background-color: white;
+            background-repeat: no-repeat;
+            background-position: 50%;
+            background-size: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            display:block;
+			object-fit: cover;
+        }
+
+        #palette {
+            height: 60vh;
+        }
+
+        #pleft {
+            border: 0.75px black solid;
+        }
+
+        #center {
+            text-align: center;
+        }
+
+        #refreshBtn {
+            background: url('/static/refresh.png') no-repeat; 
+            width: 36px; 
+            height: 24px; 
+            background-size: 15px; 
+            background-position: center;
+            float: right;
+        }
+        
+        #quesMain {
+        	display: inline-block;
+        	width: 100%;
+        }
+
+        #upBtn, #downBtn {
+            width: 30px;
+            height: 30px;
+        }
+
+        @media screen and (max-width: 600px) {
+            #id1, #id2 {
+                font-size: small;
+            }
+            #sideinst, #center {
+                display: none;
+            }
+            #upBtn, #downBtn {
+                width: 20px;
+                height: 20px;
+            }
+            #sandiv, #subFinal2, #blackBar {
+                display: none !important;
+            }
+        }
+        
+        .btn:focus,.btn:active {
+			outline: none !important;
+			box-shadow: none;
+		}
+			
+        @media screen and (min-width: 600px) {
+            #pleft {
+    			float: left;
+    			width: 75%;
+                position: relative;
+                border-bottom: 0.75px black solid;
+                border-left: 0.75px black solid;
+                border-right: 0.75px black solid;
+                font-size: large;
+                height: inherit;
+    		}
+    		
+    		#pright {
+    			float: right;
+    			width: 25%;
+    			height: inherit;
+    		}
+			
+    		#pleft.toggled {
+    			width: 100% !important;
+    		}
+    		
+    		#pright.toggled {
+    			margin: -26%;
+    		}
+    	
+            #palette {
+                height: 500px;
+            }
+
+            #subbar {
+                border-top: 0.75px black solid;
+                border-left: 0.75px black solid;
+                border-right: 0.75px black solid;
+            }
+
+            #sideinst {
+                border: 0.75px solid black;
+                max-height: 400px;
+                overflow-y: scroll;
+            }
+
+            #mfr, #cr, #san {
+                width: 25%;
+            }
+
+            #sandiv {
+                width: 20%; 
+                display: inline-block;
+            }
+
+            #subFinal {
+                display: none;
+            }
+
+            #blackBar {
+                display: flex;
+            }
+            
+        }
+
+    </style>
+    
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="/static/bootstrap-5.0.1/js/bootstrap.bundle.min.js"></script>
 
     <!-- jQuery JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="/static/jquery-3.6.0.min.js"></script>
+	
+	<!-- Sweet Alert -->
+	<link href="/static/sweetalert2/minimal.css" rel="stylesheet">
+	<script src="/static/sweetalert2/sweetalert2.min.js"></script>
+	
+    <!-- W3Schools icons pack -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!-- Question Formatting -->
+	<script>
+            queslist = []
+            subList = []
+            
+            qcolor_mfr = []
+            qcolor_san = []
+            
+            Array.prototype.remove_by_value = function(val) {
+				for (var i = 0; i < this.length; i++) {
+					if (this[i] === val) {
+						this.splice(i, 1);
+						i--;
+					}
+				}
+				return this;
+			}
+            
+            var examstart = false;
+            
+            var ourExam = "{{ ourExam }}"
+            
+            {% for ques in queslist %}
+            	queslist.push({
+            	 'question_id': "{{ques.question_id}}", 'question_text': `{{ques.question_text |safe}}`,
+                 'op1': `{{ques.op1 |safe}}`, 'op2': `{{ques.op2 |safe}}`,
+                 'op3': `{{ques.op3 |safe}}`, 'op4': `{{ques.op4 |safe}}`,
+                 'op1_id': "{{ques.op1_id}}", 'op2_id': "{{ques.op2_id}}",
+                 'op3_id': "{{ques.op3_id}}", 'op4_id': "{{ques.op4_id}}",
+                 'op1_choi': "{{ques.op1_choi}}", 'op2_choi': "{{ques.op2_choi}}",
+                 'op3_choi': "{{ques.op3_choi}}", 'op4_choi': "{{ques.op4_choi}}",
+                 'ans_status': "{{ques.ans_status}}"
+            	})
+            {% endfor %}
+            
+            {% for sub in subList %}
+            	subList.push({name:"{{sub.name}}", length:"{{sub.length}}", start:"{{sub.start}}", end:"{{sub.end}}"})
+            {% endfor %}
+            
+            	var iter = 0
+			
+				ques=queslist[iter]
+				
+				palette.innerHTML=`
+				<div id="quesMain"><b>Question No. ${iter+1}</b><button id="refreshBtn" onclick="refreshMath()"></button></div>
+            	<hr>
+            	<p>${ques.question_text}</p><br>
+            	<b>(A) </b>${ques.op1}<br><br>
+            	<b>(B) </b>${ques.op2}<br><br>
+				<b>(C) </b>${ques.op3}<br><br>
+            	<b>(D) </b>${ques.op4}<br><br><br>
+            	<input type="radio" class="inputlabel" name="${ques.question_id}" id="${ques.op1_id}"
+                	value="${ques.op1_id}" ${ques.op1_choi}><label for="${ques.op1_id}">A</label><br>
+            	<input type="radio" class="inputlabel" name="${ques.question_id}" id="${ques.op2_id}"
+                	value="${ques.op2_id}" ${ques.op2_choi}><label for="${ques.op2_id}">B</label><br>
+            	<input type="radio" class="inputlabel" name="${ques.question_id}" id="${ques.op3_id}"
+                	value="${ques.op3_id}" ${ques.op3_choi}><label for="${ques.op3_id}">C</label><br>
+            	<input type="radio" class="inputlabel" name="${ques.question_id}" id="${ques.op4_id}"
+                	value="${ques.op4_id}" ${ques.op4_choi}><label for="${ques.op4_id}">D</label><br>
+            	`
+            	
+            function next_ques(){
+            	iter+=1
+            	ques=queslist[iter]
+            	btn_qid = ques.question_id
+            	
+            	colorCheck();
+            	MathJax.typesetClear([palette]);
+            	palette.innerHTML=`
+				<div id="quesMain"><b>Question No. ${iter+1}</b><button id="refreshBtn" onclick="refreshMath()"></button></div>
+            	<hr>
+            	<p>${ques.question_text}</p><br>
+            	<b>(A) </b>${ques.op1}<br><br>
+            	<b>(B) </b>${ques.op2}<br><br>
+				<b>(C) </b>${ques.op3}<br><br>
+            	<b>(D) </b>${ques.op4}<br><br><br>
+            	<input type="radio" class="inputlabel" name="${ques.question_id}" id="${ques.op1_id}"
+                	value="${ques.op1_id}" ${ques.op1_choi}><label for="${ques.op1_id}">A</label><br>
+            	<input type="radio" class="inputlabel" name="${ques.question_id}" id="${ques.op2_id}"
+                	value="${ques.op2_id}" ${ques.op2_choi}><label for="${ques.op2_id}">B</label><br>
+            	<input type="radio" class="inputlabel" name="${ques.question_id}" id="${ques.op3_id}"
+                	value="${ques.op3_id}" ${ques.op3_choi}><label for="${ques.op3_id}">C</label><br>
+            	<input type="radio" class="inputlabel" name="${ques.question_id}" id="${ques.op4_id}"
+                	value="${ques.op4_id}" ${ques.op4_choi}><label for="${ques.op4_id}">D</label><br>
+            	`
+            	MathJax.typesetPromise([palette]).then(() => {});
+            }
+            
+            function mfrcheck(qid) {
+                var answer_id = $('input[name=' + qid + ']:checked').val();
+                if (answer_id) {
+                    aamfr();
+                }
+                else {
+                    mfr();
+                }
+            }
+            
+            function sancheck(qid) {
+                var answer_id = $('input[name=' + qid + ']:checked').val();
+                if (answer_id) {
+                    san();
+                }
+                else {
+                    notans();
+                }
+            }
 
+            function goto_ques(goto){
+            	console.log(goto)
+            	ques = queslist[goto]
+            	iter = goto
+            	btn_qid = ques.question_id
+            	
+            	MathJax.typesetClear([palette]);
+            	palette.innerHTML=`
+				<div id="quesMain"><b>Question No. ${iter+1}</b><button id="refreshBtn" onclick="refreshMath()"></button></div>
+            	<hr>
+            	<p>${ques.question_text}</p><br>
+            	<b>(A) </b>${ques.op1}<br><br>
+            	<b>(B) </b>${ques.op2}<br><br>
+				<b>(C) </b>${ques.op3}<br><br>
+            	<b>(D) </b>${ques.op4}<br><br><br>
+            	<input type="radio" class="inputlabel" name="${ques.question_id}" id="${ques.op1_id}"
+                	value="${ques.op1_id}" ${ques.op1_choi}><label for="${ques.op1_id}">A</label><br>
+            	<input type="radio" class="inputlabel" name="${ques.question_id}" id="${ques.op2_id}"
+                	value="${ques.op2_id}" ${ques.op2_choi}><label for="${ques.op2_id}">B</label><br>
+            	<input type="radio" class="inputlabel" name="${ques.question_id}" id="${ques.op3_id}"
+                	value="${ques.op3_id}" ${ques.op3_choi}><label for="${ques.op3_id}">C</label><br>
+            	<input type="radio" class="inputlabel" name="${ques.question_id}" id="${ques.op4_id}"
+                	value="${ques.op4_id}" ${ques.op4_choi}><label for="${ques.op4_id}">D</label><br>
+            	`
+            	MathJax.typesetPromise([palette]).then(() => {});
+            }
+            
+            function printBtn(e) {
+            	const palette2 = document.querySelector(e);
+        		for (var i = 0; i < queslist.length; i++) {
+      		  	var btn = document.createElement("button");
+      		  	btn.style.height="30px";
+      		  	btn.style.width="32px";
+      		  	btn.style.margin="3px";
+      		  	btn.style.borderColor = "transparent";
+      		  	btn.style.color = "black";
+      		  	btn.style.backgroundColor = "rgb(255,255,255)";
+      		  	btn.style.background = "url('/static/questions.png') no-repeat";
+      		  	btn.style.backgroundPosition = "-107px -56px"; 
+      		  	btn.setAttribute("class", "paletteBtn");
+      		  	btn.setAttribute("id", "a"+i.toString());
+      		  	btn.onclick = function(e){
+      		  		let b = parseInt(this.id.replace("a",""));
+      		  		goto_ques(b);
+      		  		colorCheck();		
+      		  	};
+    		    	var t = document.createTextNode(i+1);
+     		   	btn.appendChild(t);
+      		  	sub1_btnset.appendChild(btn);
+    			}
+    		}
+    		
+            function aamfr() {
+                let tempBtn = document.getElementById("a"+iter);
+                tempBtn.style.backgroundPosition = "-9px -87px";
+                tempBtn.style.color = "white";               
+            }
+            
+            function mfr() {
+                let tempBtn = document.getElementById("a"+iter);
+                tempBtn.style.backgroundPosition = "-75px -54px";
+                tempBtn.style.color = "white";              
+            }
+            
+            function san() {
+                let tempBtn = document.getElementById("a"+iter);
+                tempBtn.style.backgroundPosition = "-7px -55px";
+                tempBtn.style.color = "white";            
+            }
+            
+            function notans() {
+                let tempBtn = document.getElementById("a"+iter);
+                tempBtn.style.backgroundPosition = "-42px -56px";
+                tempBtn.style.color = "white";              
+            }
+            
+            function colorCheck() {
+            	if (!qcolor_mfr.includes(iter) && !qcolor_san.includes(iter)) {
+            		notans()
+            	}
+            }
+            
+            function refreshMath() {
+        		MathJax.typesetClear([palette]);
+            	MathJax.typesetPromise([palette]).then(() => {});
+            }
+            
+            collapsebar.addEventListener('click', ()=>{
+            	$('#collapsebar').toggleClass('toggled');
+            	$('#pright').toggleClass('toggled');
+            	$('#pleft').toggleClass('toggled');
+            	
+            })
+            
+            palette.style.height=pleft.style.height;
+			
+    		printBtn('#palette2');
+    </script>
+    <!-- End Question Formatting -->
+	
     <!-- Custom JS -->
     <script>
+        var btn_qid = ques.question_id
+        
         function clear_resp(id) {
-            $('input[name='+id+']').prop('checked', false);
+            $('input[name=' + id + ']').prop('checked', false);
         }
-        function answer_post(question_id, input_name) {
+
+        function answer_post_mfr(question_id, input_name) {
             var exam_id = '{{exam_id}}';
-            var answer_id = $('input[name='+input_name+']:checked').val();
+            var answer_id = $('input[name=' + input_name + ']:checked').val();
             console.log(exam_id);
             console.log(answer_id);
-            var user_id = '191030001';
+            qcolor_mfr.push(iter)
+            if (qcolor_san.includes(iter)){
+            	qcolor_san.remove_by_value(iter)
+            }
+            
+            let temp = "";
+            qtemp = queslist[iter]
+            qtemp.op1_choi=""
+            qtemp.op2_choi=""
+            qtemp.op3_choi=""
+            qtemp.op4_choi=""
+            if(answer_id==qtemp.op1_id){
+            	qtemp.op1_choi="checked"
+            }
+            else if(answer_id==qtemp.op2_id){
+            	qtemp.op2_choi="checked"
+            }
+            else if(answer_id==qtemp.op3_id){
+            	qtemp.op3_choi="checked"
+            }
+            else if(answer_id==qtemp.op4_id){
+            	qtemp.op4_choi="checked"
+            }
+            
+            if(answer_id==null){return}
+            var user_id = '{{request.user.username}}';
             $.ajax({
                 type: 'POST',
                 url: 'answer/',
-                dataType:'json',
-                data: {exam_id:exam_id, user_id:user_id, question_id:question_id, answer_id:answer_id, csrfmiddlewaretoken: '{{ csrf_token }}'}
+                dataType: 'json',
+                data: { exam_id: exam_id, user_id: user_id, question_id: question_id, answer_id: answer_id, ans_status: "aamfr", csrfmiddlewaretoken: '{{ csrf_token }}' }
             })
         }
+        
+        function answer_post_san(question_id, input_name) {
+            var exam_id = '{{exam_id}}';
+            var answer_id = $('input[name=' + input_name + ']:checked').val();
+            console.log(exam_id);
+            console.log(answer_id);
+            qcolor_san.push(iter);
+            if (qcolor_mfr.includes(iter)){
+            	qcolor_mfr.remove_by_value(iter)
+            }
+            
+            let temp = "";
+            qtemp = queslist[iter]
+            qtemp.op1_choi=""
+            qtemp.op2_choi=""
+            qtemp.op3_choi=""
+            qtemp.op4_choi=""
+            if(answer_id==qtemp.op1_id){
+            	qtemp.op1_choi="checked"
+            }
+            else if(answer_id==qtemp.op2_id){
+            	qtemp.op2_choi="checked"
+            }
+            else if(answer_id==qtemp.op3_id){
+            	qtemp.op3_choi="checked"
+            }
+            else if(answer_id==qtemp.op4_id){
+            	qtemp.op4_choi="checked"
+            }
+            
+            if(answer_id==null){return}
+            var user_id = '{{request.user.username}}';
+            $.ajax({
+                type: 'POST',
+                url: 'answer/',
+                dataType: 'json',
+                data: { exam_id: exam_id, user_id: user_id, question_id: question_id, answer_id: answer_id, ans_status: "ans", csrfmiddlewaretoken: '{{ csrf_token }}' }
+            })
+        }
+        
+        function answer_delete(question_id, input_id) {
+            var exam_id = '{{exam_id}}';
+            var user_id = '{{request.user.username}}';
+            if (qcolor_mfr.includes(iter)){
+            	qcolor_mfr.remove_by_value(iter)
+            }
+            if (qcolor_san.includes(iter)){
+            	qcolor_san.remove_by_value(iter)
+            }
+            
+            let temp = "";
+            qtemp = queslist[iter]
+            qtemp.op1_choi=""
+            qtemp.op2_choi=""
+            qtemp.op3_choi=""
+            qtemp.op4_choi=""
+            
+            $.ajax({
+                type: 'POST',
+                url: 'delete/',
+                dataType: 'json',
+                data: { exam_id: exam_id, user_id: user_id, question_id: question_id, csrfmiddlewaretoken: '{{ csrf_token }}' }
+            })
+        }
+        
     </script>
+    <!-- End custom JS -->
+	
+    <!-- To prevent cheating -->
+    <script>
+        var num = 0;
+        function vis() {
+            if (num > 3) {
+                window.close();
+            }
+
+            if (document.hidden) {
+                console.log("Hidden");
+                num += 1;
+                //window.alert("Come back to exam man! Otherwise it will be submitted.")
+                Swal.fire({
+                    title: '<h1 style="color: Red">Navigated Away Warning</h1>',
+                    html: '<p style="text-align: center">{{ user.first_name }} {{ user.last_name }}, your test will be auto submitted, if you repeat this behaviour.</p>',
+                    icon: 'warning',
+                    confirmButtonText: 'Continue Test',
+    				confirmButtonColor: 'green'
+    			})
+            }
+            else {
+                console.log("Visible");
+            }
+        }
+        function openFullscreen(ele) {
+            if (ele.requestFullscreen) {
+                ele.requestFullscreen();
+            }
+            else if (ele.webkitRequestFullscreen) {
+                ele.webkitRequestFullscreen();
+            }
+            else if (ele.msRequestFullscreen) {
+                ele.msRequestFullscreen();
+            }
+        }
+    </script>
+    <!-- End prevent cheating -->
+
+    <!-- Page load -->
+    <script>
+        function chdiv12() {
+            $(".mainsets").hide();
+            $("#id2").show();
+            examstart = false;
+        }
+        function chdiv21() {
+            $(".mainsets").hide();
+            $("#id1").show();
+            examstart = false;
+        }
+        function chdiv23() {
+            $(".alldiv").hide();
+            showLoader();
+            setTimeout(hideLoader, 3 * 1000);
+            $("#main").show();
+            document.addEventListener('visibilitychange',vis);
+            examstart = true;
+        }
+        $(".mainsets").hide();
+        $("#loading").hide();
+        window.onload = function () {
+            ele = document.documentElement;
+            $("#main").click(function () {
+                try{
+                	openFullscreen(ele);
+                }
+                catch(e){
+                	console.log(e)
+                }
+            })
+            $("#id1").show();
+            
+    		for(let xx = 0; xx < queslist.length; xx++){
+    			ttemp = queslist[xx]
+            	if(ttemp.ans_status=="aamfr"){
+            		qcolor_mfr.push(xx)
+            		let tempBtn = document.getElementById("a"+xx);
+                	tempBtn.style.backgroundPosition = "-9px -87px";
+                	tempBtn.style.color = "white";
+            	}
+            	else if(ttemp.ans_status=="ans"){
+            		qcolor_mfr.push(xx)
+            		let tempBtn = document.getElementById("a"+xx);
+                	tempBtn.style.backgroundPosition = "-7px -55px";
+                	tempBtn.style.color = "white";
+            	}
+        	}
+        }
+        function showLoader() {
+            $("#loading").show();
+        }
+        function hideLoader() {
+            $("#loading").hide();
+            fiveMinutes = 60 * 180;
+			display2 = document.querySelector("#time");
+			startTimer(fiveMinutes, display2);
+        }
+        
+        function toBottom() {
+        	palette.scrollTop = 0;
+        }
+        
+        function toTop() {
+        	palette.scrollTop = palette.scrollHeight;
+        }
+    </script>
+    <!-- End page load -->
+    
+    <!-- Timer for time remaining -->
+	<script type="text/javascript">
+		function startTimer(duration1, display1) {
+			var timer1 = duration1, minutes1, seconds1;
+			
+			count1 = setInterval(function () {
+				hours1 = parseInt(timer1 / 3600, 10);
+				minutes1 = parseInt(timer1 % 3600 / 60, 10);
+				seconds1 = parseInt(timer1 % 3600 % 60, 10);
+				
+				minutes1 = minutes1 < 10 ? "0" + minutes1 : minutes1;
+				seconds1 = seconds1 < 10 ? "0" + seconds1 : seconds1;
+				hours1 = hours1 < 10 ? "0" + hours1 : hours1;
+
+				display1.innerHTML = hours1 + ":" + minutes1 + ":" + seconds1;
+
+				if (--timer1 < 0) {
+					clearInterval(count1);
+				}
+			}, 1000);
+		}
+
+	</script>
+	<!-- End Timer for time remaining -->
+    
+    <script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+    		extensions: ["tex2jax.js"],
+    		jax: ["input/TeX", "output/HTML-CSS"],
+    		tex2jax: {
+    			inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+    			//displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    			processEscapes: true
+    		},
+    		"HTML-CSS": { fonts: ["TeX"] }
+		});
+  
+	</script>
+	<script src="/static/polyfill.min.js?features=es6"></script>
+	<script id="MathJax-script" async src="/static/mathjax/tex-mml-chtml.js"></script>
+	
 </body>
 
 </html>
