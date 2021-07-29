@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Question, Choice, User, QuestionAnswer
+from .models import Question, Choice, UserData, QuestionAnswer
 
 class ChoiceInline(admin.StackedInline):
     model = Choice
@@ -21,9 +21,9 @@ class QuestionAnswerInline(admin.StackedInline):
     model = QuestionAnswer
     extra = 1
 
-class UserAdmin(admin.ModelAdmin):
+class UserDataAdmin(admin.ModelAdmin):
     fieldsets = [
-        ('User Description', {'fields': ['user_name', 'user_id']}),
+        ('UserData Description', {'fields': ['user_name', 'user_id']}),
     ]
     inlines = [QuestionAnswerInline]
     list_display = ('user_name', 'user_id')
@@ -31,4 +31,4 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ['user_id', 'user_name']
 
 admin.site.register(Question, QuestionAdmin)
-admin.site.register(User, UserAdmin)
+admin.site.register(UserData, UserDataAdmin)

@@ -4,7 +4,7 @@ from django.db import models
 
 class Question(models.Model):
 
-    question_id = models.IntegerField()
+    question_id = models.IntegerField(unique=True)
     question_text = models.CharField(max_length=1000)
     answer_id = models.IntegerField()
     exam_id = models.IntegerField()
@@ -23,19 +23,19 @@ class Choice(models.Model):
 
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice_text = models.CharField(max_length=100)
-    choice_id = models.IntegerField()
+    choice_id = models.IntegerField(unique=True)
 
     def __str__(self):
         return self.choice_text
 
-class User(models.Model):
+class UserData(models.Model):
 
     user_name = models.CharField(max_length=50)
-    user_id = models.IntegerField()
+    user_id = models.IntegerField(unique=True)
 
     class Meta:
-        verbose_name = "User"
-        verbose_name_plural = "Users"
+        verbose_name = "UserData"
+        verbose_name_plural = "UserDatas"
 
     def __str__(self):
         return self.user_name
@@ -45,10 +45,11 @@ class User(models.Model):
 
 class QuestionAnswer(models.Model):
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    question_id = models.IntegerField()
+    user = models.ForeignKey(UserData, on_delete=models.CASCADE)
+    question_id = models.IntegerField(unique=True)
     answer_id = models.IntegerField()
     exam_id = models.IntegerField()
+    ans_status = models.CharField(max_length=10, default="aamfr")
 
     def __str__(self):
         return "Question id: "+str(self.question_id)+", Answer_id: "+str(self.answer_id)
