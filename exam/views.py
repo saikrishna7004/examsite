@@ -30,7 +30,7 @@ def examInstructions(request):
 		scheduleVal = request.POST.get("scheduleVal")
 		ourExam = request.POST.get("ourExam")
 		test = Question
-		qlist = test.objects.filter(exam_id=scheduleVal)  # [0].question_id
+		qlist = test.objects.filter(exam_id=scheduleVal).order_by("question_id")  # [0].question_id
 		print(qlist)		
 		queslist = []
 		for ques in qlist:
