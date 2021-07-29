@@ -142,7 +142,7 @@ def create(request):
 		return HttpResponse("<meta name='viewport' content='width=device-width, initial-scale=1.0'><h2>You are not permitted to access this page. Login as a Staff or SuperUser to access this page.</h2><br><a href='/login'>Click Here</a> to redirect to Login page.")
 	import time
 	start=time.time()
-	question_paper = open(os.path.join(STATICFILES_DIRS[0],"/static/examtest.txt"),'r').read()
+	question_paper = open("/app/static/examtest.txt",'r').read()
 	question_set = question_paper.split("\n__________\n")
 	exam_id = 5056
 	choice_id_inc = str(exam_id)+'000'
