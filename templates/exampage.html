@@ -935,12 +935,11 @@
             }
             
             if(answer_id==null){return}
-            var user_id = '{{request.user.username}}';
             $.ajax({
                 type: 'POST',
                 url: 'answer/',
                 dataType: 'json',
-                data: { exam_id: exam_id, user_id: user_id, question_id: question_id, answer_id: answer_id, ans_status: "aamfr", csrfmiddlewaretoken: '{{ csrf_token }}' }
+                data: { exam_id: exam_id, question_id: question_id, answer_id: answer_id, ans_status: "aamfr", csrfmiddlewaretoken: '{{ csrf_token }}' }
             })
         }
         
@@ -974,18 +973,16 @@
             }
             
             if(answer_id==null){return}
-            var user_id = '{{request.user.username}}';
             $.ajax({
                 type: 'POST',
                 url: 'answer/',
                 dataType: 'json',
-                data: { exam_id: exam_id, user_id: user_id, question_id: question_id, answer_id: answer_id, ans_status: "ans", csrfmiddlewaretoken: '{{ csrf_token }}' }
+                data: { exam_id: exam_id, question_id: question_id, answer_id: answer_id, ans_status: "ans", csrfmiddlewaretoken: '{{ csrf_token }}' }
             })
         }
         
         function answer_delete(question_id, input_id) {
             var exam_id = '{{exam_id}}';
-            var user_id = '{{request.user.username}}';
             if (qcolor_mfr.includes(iter)){
             	qcolor_mfr.remove_by_value(iter)
             }
@@ -1004,7 +1001,7 @@
                 type: 'POST',
                 url: 'delete/',
                 dataType: 'json',
-                data: { exam_id: exam_id, user_id: user_id, question_id: question_id, csrfmiddlewaretoken: '{{ csrf_token }}' }
+                data: { exam_id: exam_id, question_id: question_id, csrfmiddlewaretoken: '{{ csrf_token }}' }
             })
         }
         
