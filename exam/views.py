@@ -139,25 +139,27 @@ def results(request, exam_id):
 def create(request):
 	if not request.user.is_staff:
 		return HttpResponse("<meta name='viewport' content='width=device-width, initial-scale=1.0'><h2>You are not permitted to access this page. Login as a Staff or SuperUser to access this page.</h2><br><a href='/login'>Click Here</a> to redirect to Login page.")
-	import time
-	start=time.time()
-	question_paper = open("/storage/emulated/0/qpython/examproject/static/examtest.txt",'r').read()
-	question_set = question_paper.split("\n__________\n")
-	exam_id = 5051
-	choice_id_inc = str(exam_id)+'000'
-	choice_id_inc = int(choice_id_inc)
-	question_id_inc = str(exam_id)+'000'
-	question_id_inc = int(question_id_inc)
-	with transaction.atomic():
-		for x in range(0,len(question_set)):
-			question_id_inc += 1
-			queset = question_set[x].split("\n")
-			Question.objects.create(exam_id=exam_id, question_id=question_id_inc, question_text=queset[0],answer_id=int(str(exam_id)+'000')+x*4+int(queset[5]))
-			for y in range(1,5):
-				choice_id_inc += 1
-				Question.objects.filter(question_id=question_id_inc)[0].choice_set.create(choice_text=queset[y],choice_id=choice_id_inc)
-	end=time.time()
-	return HttpResponse("<h1>Done 👍 in "+str(end-start)+"</h1>")
+	if request.method=="POST":
+			print(request.FILES)
+			start=time.time()
+			question_paper = request.FILES['qpaperFile'].read().decode('UTF-8')
+			question_set = question_paper.split("\n__________\n")
+			exam_id = request.POST.get("examId")
+			choice_id_inc = str(exam_id)+'000'
+			choice_id_inc = int(choice_id_inc)
+			question_id_inc = str(exam_id)+'000'
+			question_id_inc = int(question_id_inc)
+			with transaction.atomic():
+				for x in range(0,len(question_set)):
+					question_id_inc += 1
+					queset = question_set[x].split("\n")
+					Question.objects.create(exam_id=exam_id, question_id=question_id_inc, question_text=queset[0],answer_id=int(str(exam_id)+'000')+x*4+int(queset[5]))
+					for y in range(1,5):
+						choice_id_inc += 1
+						Question.objects.filter(question_id=question_id_inc)[0].choice_set.create(choice_text=queset[y],choice_id=choice_id_inc)
+			end=time.time()
+			return HttpResponse("<h1>Done 👍 in "+str(end-start)+"</h1>")
+	return render(request, "create.html")
 
 def matheditor(request):
 	if request.user.is_staff:
