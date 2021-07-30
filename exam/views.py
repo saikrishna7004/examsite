@@ -134,7 +134,7 @@ def results(request, exam_id):
 			y += 1
 		x += 1
 	#print("The no. of correct options is: ", y)
-	return HttpResponse("<h1>The no. of correct answers is: "+str(y)+"</h1>")
+	return HttpResponse("<meta name='viewport' content='width=device-width, initial-scale=1.0'><h1>The no. of correct answers is: "+str(y)+"</h1>")
 
 def create(request):
 	if not request.user.is_staff:
@@ -150,6 +150,8 @@ def create(request):
 			question_id_inc = str(exam_id)+'000'
 			question_id_inc = int(question_id_inc)
 			with transaction.atomic():
+				if Question.objects.filter(exam_id=exam_id).exists():
+					return HttpResponse(f"<meta name='viewport' content='width=device-width, initial-scale=1.0'>The given Exam ID {exam_id} already exists. Please choose other ID.")
 				for x in range(0,len(question_set)):
 					question_id_inc += 1
 					queset = question_set[x].split("\n")
@@ -158,7 +160,7 @@ def create(request):
 						choice_id_inc += 1
 						Question.objects.filter(question_id=question_id_inc)[0].choice_set.create(choice_text=queset[y],choice_id=choice_id_inc)
 			end=time.time()
-			return HttpResponse("<h1>Done 👍 in "+str(end-start)+"</h1>")
+			return HttpResponse(f"<meta name='viewport' content='width=device-width, initial-scale=1.0'><h1>Done 👍 in {end-start} seconds.</h1>The Exam ID is {exam_id}")
 	return render(request, "create.html")
 
 def matheditor(request):
