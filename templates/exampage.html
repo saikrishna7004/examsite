@@ -667,7 +667,7 @@
         }
         function hideLoader() {
             $("#loading").hide();
-            fiveMinutes = 60 * 180;
+            fiveMinutes = 60 * parseInt("{{ ourExam.ttime }}");
 			display2 = document.querySelector("#time");
 			startTimer(fiveMinutes, display2);
         }
