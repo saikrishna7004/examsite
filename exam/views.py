@@ -1,8 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect
-import json, time, os
+import json, time
 from .models import Question, UserData
 from django.db import transaction
-from examproject.settings import STATICFILES_DIRS
 
 # Create your views here.
 
@@ -31,7 +30,6 @@ def examInstructions(request):
 		ourExam = request.POST.get("ourExam")
 		test = Question
 		qlist = test.objects.filter(exam_id=scheduleVal).order_by("question_id")  # [0].question_id
-		print(qlist)		
 		queslist = []
 		for ques in qlist:
 			choi = ques.choice_set.all().order_by("choice_id")
@@ -79,7 +77,7 @@ def answer(request):
 	if request.user.is_anonymous:
 		return redirect("login")
 	if request.method == "POST":
-		user_id = request.POST.get("user_id")
+		user_id = request.user.username
 		exam_id = request.POST.get("exam_id")
 		question_id = request.POST.get("question_id")
 		answer_id = request.POST.get("answer_id")
@@ -109,7 +107,7 @@ def delete(request):
 	if request.user.is_anonymous:
 		return redirect("login")
 	if request.method == "POST":
-		user_id = request.POST.get("user_id")
+		user_id = request.user.username
 		exam_id = request.POST.get("exam_id")
 		question_id = request.POST.get("question_id")
 
@@ -143,9 +141,9 @@ def create(request):
 		return HttpResponse("<meta name='viewport' content='width=device-width, initial-scale=1.0'><h2>You are not permitted to access this page. Login as a Staff or SuperUser to access this page.</h2><br><a href='/login'>Click Here</a> to redirect to Login page.")
 	import time
 	start=time.time()
-	question_paper = open("/app/static/examtest.txt",'r').read()
+	question_paper = open("/storage/emulated/0/qpython/examproject/static/examtest.txt",'r').read()
 	question_set = question_paper.split("\n__________\n")
-	exam_id = 5056
+	exam_id = 5051
 	choice_id_inc = str(exam_id)+'000'
 	choice_id_inc = int(choice_id_inc)
 	question_id_inc = str(exam_id)+'000'
