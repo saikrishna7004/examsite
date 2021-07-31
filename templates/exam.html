@@ -160,7 +160,7 @@
                     <h6 class="sorting m-0 p-1">Exam</h6>
                 </div>
                 <div class="container p-2 border" style="background-color: #fff;">
-
+					
                     {% for exams in allexams %}
 
                     <!-- Test div -->
@@ -176,9 +176,9 @@
                                 <div class="col-md-2 col-sm-3 col-xs-4">
                                     <div class="box-date text-center" style="border-radius: 0;">
                                         <ul>
-                                            <li class="t-date"><span>30</span>
+                                            <li class="t-date"><span>{{exams.day}}</span>
                                             </li>
-                                            <li class="t-month"><span>May 2021</span></li>
+                                            <li class="t-month"><span>{{exams.month}} {{exams.year}}</span></li>
                                         </ul>
                                     </div>
                                 </div>
