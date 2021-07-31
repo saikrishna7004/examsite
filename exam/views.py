@@ -1,21 +1,24 @@
 from django.shortcuts import render, HttpResponse, redirect
-import json, time
-from .models import Question, UserData
+import json, time, calendar
+from .models import Question, UserData, ExamData
 from django.db import transaction
+from django import template
+from django.utils.timezone import localdate
 
 # Create your views here.
 
 def index(request):
 	if request.user.is_anonymous:
 		return redirect("login")
-	allexams = [
-		{'title': '30-05-2021_Sr.Super-60 &amp; All_Jee-Main_GTM-26',
-			'stime': '10:15 AM', 'etime': '01:15 PM', 'ttime': '180 Mins', 'examid': 5054},
-		{'title': '30-05-2021_Sr.Super-60 &amp; All_Jee-Adv_GTA-6',
-			'stime': '9:00 AM', 'etime': '12:00 PM', 'ttime': '180 Mins', 'examid': 5055},
-		{'title': '30-05-2021_Sr.Super-60 &amp; All_Jee-Main_GTM-1',
-			'stime': '10:15 AM', 'etime': '01:15 PM', 'ttime': '180 Mins', 'examid': 5056},
-	]
+	allexams = []
+	examlist = ExamData.objects.filter(date=localdate()).order_by("exam_id")
+	for exam in examlist:
+		allexams.append({
+			'title': exam.title, 'stime': exam.start_time, 'etime': exam.end_time, 
+			'ttime': exam.total_time, 'examid': int(exam.exam_id), 
+			'day': exam.date.day, 'month': calendar.month_name[exam.date.month], 'year': exam.date.year
+		})
+	
 	content = {
 		'allexams': allexams
 	}
