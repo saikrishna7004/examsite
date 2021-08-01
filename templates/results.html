@@ -130,7 +130,7 @@
 
 <body>
     <div class="container my-3">
-        <h1>This is exam site from exam.html</h1>
+        <h1>This is results site from exam.html</h1>
         <hr>
         {{ request.user.first_name }} {{ request.user.last_name }}
         <br>
@@ -152,8 +152,6 @@
                 </li>
             </ul>
         </div>
-        
-		{% if allexams|length %}
 		
         <div class="container p-3">
 			
@@ -188,14 +186,8 @@
                                 <div class="col-md-6 col-sm-6 col-xs-8">
                                     <div class="box-subject">
                                         <ul>
-                                            <li class="t-subject"><span class="left">{{exams.title |safe}}</span> <span
-                                                    class="t-time" style="color: red;"><i
-                                                        class="fa fa-clock-o"></i><span>{{exams.ttime}}</span></span>
-                                            </li>
-                                            <li class="t-time"><span style="color: green;">
-                                                    <i class="fa fa-clock-o"></i><span>{{exams.stime}} - </span>
-                                                </span> <span style="color: red;"><i class="fa fa-clock-o"></i><span
-                                                        style="color: red;">{{exams.etime}}</span></span>
+                                            <li class="t-subject">
+                                            <span class="left">{{exams.title |safe}}</span> 
                                             </li>
                                         </ul>
 
@@ -205,14 +197,8 @@
                                     <div class="box-button">
                                         <button type="button" class="btn-guest pull-right"
                                             id="getStartExamButtonId{{exams.examid}}" style="border-radius: 0;"
-                                            onclick="openInstructionsPage('{{exams.examid}}','getStartExamButtonId{{exams.examid}}','takeExamId{{exams.examid}}')">TAKE
-                                            EXAM</button>
+                                            onclick="resultView('{{exams.examid}}')">EXAM RESULT</button>
                                     </div>
-
-                                    <form id="formid{{exams.examid}}">
-                                        {% csrf_token %}
-                                    </form>
-
                                 </div>
                             </div>
                         </div>
@@ -227,12 +213,6 @@
                 </div>
             </div>
         </div>
-        
-        {% else %}
-    	<div class="alert alert-primary" role="alert">
-        	No Exams scheduled for Today
-    	</div>
-    	{% endif %}
     
     </div>
 
@@ -246,49 +226,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script>
-        
-    
-        function openInstructionsPage(scheduleVal, ele, idVal) {
-            $("#" + ele).attr("disabled", true);
-            
-            var allexams = {{allexams |safe}}
-        	var ourExam;
-            
-            for (let i=0; i<allexams.length; i++) {
-            	tempExam=allexams[i]
-            	if (parseInt(tempExam.examid) == parseInt(scheduleVal)) {
-            		ourExam = JSON.stringify(tempExam)
-            	}
-            }
-
-            var winName = 'MyWindow' + scheduleVal;
-            var winURL = 'examInstructions/';
-            var windowoption = 'resizable=yes,status=0,toolbar=0,scrollbars=1';
-            var params = {
-                'scheduleVal': scheduleVal,
-                'ourExam': ourExam
-            };
-            var form = document.getElementById('formid' + scheduleVal);
-            form.setAttribute("method", "post");
-            form.setAttribute("action", winURL);
-            form.setAttribute("target", winName);
-            for (var i in params) {
-                if (params.hasOwnProperty(i)) {
-                    var input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = i;
-                    input.value = params[i];
-                    form.appendChild(input);
-                }
-            }
-            document.body.appendChild(form);
-            window.open('', winName, windowoption);
-            form.target = winName;
-            form.submit();
-            form.reset();
-            $('#' + ele).css("color", "red");
-            $('#' + ele).html("RESUME EXAM")
-            $('#' + ele).attr("disabled", false);
+        function resultView (exam_id) {
+        	location.href = "/exam/results/"+exam_id;
         }
     </script>
 

@@ -11,6 +11,9 @@
     <!-- Bootstrap CSS -->
     <link async rel="stylesheet" href="/static/bootstrap-5.0.1/css/bootstrap.min.css">
 
+    <!-- W3Schools icons pack -->
+    <link async rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <!-- jQuery JS -->
     <script src="/static/jquery-3.6.0.min.js"></script>
 </head>
@@ -332,7 +335,7 @@
     <div id="main" class="mainsets px-1 container-fluid" style="overflow: hidden; display: none;">
 		
         <!-- Blue Bar -->
-		<div style="width:100%; font-size: large; border-bottom: 0.75px solid black; background: url('/static/bluebar.jpg') no-repeat; background-size: cover; color: white;"><h6>{{ ourExam.title |safe }}</h6></div>
+		<div style="width:100%; border-bottom: 0.75px solid black; background: linear-gradient( rgb(45, 111, 182) 0%, rgb(75, 147, 219) 49%, rgb(45, 111, 182) 100%); color: white;"><strong>{{ ourExam.title |safe }}</strong></div>
         <!-- End Blue Bar -->
     	
         <!-- Top Black Bar -->
@@ -441,8 +444,7 @@
     	#subheadbar {
     		width:100%; 
     		border: 0.75px solid black; 
-    		background: url('/static/bluebar.jpg'); 
-    		background-size: 100% 16px; 
+    		background: linear-gradient( rgb(45, 111, 182) 0%, rgb(75, 147, 219) 49%, rgb(45, 111, 182) 100%); 
     		color: white; 
     		text-align: center;
     	}
