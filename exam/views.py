@@ -122,7 +122,24 @@ def delete(request):
 	return HttpResponse("This is answer page, later this will be modified")
 
 @transaction.atomic
-def results(request, exam_id):
+def results(request):
+	if request.user.is_anonymous:
+		return redirect("login")
+	allexams = []
+	examlist = ExamData.objects.filter(date=localdate()).order_by("exam_id")
+	for exam in examlist:
+		allexams.append({
+			'title': exam.title, 'examid': int(exam.exam_id), 
+			'day': exam.date.day, 'month': calendar.month_name[exam.date.month], 'year': exam.date.year
+		})
+	print(examlist)
+	content = {
+		'allexams': allexams
+	}
+	return render(request, "results.html", content)
+
+@transaction.atomic
+def resultView(request, exam_id):
 	if request.user.is_anonymous:
 		return redirect("login")
 	user_id = request.user.username
