@@ -132,7 +132,6 @@ def results(request):
 			'title': exam.title, 'examid': int(exam.exam_id), 
 			'day': exam.date.day, 'month': calendar.month_name[exam.date.month], 'year': exam.date.year
 		})
-	print(examlist)
 	content = {
 		'allexams': allexams
 	}
