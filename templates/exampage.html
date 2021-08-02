@@ -392,7 +392,7 @@
         		<button id="cr" class="btn col-4 mt-1 px-2" onclick="notans(); clear_resp(btn_qid); answer_delete(btn_qid, btn_qid);">Clear Response</button>
                 <span id="sandiv"></span>
                 <button id="san" class="btn col-4 mt-1 px-2" onclick="sancheck(btn_qid); answer_post_san(btn_qid, btn_qid); next_ques();">Save & Next</button>
-                <button id="subFinal" class="btn col-4 mt-1 px-2" onclick="">Submit</button>
+                <button id="subFinal" class="btn col-4 mt-1 px-2" onclick="submitExam();">Submit</button>
                 
     		</div>
             <!-- End First -->
@@ -1002,6 +1002,11 @@
                 dataType: 'json',
                 data: { exam_id: exam_id, question_id: question_id, csrfmiddlewaretoken: '{{ csrf_token }}' }
             })
+        }
+        
+        function submitExam() {
+        	alert("Bye bye");
+        	window.close();
         }
         
     </script>
