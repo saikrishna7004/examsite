@@ -44,12 +44,17 @@ class UserData(models.Model):
 		return reverse("User_detail", kwargs={"pk": self.pk})
 
 class QuestionAnswer(models.Model):
-
+	
+	ANS_STATUS_CHOICES = (
+		('aamfr','Answered and Marked for Review'),
+		('ans', 'Answered and Saved'),
+	)
+	
 	user = models.ForeignKey(UserData, on_delete=models.CASCADE)
 	question_id = models.IntegerField(unique=True)
 	answer_id = models.IntegerField()
 	exam_id = models.IntegerField()
-	ans_status = models.CharField(max_length=10, default="aamfr")
+	ans_status = models.CharField(max_length=10, choices=ANS_STATUS_CHOICES, default="aamfr")
 
 	def __str__(self):
 		return "Question id: "+str(self.question_id)+", Answer_id: "+str(self.answer_id)
@@ -72,3 +77,25 @@ class ExamData(models.Model):
 
 	def get_absolute_url(self):
 		return reverse("Exam_detail", kwargs={"pk": self.pk})
+
+class ExamStatus(models.Model):
+	
+	STATUS_CHOICES = (
+		('completed','Completed'),
+		('started', 'Started'),
+	)
+	
+	user_id = models.IntegerField()
+	exam_id = models.IntegerField()
+	status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="started")
+	time_left = models.CharField(max_length=20)
+	
+	class Meta:
+		verbose_name = "ExamStatus"
+		verbose_name_plural = "ExamStatuses"
+
+	def __str__(self):
+		return self.question_text
+
+	def get_absolute_url(self):
+		return reverse("ExamStatus_detail", kwargs={"pk": self.pk})
