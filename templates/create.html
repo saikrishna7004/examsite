@@ -1,48 +1,258 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Site</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Question Create</title>
 
-    
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/static/bootstrap-5.0.1/css/bootstrap.min.css">
-    
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="/static/bootstrap-5.0.1/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container my-3">
-        <h1>Welcome to create.html from templates </h1>
-        <hr>
-        {{ request.user.first_name }} {{ request.user.last_name }}
-        <br>
-        <a class="btn btn-outline-primary" href="/" role="button">Home</a>
-        <a class="btn btn-outline-primary" href="/logout" role="button">Logout</a>
-    </div>
-    <form action="" method="post" enctype="multipart/form-data">
-    	
-    	{% csrf_token %}
-    	
-    	<div class="container my-3">
-        	<h1>Upload Question Paper</h1>
-        	<hr>
-			<div class="mb-3">
-				<label for="examId" class="form-label">Exam ID</label>
-				<input type="number" class="form-control" id="examId" name="examId">
-			</div>
-			<div class="mb-3">
-				<label for="qpaperFile" class="form-label">Question Paper File (Pre-formatted)</label>
-				<input class="form-control" type="file" id="qpaperFile" name="qpaperFile" />
-			</div>
-			<div class="mb-3">
-				<button type="submit" class="btn btn-outline-primary">Upload and Submit</button>
-			</div>
-    	</div>
-    	
-    </form>
 
+	<div class="container my-3" style="max-height: 65vh; overflow: scroll;">
+		<h5 class="card-title">Add a note</h5>
+        <div class="form-group">
+        	<label for="ques">Question</label>
+			<textarea class="form-control" id="ques" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+        	<label for="op1">Op1</label>
+			<textarea class="form-control" id="op1"></textarea>
+        </div>
+        <div class="form-group">
+        	<label for="op2">Op2</label>
+			<textarea class="form-control" id="op2"></textarea>
+        </div>
+        <div class="form-group">
+        	<label for="op3">Op3</label>
+			<textarea class="form-control" id="op3"></textarea>
+        </div>
+        <div class="form-group">
+        	<label for="op4">Op4</label>
+			<textarea class="form-control" id="op4"></textarea>
+        </div>
+        <div class="form-group">
+        	<label for="ans">Answer</label>
+			<input type="number" class="form-control" id="ans">
+        </div>
+        <button class="btn btn-outline-primary shadow-none my-2" id="addBtn">+ Add</button>
+	</div>
+	<div class="container">
+		<button class="btn btn-outline-primary shadow-none my-2" onclick="save()">Save</button>
+		<button class="btn btn-outline-primary shadow-none my-2" onclick="$('#mathpop').show();">Maths</button>
+		<button class="btn btn-outline-primary shadow-none my-2" onclick="$('#tinypop').show();">TinyMCE</button>
+	</div>
+	<div id="preview" class="container my-3" style="max-height: 45vh; overflow: scroll;">
+		
+	</div>
+	<div class="pop" id="mathpop">
+		<div class="p-2 innerwhite">
+			<button class="btn btn-outline-primary shadow-none my-2" onclick="$('#mathpop').hide();">Close</button>
+			<button class="btn btn-outline-primary shadow-none my-2" onclick="copyToClipboard(formula.value.replaceAll('\\','\\\\'))">Copy</button>
+			<math-field id="formula" virtual-keyboard-mode=manual>
+				x=\frac{-b\pm \sqrt{b^2-4ac}}{2a}
+			</math-field><br><br>
+			<textarea class="form-control" id="latex" rows="2"></textarea>
+		</div>
+	</div>
+	<div class="pop" id="tinypop">
+		<div class="p-2 innerwhite">
+			<button class="btn btn-outline-primary shadow-none my-2" onclick="$('#tinypop').hide();">Close</button>
+			<button class="btn btn-outline-primary shadow-none my-2" onclick="copyToClipboard(tinyMCE.activeEditor.getContent({format : 'raw'}))">Copy</button>
+			<textarea id="tiny"></textarea>
+		</div>
+	</div>
+	<style>
+		.btn {
+			border-radius: 0;
+			padding-top: 2px;
+			padding-bottom: 2px;
+		}
+		.pop {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgb(0,0,0,0.3);
+			display: none;
+			text-align: center;
+			align-items: center;
+		}
+		.pop .innerwhite {
+			top: 10%;
+			left: 10%;
+			width: 80%;
+			height: 80%;
+			background: white;
+			position: relative;
+			overflow: scroll;
+		}
+		#preview:last-child hr {
+			display: none;
+		}
+	</style>
+
+	<!-- jQuery JS -->
+	<script src="/static/jquery-3.6.0.min.js"></script>
+	
     <!-- Bootstrap Bundle with Popper -->
-    <script src="/static/bootstrap-5.0.1/js/bootstrap.min.js"></script>    
+    <script async src="/static/bootstrap-5.0.1/js/bootstrap.bundle.min.js"></script>
+
+	<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+	<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/jquery.tinymce.min.js" referrerpolicy="origin"></script>
+
+	<script>
+		tinymce.init({
+			selector: "textarea#tiny",
+			height: 400,
+			menubar: false,
+			dialogue_type: "modal",
+			plugins: [
+				'advlist autolink lists link image charmap print preview anchor',
+				'searchreplace visualblocks image table code fullscreen',
+				'insertdatetime media table paste code help wordcount'
+			],
+			toolbar: 'undo redo | image table code preview | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+		});
+		
+		 
+showNotes();
+
+// If user adds a note, add it to the localStorage
+let addBtn = document.getElementById("addBtn");
+addBtn.addEventListener("click", function(e) {
+	let ques = document.getElementById("ques");
+	let op1 = document.getElementById("op1");
+	let op2 = document.getElementById("op2");
+	let op3 = document.getElementById("op3");
+	let op4 = document.getElementById("op4");
+	let notes = localStorage.getItem("notes");
+	let ans = document.getElementById("ans");
+	if (notes == null) {
+		notesObj = [];
+	} else {
+		notesObj = JSON.parse(notes);
+	}
+	tempQues = {
+		question: ques.value, op1: op1.value, op2: op2.value, op3: op3.value, op4: op4.value, answer: ans.value
+	}
+	notesObj.push(tempQues);
+	localStorage.setItem("notes", JSON.stringify(notesObj));
+	ques.value = "";
+	op1.value = "";
+	op2.value = "";
+	op3.value = "";
+	op4.value = "";
+	ans.value = "";
+	
+	showNotes();
+});
+
+// Function to show elements from localStorage
+function showNotes() {
+	let notes = localStorage.getItem("notes");
+	if (notes == null) {
+		notesObj = [];
+	} else {
+		notesObj = JSON.parse(notes);
+	}
+	let html = "";
+	notesObj.forEach(function(e, index) {
+		html += `
+				Q ${index+1}: ${e.question}<br>
+				Op1: ${e.op1}<br>
+				Op2: ${e.op2}<br>
+				Op3: ${e.op3}<br>
+				Op4: ${e.op4}<br>
+				Answer: ${e.answer}<br>
+				<button id="${index}" onclick="deleteNote(this.id)" class="btn btn-outline-primary shadow-none my-1">Delete Note</button><hr>
+                `;
+	});
+	let preview = document.getElementById("preview");
+	if (notesObj.length != 0) {
+		preview.innerHTML = html;
+	} else {
+		preview.innerHTML = `Nothing to show! Use "Add a Note" section above to add notes.`;
+	}
+}
+
+// Function to delete a note
+function deleteNote(index) {
+//   console.log("I am deleting", index);
+
+	let notes = localStorage.getItem("notes");
+	if (notes == null) {
+		notesObj = [];
+	} else {
+		notesObj = JSON.parse(notes);
+	}
+
+	notesObj.splice(index, 1);
+	localStorage.setItem("notes", JSON.stringify(notesObj));
+	showNotes();
+}
+
+function save() {
+
+	let notes = localStorage.getItem("notes");
+	if (notes == null) {
+		notesObj = [];
+	} else {
+		notesObj = JSON.parse(notes);
+	}
+	
+	tempString = "";
+
+	notesObj.forEach(function(temp, index) {
+		tempString += temp.question + "\n" + temp.op1 + "\n" + temp.op2 + "\n" + temp.op3 + "\n" + temp.op4 + "\n" + temp.answer + "\n__________\n";
+	});
+	
+	download("exampaper.txt", tempString);
+}
+
+function download(filename, text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+}
+
+	
+	
+	</script>
+
+	<script>
+		var formula = document.getElementById('formula');
+		var latex = document.getElementById('latex');
+		$('#latex').on('input', function() { formula.value=latex.value });
+		$('#formula').on('input', function() { latex.value=formula.value });
+		function udl() {latex.value = formula.value;};
+		window.onload=()=>{udl()}
+		
+		function copyToClipboard(text) {
+			var dummy = document.createElement("textarea");
+			document.body.appendChild(dummy);
+			dummy.value = text;
+			dummy.select();
+			document.execCommand("copy");
+			document.body.removeChild(dummy);
+		}
+		window.onload = ()=>{
+			$("button.tox-notification__dismiss.tox-button.tox-button--naked.tox-button--icon").click()
+		}
+	</script>
+
+	<script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>
+	
 </body>
+
 </html>
