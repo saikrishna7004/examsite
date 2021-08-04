@@ -155,7 +155,7 @@ def resultView(request, exam_id):
 	#print("The no. of correct options is: ", y)
 	return HttpResponse("<meta name='viewport' content='width=device-width, initial-scale=1.0'><h1>The no. of correct answers is: "+str(y)+"</h1>")
 
-def create(request):
+def upload(request):
 	if not request.user.is_staff:
 		return HttpResponse("<meta name='viewport' content='width=device-width, initial-scale=1.0'><h2>You are not permitted to access this page. Login as a Staff or SuperUser to access this page.</h2><br><a href='/login'>Click Here</a> to redirect to Login page.")
 	if request.method=="POST":
@@ -180,6 +180,11 @@ def create(request):
 						Question.objects.filter(question_id=question_id_inc)[0].choice_set.create(choice_text=queset[y],choice_id=choice_id_inc)
 			end=time.time()
 			return HttpResponse(f"<meta name='viewport' content='width=device-width, initial-scale=1.0'><h1>Done 👍 in {end-start} seconds.</h1>The Exam ID is {exam_id}")
+	return render(request, "upload.html")
+
+def create(request):
+	if not request.user.is_staff:
+		return HttpResponse("<meta name='viewport' content='width=device-width, initial-scale=1.0'><h2>You are not permitted to access this page. Login as a Staff or SuperUser to access this page.</h2><br><a href='/login'>Click Here</a> to redirect to Login page.")
 	return render(request, "create.html")
 
 def matheditor(request):
@@ -187,3 +192,6 @@ def matheditor(request):
 		return render(request, "maths.html")
 	else:
 		return HttpResponse("<meta name='viewport' content='width=device-width, initial-scale=1.0'><h2>You are not permitted to access this page. Login as a Staff or SuperUser to access this page.</h2><br><a href='/login'>Click Here</a> to redirect to Login page.")
+
+def test(request):
+	return render(request, "test.html")
