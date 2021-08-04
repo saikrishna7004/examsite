@@ -96,7 +96,7 @@
 	</style>
 
 	<!-- jQuery JS -->
-	<script src="/static/jquery-3.6.0.min.js"></script>
+	<script async src="/static/jquery-3.6.0.min.js"></script>
 	
     <!-- Bootstrap Bundle with Popper -->
     <script async src="/static/bootstrap-5.0.1/js/bootstrap.bundle.min.js"></script>
@@ -109,7 +109,6 @@
 			selector: "textarea#tiny",
 			height: 400,
 			menubar: false,
-			dialogue_type: "modal",
 			plugins: [
 				'advlist autolink lists link image charmap print preview anchor',
 				'searchreplace visualblocks image table code fullscreen',
@@ -210,6 +209,8 @@ function save() {
 		tempString += temp.question + "\n" + temp.op1 + "\n" + temp.op2 + "\n" + temp.op3 + "\n" + temp.op4 + "\n" + temp.answer + "\n__________\n";
 	});
 	
+	tempString = tempString.slice(0, -12);
+	
 	download("exampaper.txt", tempString);
 }
 
@@ -246,12 +247,12 @@ function download(filename, text) {
 			document.execCommand("copy");
 			document.body.removeChild(dummy);
 		}
-		window.onload = ()=>{
+		window.onload = setInterval(()=>{
 			$("button.tox-notification__dismiss.tox-button.tox-button--naked.tox-button--icon").click()
-		}
+		}, 1000);
 	</script>
 
-	<script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>
+	<script async src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>
 	
 </body>
 
