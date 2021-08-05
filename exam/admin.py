@@ -1,8 +1,18 @@
 from django.contrib import admin
+from django.utils.timezone import localdate
+from django.db import transaction
 
 # Register your models here.
 
 from .models import Question, Choice, UserData, QuestionAnswer, ExamData, ExamStatus
+
+@transaction.atomic
+def change_date(modeladmin, request, queryset):
+    for examdata in queryset:
+        examdata.date=localdate()
+        examdata.save(update_fields=['date'])
+change_date.short_description = 'Change Date to Today'
+
 
 class ChoiceInline(admin.StackedInline):
     model = Choice
@@ -37,6 +47,7 @@ class ExamDataAdmin(admin.ModelAdmin):
     list_display = ('exam_id', 'title', 'date', 'start_time')
     list_filter = ['exam_id']
     search_fields = ['exam_id', 'title']
+    actions = [change_date]
 
 class ExamStatusAdmin(admin.ModelAdmin):
     fieldsets = [
