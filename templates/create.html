@@ -11,7 +11,7 @@
 </head>
 <body>
 
-	<div class="container my-3" style="max-height: 65vh; overflow: scroll;">
+	<div class="container mt-3">
 		<h5 class="card-title">Add a note</h5>
         <div class="form-group">
         	<label for="ques">Question</label>
@@ -37,20 +37,20 @@
         	<label for="ans">Answer</label>
 			<input type="number" class="form-control" id="ans">
         </div>
-        <button class="btn btn-outline-success shadow-none my-2" id="addBtn">+ Add</button>
+        <button class="btn btn-success shadow-none my-2" id="addBtn">+ Add</button>
 	</div>
 	<div class="container">
-		<button class="btn btn-outline-primary shadow-none my-2" onclick="save()">Save</button>
-		<button class="btn btn-outline-primary shadow-none my-2" onclick="$('#mathpop').show();">Maths</button>
-		<button class="btn btn-outline-primary shadow-none my-2" onclick="$('#tinypop').show();">TinyMCE</button>
+		<button class="btn btn-primary shadow-none my-2" onclick="save()">Save</button>
+		<button class="btn btn-primary shadow-none my-2" onclick="$('#mathpop').show();">Maths</button>
+		<button class="btn btn-primary shadow-none my-2" onclick="$('#tinypop').show();">TinyMCE</button>
 	</div>
 	<div id="preview" class="container my-3" style="max-height: 45vh; overflow: scroll;">
 		
 	</div>
 	<div class="pop" id="mathpop">
 		<div class="p-2 innerwhite">
-			<button class="btn btn-outline-primary shadow-none my-2" onclick="$('#mathpop').hide();">Close</button>
-			<button class="btn btn-outline-primary shadow-none my-2" onclick="copyToClipboard('\\\\('+formula.value.replaceAll('\\','\\\\'))+'\\\\)'">Copy</button>
+			<button class="btn btn-primary shadow-none my-2" onclick="$('#mathpop').hide();">Close</button>
+			<button class="btn btn-primary shadow-none my-2" onclick="copyToClipboard('\\\\('+formula.value.replaceAll('\\','\\\\'))+'\\\\)'">Copy</button>
 			<math-field id="formula" virtual-keyboard-mode=manual>
 				x=\frac{-b\pm \sqrt{b^2-4ac}}{2a}
 			</math-field><br><br>
@@ -59,8 +59,8 @@
 	</div>
 	<div class="pop" id="tinypop">
 		<div class="p-2 innerwhite">
-			<button class="btn btn-outline-primary shadow-none my-2" onclick="$('#tinypop').hide();">Close</button>
-			<button class="btn btn-outline-primary shadow-none my-2" onclick="copyToClipboard(tinyMCE.activeEditor.getContent({format : 'raw'}))">Copy</button>
+			<button class="btn btn-primary shadow-none my-2" onclick="$('#tinypop').hide();">Close</button>
+			<button class="btn btn-primary shadow-none my-2" onclick="copyToClipboard(tinyMCE.activeEditor.getContent({format : 'raw'}))">Copy</button>
 			<textarea id="tiny"></textarea>
 		</div>
 	</div>
@@ -90,7 +90,7 @@
 			position: relative;
 			overflow: scroll;
 		}
-		#preview:last-child hr {
+		.preques:last-child hr {
 			display: none;
 		}
 	</style>
@@ -160,15 +160,15 @@ function showNotes() {
 	}
 	let html = "";
 	notesObj.forEach(function(e, index) {
-		html += `
+		html += `<div class="preques">
 				Q ${index+1}: ${e.question}<br>
 				Op1: ${e.op1}<br>
 				Op2: ${e.op2}<br>
 				Op3: ${e.op3}<br>
 				Op4: ${e.op4}<br>
 				Answer: ${e.answer}<br>
-				<button id="${index}" onclick="deleteNote(this.id)" class="btn btn-outline-danger shadow-none my-1">Delete Note</button><hr>
-                `;
+				<button id="${index}" onclick="deleteNote(this.id)" class="btn btn-danger shadow-none my-1">Delete Note</button><hr>
+                </div>`;
 	});
 	let preview = document.getElementById("preview");
 	if (notesObj.length != 0) {
