@@ -50,7 +50,7 @@
 	<div class="pop" id="mathpop">
 		<div class="p-2 innerwhite">
 			<button class="btn btn-outline-primary shadow-none my-2" onclick="$('#mathpop').hide();">Close</button>
-			<button class="btn btn-outline-primary shadow-none my-2" onclick="copyToClipboard(formula.value.replaceAll('\\','\\\\'))">Copy</button>
+			<button class="btn btn-outline-primary shadow-none my-2" onclick="copyToClipboard('\\\\('+formula.value.replaceAll('\\','\\\\'))+'\\\\)'">Copy</button>
 			<math-field id="formula" virtual-keyboard-mode=manual>
 				x=\frac{-b\pm \sqrt{b^2-4ac}}{2a}
 			</math-field><br><br>
@@ -237,7 +237,6 @@ function download(filename, text) {
 		$('#latex').on('input', function() { formula.value=latex.value });
 		$('#formula').on('input', function() { latex.value=formula.value });
 		function udl() {latex.value = formula.value;};
-		window.onload=()=>{udl()}
 		
 		function copyToClipboard(text) {
 			var dummy = document.createElement("textarea");
@@ -249,6 +248,7 @@ function download(filename, text) {
 		}
 		window.onload = setInterval(()=>{
 			$("button.tox-notification__dismiss.tox-button.tox-button--naked.tox-button--icon").click()
+			udl();
 		}, 1000);
 	</script>
 
