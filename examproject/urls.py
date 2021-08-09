@@ -22,5 +22,5 @@ urlpatterns = [
     path('', include("home.urls")),
     path('admin/', admin.site.urls),
     path('exam/', include("exam.urls")),
-    path('favicon.ico', RedirectView.as_view(url='/static/home/logo.png')),
+    path('favicon.ico', RedirectView.as_view(url='/static/home/favicon.png')),
 ]
