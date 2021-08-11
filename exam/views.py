@@ -63,7 +63,7 @@ def examInstructions(request):
 				 'ans_status': current_ans_status,
 				 }
 			)
-		subList = [{"name":"Maths","length":"7","start":"1","end":"7"},{"name":"Physics","length":"7","start":"8","end":"14"},{"name":"Chemistry","length":"7","start":"15","end":"21"}]
+		subList = [{"name":"Mathematics","length":"7","start":"1","end":"7"},{"name":"Physics","length":"7","start":"8","end":"14"},{"name":"Chemistry","length":"7","start":"15","end":"21"}]
 		# return HttpResponse(scheduleVal)
 		content = {
 			'queslist': queslist,
@@ -126,7 +126,7 @@ def results(request):
 	if request.user.is_anonymous:
 		return redirect("login")
 	allexams = []
-	examlist = ExamData.objects.filter(date=localdate()).order_by("exam_id")
+	examlist = ExamData.objects.all()
 	for exam in examlist:
 		allexams.append({
 			'title': exam.title, 'examid': int(exam.exam_id), 
