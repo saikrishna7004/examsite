@@ -850,10 +850,10 @@
       		  	btn.setAttribute("class", "paletteBtn");
       		  	btn.setAttribute("id", "a"+i.toString());
       		  	btn.onclick = function(e){
-      		  		changeState();
       		  		let b = parseInt(this.id.replace("a",""));
       		  		goto_ques(b);
       		  		colorCheck();
+      		  		changeState1();
       		  	};
     		    	var t = document.createTextNode(i+1);
      		   	btn.appendChild(t);
@@ -919,8 +919,16 @@
             	}	
             }
             
+            function changeState1() {
+            	for (let titer=0; titer<3; titer++) {
+            		if (iter>=parseInt(subList[titer].start-1) && iter<parseInt(subList[titer].end)) {
+            			subState[titer]=iter;	
+            		}
+            	}	
+            }
+            
             function sub_bt(pk) {
-            	changeState();
+            	changeState1();
             	iter=subState[pk];
             	goto_ques(iter);
             	changePalette();
