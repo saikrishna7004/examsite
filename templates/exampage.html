@@ -364,9 +364,9 @@
 				<!-- Subjects Bar -->
             	<div class="container-fluid p-0 m-0 row">
                 	<div class="col-md-auto p-0">
-                		<button id="bt1" class="btn sub px-2 py-1">PHYSICS <i class="fa fa-info-circle"></i></button>
-                		<button id="bt2" class="btn sub px-2 py-1">CHEMISTRY <i class="fa fa-info-circle"></i></button>
-                		<button id="bt3" class="btn sub px-2 py-1">MATHEMATICS <i class="fa fa-info-circle"></i></button>
+                		<button id="bt1" onclick="sub_bt(0)" class="btn sub px-2 py-1">PHYSICS <i class="fa fa-info-circle"></i></button>
+                		<button id="bt2" onclick="sub_bt(1)" class="btn sub px-2 py-1">CHEMISTRY <i class="fa fa-info-circle"></i></button>
+                		<button id="bt3" onclick="sub_bt(2)" class="btn sub px-2 py-1">MATHEMATICS <i class="fa fa-info-circle"></i></button>
             		</div>
                 	<div class="col"> </div>
                 	<div class="col-md-auto p-1 timesDiv">
@@ -388,10 +388,10 @@
                 <div style="display: block; text-align:right;">
 					<img onclick="toBottom()" src="/static/Up.png" id="downBtn" alt="Down">
 				</div>
-				<button id="mfr" class="btn col-4 mt-1 px-0" onclick="mfrcheck(btn_qid); answer_post_mfr(btn_qid, btn_qid); next_ques();">Mark For Review & Next</button>
+				<button id="mfr" class="btn col-4 mt-1 px-0" onclick="mfrcheck(btn_qid); answer_post_mfr(btn_qid, btn_qid); changeState(); next_ques(); changePalette();">Mark For Review & Next</button>
         		<button id="cr" class="btn col-4 mt-1 px-2" onclick="notans(); clear_resp(btn_qid); answer_delete(btn_qid, btn_qid);">Clear Response</button>
                 <span id="sandiv"></span>
-                <button id="san" class="btn col-4 mt-1 px-2" onclick="sancheck(btn_qid); answer_post_san(btn_qid, btn_qid); next_ques();">Save & Next</button>
+                <button id="san" class="btn col-4 mt-1 px-2" onclick="sancheck(btn_qid); answer_post_san(btn_qid, btn_qid); changeState(); next_ques(); changePalette();">Save & Next</button>
                 <button id="subFinal" class="btn col-4 mt-1 px-2" onclick="submitExam();">Submit</button>
                 
     		</div>
@@ -418,9 +418,9 @@
                 </div>
                 <div id="subheadbar">CHEMISTRY</div>
     			<div style="border: 0.75px solid black; min-height: 200px; max-height: 250px;" id="palette2">
-    				<div id="sub1_btnset"></div>
-    				<div id="sub2_btnset" hidden></div>
-    				<div id="sub3_btnset" hidden></div>
+    				<div class="sub_btnset" id="sub1_btnset"></div>
+    				<div class="sub_btnset" id="sub2_btnset"></div>
+    				<div class="sub_btnset" id="sub3_btnset"></div>
                     <div style="text-align: center;"><button id="subFinal2" class="btn col-4 mt-1 px-2" onclick="">Submit</button></div>
     			</div>
                 
@@ -472,9 +472,14 @@
     		color: white;
     	}
     	
-    	#bt1, #bt2 {
+    	#bt1, #bt2, #bt3 {
     		background-color: white;
     		color: #347ab7;
+    	}
+    	
+    	#bt1.active, #bt2.active, #bt3.active {
+    		background-color: #347ab7;
+    		color: white;
     	}
     	
     	#mfr, #cr {
@@ -727,6 +732,9 @@
             	subList.push({name:"{{sub.name}}", length:"{{sub.length}}", start:"{{sub.start}}", end:"{{sub.end}}"})
             {% endfor %}
             
+            subState = [parseInt(subList[0].start)-1, parseInt(subList[1].start)-1, parseInt(subList[2].start)-1]
+            
+            
             	var iter = 0
 			
 				ques=queslist[iter]
@@ -751,6 +759,11 @@
             	
             function next_ques(){
             	iter+=1
+            	if(iter>=queslist.length){
+            		$(".sub_btnset").hide();
+            		$("#sub1_btnset").show();
+            		iter=0;
+            	}
             	ques=queslist[iter]
             	btn_qid = ques.question_id
             	
@@ -823,9 +836,8 @@
             	MathJax.typesetPromise([palette]).then(() => {});
             }
             
-            function printBtn(e) {
-            	const palette2 = document.querySelector(e);
-        		for (var i = 0; i < queslist.length; i++) {
+            for (var tbtniter = 0; tbtniter < 3; tbtniter++){
+            	for (var i = parseInt(subList[tbtniter].start)-1; i < parseInt(subList[tbtniter].end); i++) {
       		  	var btn = document.createElement("button");
       		  	btn.style.height="30px";
       		  	btn.style.width="32px";
@@ -838,14 +850,16 @@
       		  	btn.setAttribute("class", "paletteBtn");
       		  	btn.setAttribute("id", "a"+i.toString());
       		  	btn.onclick = function(e){
+      		  		changeState();
       		  		let b = parseInt(this.id.replace("a",""));
       		  		goto_ques(b);
-      		  		colorCheck();		
+      		  		colorCheck();
       		  	};
     		    	var t = document.createTextNode(i+1);
      		   	btn.appendChild(t);
-      		  	sub1_btnset.appendChild(btn);
+      		  	document.getElementById("sub"+(tbtniter+1).toString()+"_btnset").appendChild(btn);
     			}
+            
     		}
     		
             function aamfr() {
@@ -883,17 +897,53 @@
             	MathJax.typesetPromise([palette]).then(() => {});
             }
             
+            function changePalette() {
+            	for (let titer=0; titer<3; titer++) {
+            		if (iter>=parseInt(subList[titer].start-1) && iter<parseInt(subList[titer].end)) {
+            			$(".sub_btnset").hide();
+            			$("#sub"+(titer+1).toString()+"_btnset").show();
+            			subheadbar.innerHTML = subList[titer].name.toUpperCase();
+            			$("#bt1").removeClass("active");
+            			$("#bt2").removeClass("active");
+            			$("#bt3").removeClass("active");
+            			$("#bt"+(titer+1).toString()).addClass("active");
+            		}
+            	}
+            }
+            
+            function changeState() {
+            	for (let titer=0; titer<3; titer++) {
+            		if (iter+1>=parseInt(subList[titer].start-1) && iter+1<parseInt(subList[titer].end)) {
+            			subState[titer]=iter;	
+            		}
+            	}	
+            }
+            
+            function sub_bt(pk) {
+            	changeState();
+            	iter=subState[pk];
+            	goto_ques(iter);
+            	changePalette();
+            	colorCheck();
+            }
+            
+            $(".sub_btnset").hide();
+            $("#sub1_btnset").show();
+            subheadbar.innerHTML = subList[0].name.toUpperCase()
+            
             collapsebar.addEventListener('click', ()=>{
             	$('#collapsebar').toggleClass('toggled');
             	$('#pright').toggleClass('toggled');
             	$('#pleft').toggleClass('toggled');
-            	
             })
+            
+            $("#bt1").addClass("active");
+            bt1.innerHTML = subList[0].name.toUpperCase()+' <i class="fa fa-info-circle">'
+            bt2.innerHTML = subList[1].name.toUpperCase()+' <i class="fa fa-info-circle">'
+            bt3.innerHTML = subList[2].name.toUpperCase()+' <i class="fa fa-info-circle">'
             
             palette.style.height=pleft.style.height;
 			
-    		printBtn('#palette2');
-    		
     		let tempBtn1 = document.getElementById("a0");
             tempBtn1.style.backgroundPosition = "-42px -56px";
             tempBtn1.style.color = "white";
