@@ -42,7 +42,7 @@ class UserDataAdmin(admin.ModelAdmin):
 
 class ExamDataAdmin(admin.ModelAdmin):
     fieldsets = [
-        ('ExamData Description', {'fields': ['title', 'start_time', 'end_time', 'total_time', 'exam_id', 'date']}),
+        ('ExamData Description', {'fields': ['title', 'start_time', 'end_time', 'total_time', 'type', 'exam_id', 'date']}),
     ]
     list_display = ('exam_id', 'title', 'date', 'type', 'start_time')
     list_filter = ['exam_id']
