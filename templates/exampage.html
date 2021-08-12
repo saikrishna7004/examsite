@@ -732,7 +732,7 @@
             	subList.push({name:"{{sub.name}}", length:"{{sub.length}}", start:"{{sub.start}}", end:"{{sub.end}}"})
             {% endfor %}
             
-            subState = [parseInt(subList[0].start)-1, parseInt(subList[1].start)-1, parseInt(subList[2].start)-1]
+            subState = [subList[0].start-1, subList[1].start-1, subList[2].start-1]
             
             
             	var iter = 0
@@ -837,7 +837,7 @@
             }
             
             for (var tbtniter = 0; tbtniter < 3; tbtniter++){
-            	for (var i = parseInt(subList[tbtniter].start)-1; i < parseInt(subList[tbtniter].end); i++) {
+            	for (var i = subList[tbtniter].start-1; i < subList[tbtniter].end; i++) {
       		  	var btn = document.createElement("button");
       		  	btn.style.height="30px";
       		  	btn.style.width="32px";
@@ -899,7 +899,7 @@
             
             function changePalette() {
             	for (let titer=0; titer<3; titer++) {
-            		if (iter>=parseInt(subList[titer].start-1) && iter<parseInt(subList[titer].end)) {
+            		if (iter>=subList[titer].start-1 && iter<subList[titer].end) {
             			$(".sub_btnset").hide();
             			$("#sub"+(titer+1).toString()+"_btnset").show();
             			subheadbar.innerHTML = subList[titer].name.toUpperCase();
@@ -913,7 +913,7 @@
             
             function changeState() {
             	for (let titer=0; titer<3; titer++) {
-            		if (iter+1>=parseInt(subList[titer].start-1) && iter+1<parseInt(subList[titer].end)) {
+            		if (iter+1>=subList[titer].start-1 && iter+1<subList[titer].end) {
             			subState[titer]=iter;	
             		}
             	}	
@@ -921,7 +921,7 @@
             
             function changeState1() {
             	for (let titer=0; titer<3; titer++) {
-            		if (iter>=parseInt(subList[titer].start-1) && iter<parseInt(subList[titer].end)) {
+            		if (iter>=subList[titer].start-1 && iter<subList[titer].end) {
             			subState[titer]=iter;	
             		}
             	}	
