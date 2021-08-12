@@ -71,7 +71,7 @@ class ExamData(models.Model):
 	end_time = models.CharField(max_length=10)
 	total_time = models.CharField(max_length=10)
 	exam_id = models.IntegerField(unique=True)
-	type = models.CharField(max_length=10)
+	type = models.CharField(max_length=10, default="custom-21")
 	date = models.DateField()
 
 	class Meta:
