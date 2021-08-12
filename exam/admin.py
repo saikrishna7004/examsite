@@ -23,7 +23,7 @@ class QuestionAdmin(admin.ModelAdmin):
         ('Question Description', {'fields': ['exam_id','question_id','question_text','answer_id']}),
     ]
     inlines = [ChoiceInline]
-    list_display = ('exam_id','question_text', 'question_id', 'answer_id')
+    list_display = ('exam_id','short_question_text', 'question_id', 'answer_id')
     list_filter = ['exam_id']
     search_fields = ['exam_id', 'question_text']
 

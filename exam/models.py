@@ -18,6 +18,10 @@ class Question(models.Model):
 
 	def get_absolute_url(self):
 		return reverse("Question_detail", kwargs={"pk": self.pk})
+	
+	@property
+	def short_question_text(self):
+		return truncatechars(self.question_text, 100)	
 
 class Choice(models.Model):
 
