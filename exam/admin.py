@@ -4,7 +4,7 @@ from django.db import transaction
 
 # Register your models here.
 
-from .models import Question, Choice, UserData, QuestionAnswer, ExamData, ExamStatus
+from .models import Question, Choice, UserData, QuestionAnswer, ExamData, ExamStatus, PaperModel, Subject
 
 @transaction.atomic
 def change_date(modeladmin, request, queryset):
@@ -44,7 +44,7 @@ class ExamDataAdmin(admin.ModelAdmin):
     fieldsets = [
         ('ExamData Description', {'fields': ['title', 'start_time', 'end_time', 'total_time', 'exam_id', 'date']}),
     ]
-    list_display = ('exam_id', 'title', 'date', 'start_time')
+    list_display = ('exam_id', 'title', 'date', 'type', 'start_time')
     list_filter = ['exam_id']
     search_fields = ['exam_id', 'title']
     actions = [change_date]
@@ -57,8 +57,21 @@ class ExamStatusAdmin(admin.ModelAdmin):
     list_filter = ['exam_id', 'user_id']
     search_fields = ['exam_id', 'user_id']
 
+class SubjectInline(admin.StackedInline):
+    model = Subject
+    extra = 3
+
+class PaperModelAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('PaperModel Description', {'fields': ['type']}),
+    ]
+    inlines = [SubjectInline]
+    list_display = ('type',)
+    list_filter = ['type']
+    search_fields = ['type']
 
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(UserData, UserDataAdmin)
 admin.site.register(ExamData, ExamDataAdmin)
 admin.site.register(ExamStatus, ExamStatusAdmin)
+admin.site.register(PaperModel, PaperModelAdmin)

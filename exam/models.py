@@ -66,6 +66,7 @@ class ExamData(models.Model):
 	end_time = models.CharField(max_length=10)
 	total_time = models.CharField(max_length=10)
 	exam_id = models.IntegerField(unique=True)
+	type = models.CharField(max_length=10)
 	date = models.DateField()
 
 	class Meta:
@@ -99,3 +100,28 @@ class ExamStatus(models.Model):
 
 	def get_absolute_url(self):
 		return reverse("ExamStatus_detail", kwargs={"pk": self.pk})
+
+class PaperModel(models.Model):
+
+	type = models.CharField(max_length=10, unique=True)
+	
+	class Meta:
+		verbose_name = "PaperModel"
+		verbose_name_plural = "PaperModels"
+
+	def __str__(self):
+		return self.type
+
+	def get_absolute_url(self):
+		return reverse("PaperModel_detail", kwargs={"pk": self.pk})
+
+class Subject(models.Model):
+
+	paper = models.ForeignKey(PaperModel, on_delete=models.CASCADE)
+	name = models.CharField(max_length=100)
+	length = models.IntegerField()
+	start = models.IntegerField()
+	end = models.IntegerField()
+
+	def __str__(self):
+		return self.name

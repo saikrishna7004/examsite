@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect
 import json, time, calendar
-from .models import Question, UserData, ExamData
+from .models import Question, UserData, ExamData, PaperModel
 from django.db import transaction
 from django import template
 from django.utils.timezone import localdate
@@ -15,7 +15,7 @@ def index(request):
 	for exam in examlist:
 		allexams.append({
 			'title': exam.title, 'stime': exam.start_time, 'etime': exam.end_time, 
-			'ttime': exam.total_time, 'examid': int(exam.exam_id), 
+			'ttime': exam.total_time, 'examid': int(exam.exam_id), 'type': exam.type,
 			'day': exam.date.day, 'month': calendar.month_name[exam.date.month], 'year': exam.date.year
 		})
 	
@@ -63,7 +63,13 @@ def examInstructions(request):
 				 'ans_status': current_ans_status,
 				 }
 			)
-		subList = [{"name":"Mathematics","length":"7","start":"1","end":"7"},{"name":"Physics","length":"7","start":"8","end":"14"},{"name":"Chemistry","length":"7","start":"15","end":"21"}]
+		
+		paperList = PaperModel.objects.filter(type=json.loads(ourExam)["type"])[0].subject_set.order_by("start")
+		subList=[]
+		for tempSub in paperList:
+			subList.append({
+				"name":tempSub.name, "length":tempSub.length, "start": tempSub.start, "end": tempSub.end
+			})
 		# return HttpResponse(scheduleVal)
 		content = {
 			'queslist': queslist,
