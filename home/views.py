@@ -23,7 +23,7 @@ def loginuser(request):
 		if not rememberme:
 			request.session.set_expiry(0)
 		else:
-			request.session.set_expiry(3600)
+			request.session.set_expiry(86400)
 		user = authenticate(username=username, password=password)
 		if user is not None:
 			login(request, user)
