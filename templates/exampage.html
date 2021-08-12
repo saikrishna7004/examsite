@@ -430,6 +430,8 @@
         <!-- End Two in one div -->
     </div>
     
+    <div id="net" style="width: 100%; height: 100%; position: fixed; top: 0; background: white; display: none;">No internet connection</div>
+    
     <div id="loading" style="display: none;"></div>
 
     <style>
@@ -1173,7 +1175,8 @@
 				}
 			}, 1000);
 		}
-
+		window.addEventListener('offline', () => $("#net").show());
+		window.addEventListener('online', () => $("#net").hide());
 	</script>
 	<!-- End Timer for time remaining -->
     
