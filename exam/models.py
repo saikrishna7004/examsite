@@ -1,4 +1,5 @@
 from django.db import models
+from django.template.defaultfilters import truncatewords
 
 # Create your models here.
 
@@ -21,7 +22,7 @@ class Question(models.Model):
 	
 	@property
 	def short_question_text(self):
-		return truncatechars(self.question_text, 100)	
+		return truncatewords(self.question_text, 6)	
 
 class Choice(models.Model):
 
