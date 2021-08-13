@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="">
     <title>Exam Page</title>
 	<script async src="//cdn.jsdelivr.net/npm/eruda" onload="eruda.init()"></script>
     
@@ -364,10 +365,19 @@
 				<!-- Subjects Bar -->
             	<div class="container-fluid p-0 m-0 row">
                 	<div class="col-md-auto p-0">
-                		<button id="bt1" onclick="sub_bt(0)" class="btn sub px-2 py-1">PHYSICS <i class="fa fa-info-circle"></i></button>
-                		<button id="bt2" onclick="sub_bt(1)" class="btn sub px-2 py-1">CHEMISTRY <i class="fa fa-info-circle"></i></button>
-                		<button id="bt3" onclick="sub_bt(2)" class="btn sub px-2 py-1">MATHEMATICS <i class="fa fa-info-circle"></i></button>
-            		</div>
+                		<div class="p-0" style="display: inline-block; position: relative;">
+                			<button id="bt1" onclick="sub_bt(0)" class="btn sub px-2 py-1">PHYSICS <i class="fa fa-info-circle"></i></button>
+                			<div class="subinf" id="subinf1">fert</div>
+                		</div>
+                		<div class="p-0" style="display: inline-block; position: relative;">
+                			<button id="bt2" onclick="sub_bt(1)" class="btn sub px-2 py-1">CHEMISTRY <i class="fa fa-info-circle"></i></button>
+                			<div class="subinf" id="subinf2">fert</div>
+                		</div>
+                		<div class="p-0" style="display: inline-block; position: relative;">
+                			<button id="bt3" onclick="sub_bt(2)" class="btn sub px-2 py-1">MATHEMATICS <i class="fa fa-info-circle"></i></button>
+            				<div class="subinf" id="subinf3">fert</div>
+                		</div>
+                	</div>
                 	<div class="col"> </div>
                 	<div class="col-md-auto p-1 timesDiv">
                 		Exam End Time: <span style="color: red">{{ ourExam.etime }} &nbsp</span> 
@@ -421,7 +431,7 @@
     				<div class="sub_btnset" id="sub1_btnset"></div>
     				<div class="sub_btnset" id="sub2_btnset"></div>
     				<div class="sub_btnset" id="sub3_btnset"></div>
-                    <div style="text-align: center;"><button id="subFinal2" class="btn col-4 mt-1 px-2" onclick="">Submit</button></div>
+                    <div style="text-align: center;"><button id="subFinal2" class="btn col-4 mt-1 px-2" onclick="submitExam();">Submit</button></div>
     			</div>
                 
     		</div>
@@ -567,6 +577,17 @@
         
         .swal2-styled:focus {
         	box-shadow: none !important;
+        }
+        
+        .subinf {
+        	top: 35px; 
+        	height:350px; 
+        	width:175px; 
+        	position: absolute; 
+        	background: rgb(255,255,255); 
+        	z-index: 1; 
+        	box-shadow: 5px 5px rgb(0,0,0,0.075); 
+        	border: solid 1px #eeeeee;
         }
 
         @media screen and (max-width: 600px) {
@@ -948,10 +969,13 @@
             })
             
             $("#bt1").addClass("active");
-            bt1.innerHTML = subList[0].name.toUpperCase()+' <i class="fa fa-info-circle">'
-            bt2.innerHTML = subList[1].name.toUpperCase()+' <i class="fa fa-info-circle">'
-            bt3.innerHTML = subList[2].name.toUpperCase()+' <i class="fa fa-info-circle">'
-            
+            bt1.innerHTML = subList[0].name.toUpperCase()+' <i id="infohover1" class="fa fa-info-circle">'
+            bt2.innerHTML = subList[1].name.toUpperCase()+' <i id="infohover2" class="fa fa-info-circle">'
+            bt3.innerHTML = subList[2].name.toUpperCase()+' <i id="infohover3" class="fa fa-info-circle">'
+            $(".subinf").hide()
+            $("#infohover1").hover(()=>{$("#subinf1").slideDown(600)},()=>{$("#subinf1").slideUp(600)})
+            $("#infohover2").hover(()=>{$("#subinf2").slideDown(600)},()=>{$("#subinf2").slideUp(600)})
+            $("#infohover3").hover(()=>{$("#subinf3").slideDown(600)},()=>{$("#subinf3").slideUp(600)})
             palette.style.height=pleft.style.height;
 			
     		let tempBtn1 = document.getElementById("a0");
