@@ -44,7 +44,7 @@
 		<button class="btn btn-primary shadow-none my-2" onclick="$('#mathpop').show();">Maths</button>
 		<button class="btn btn-primary shadow-none my-2" onclick="$('#tinypop').show();">TinyMCE</button>
 	</div>
-	<div id="preview" class="container my-3" style="max-height: 45vh; overflow: scroll;">
+	<div id="preview" class="container my-3" style="max-height: 45vh; overflow: auto;">
 		
 	</div>
 	<div class="pop" id="mathpop">
@@ -88,7 +88,7 @@
 			height: 80%;
 			background: white;
 			position: relative;
-			overflow: scroll;
+			overflow: auto;
 		}
 		.preques:last-child hr {
 			display: none;
