@@ -179,7 +179,7 @@
                 </div>
             </div>
             <div class="container-fluid border my-3 p-3 text-center">
-                <img class="my-3 myimg" src="/static/person.jpg" alt="User Image" width="50px" height="50px">
+                <img class="my-3" src="/static/person.jpg" alt="User Image" width="50px" height="50px">
                 <h5 class="my-3">{{ request.user.first_name }} {{ request.user.last_name }}</h5>
             </div>
 
@@ -327,7 +327,7 @@
                 </div>
             </div>
             <div class="container-fluid border my-3 p-3 text-center">
-                <img class="my-3 myimg" src="/static/person.jpg" alt="User Image" width="50px" height="50px">
+                <img class="my-3" src="/static/person.jpg" alt="User Image" width="50px" height="50px">
                 <h5 class="my-3">{{ request.user.first_name }} {{ request.user.last_name }}</h5>
             </div>
         </div>
@@ -367,15 +367,33 @@
                 	<div class="col-md-auto p-0">
                 		<div class="p-0" style="display: inline-block; position: relative;">
                 			<button id="bt1" onclick="sub_bt(0)" class="btn sub px-2 py-1">PHYSICS <i class="fa fa-info-circle"></i></button>
-                			<div class="subinf" id="subinf1">fert</div>
+                			<div class="subinf px-3" id="subinf1">
+                				<div id="sub1_1" class="myimg row"><span class="count col-4 m-2 p-0" style="color: white; background-position: -7px -55px">5</span> <span class="col-8"> Answered</span> </div>
+                        		<div id="sub1_2" class="myimg row"><span class="count col-4 m-2 p-0" style="color: white; background-position: -42px -56px">5</span> <span class="col-8"> Not Answered</span> </div>
+                        		<div id="sub1_3" class="myimg row"><span class="count col-4 m-2 p-0" style="color: black; background-position: -107px -56px">5</span> <span class="col-8"> Not Visited</span> </div>
+                        		<div id="sub1_4" class="myimg row"><span class="count col-4 m-2 p-0" style="color: white; background-position: -75px -54px">5</span> <span class="col-8"> Marked For Review</span> </div>
+                        		<div id="sub1_5" class="myimg row"><span class="count col-4 m-2 p-0" style="color: white; background-position: -9px -87px">5</span> <span class="col-8"> Answered & Marked for Review (will be considered for evaluation)</span> </div>
+                    		</div>
                 		</div>
                 		<div class="p-0" style="display: inline-block; position: relative;">
                 			<button id="bt2" onclick="sub_bt(1)" class="btn sub px-2 py-1">CHEMISTRY <i class="fa fa-info-circle"></i></button>
-                			<div class="subinf" id="subinf2">fert</div>
+                			<div class="subinf px-3" id="subinf2">
+                				<div id="sub2_1" class="myimg row"><span class="count col-4 m-2 p-0" style="color: white; background-position: -7px -55px">5</span> <span class="col-8"> Answered</span> </div>
+                        		<div id="sub2_2" class="myimg row"><span class="count col-4 m-2 p-0" style="color: white; background-position: -42px -56px">5</span> <span class="col-8"> Not Answered</span> </div>
+                        		<div id="sub2_3" class="myimg row"><span class="count col-4 m-2 p-0" style="color: black; background-position: -107px -56px">5</span> <span class="col-8"> Not Visited</span> </div>
+                        		<div id="sub2_4" class="myimg row"><span class="count col-4 m-2 p-0" style="color: white; background-position: -75px -54px">5</span> <span class="col-8"> Marked For Review</span> </div>
+                        		<div id="sub2_5" class="myimg row"><span class="count col-4 m-2 p-0" style="color: white; background-position: -9px -87px">5</span> <span class="col-8"> Answered & Marked for Review (will be considered for evaluation)</span> </div>
+                    		</div>
                 		</div>
                 		<div class="p-0" style="display: inline-block; position: relative;">
                 			<button id="bt3" onclick="sub_bt(2)" class="btn sub px-2 py-1">MATHEMATICS <i class="fa fa-info-circle"></i></button>
-            				<div class="subinf" id="subinf3">fert</div>
+            				<div class="subinf px-3" id="subinf3">
+            					<div id="sub3_1" class="myimg row"><span class="count col-4 m-2 p-0" style="color: white; background-position: -7px -55px">5</span> <span class="col-8"> Answered</span> </div>
+                        		<div id="sub3_2" class="myimg row"><span class="count col-4 m-2 p-0" style="color: white; background-position: -42px -56px">5</span> <span class="col-8"> Not Answered</span> </div>
+                        		<div id="sub3_3" class="myimg row"><span class="count col-4 m-2 p-0" style="color: black; background-position: -107px -56px">5</span> <span class="col-8"> Not Visited</span> </div>
+                        		<div id="sub3_4" class="myimg row"><span class="count col-4 m-2 p-0" style="color: white; background-position: -75px -54px">5</span> <span class="col-8"> Marked For Review</span> </div>
+                        		<div id="sub3_5" class="myimg row"><span class="count col-4 m-2 p-0" style="color: white; background-position: -9px -87px">5</span> <span class="col-8"> Answered & Marked for Review (will be considered for evaluation)</span> </div>
+                    		</div>
                 		</div>
                 	</div>
                 	<div class="col"> </div>
@@ -394,7 +412,7 @@
 				<div style="display: block; text-align:right;">
 					<img onclick="toTop()" src="/static/Down.png" id="upBtn" alt="Up">
 				</div>
-				<div style="overflow-y: scroll; overflow-x: scroll;" id="palette" class="container-fluid p-1"></div>
+				<div style="overflow-y: auto; overflow-x: auto;" id="palette" class="container-fluid p-1"></div>
                 <div style="display: block; text-align:right;">
 					<img onclick="toBottom()" src="/static/Up.png" id="downBtn" alt="Down">
 				</div>
@@ -414,16 +432,16 @@
                 
                 <div class="container-fluid p-0" id="sideinst" style="position: relative;">
                     <div id="center" class="container-fluid p-2">
-                        <img class="my-3 myimg" src="/static/person.jpg" alt="User Image" width="100px" height="100px"><br>
+                        <img class="my-3" src="/static/person.jpg" alt="User Image" width="100px" height="100px"><br>
                         <h5 class="my-3">{{ request.user.first_name }} {{ request.user.last_name }}</h5>
                     </div>
                     <hr style="opacity: 1;">
-                    <div class="container-fluid p-2">
-                        <div><img class="my-2 myimg py-0" src="/static/questions.png" width="30px" height="32px"> - Answered </div>
-                        <div><img class="my-2 myimg py-0" src="/static/questions.png" width="30px" height="32px"> - Not Answered </div>
-                        <div><img class="my-2 myimg py-0" src="/static/questions.png" width="30px" height="32px"> - Not Visited </div>
-                        <div><img class="my-2 myimg py-0" src="/static/questions.png" width="30px" height="32px"> - Marked For Review </div>
-                        <div><img class="my-2 myimg py-0" src="/static/questions.png" width="30px" height="32px"> - Answered & Marked for Review (will be considered for evaluation) </div>
+                    <div class="container-fluid p-2" style="position: relative">
+                        <div class="myimg"><span class="count" style="color: white; background-position: -7px -55px">5</span> Answered </div>
+                        <div class="myimg"><span class="count" style="color: white; background-position: -42px -56px">5</span> Not Answered </div>
+                        <div class="myimg"><span class="count" style="background-position: -107px -56px">5</span> Not Visited </div>
+                        <div class="myimg"><span class="count" style="color: white; background-position: -75px -54px">5</span> Marked For Review </div>
+                        <div class="myimg"><span class="count" style="color: white; background-position: -9px -87px">5</span> Answered & Marked for Review (will be considered for evaluation) </div>
                     </div>
                 </div>
                 <div id="subheadbar">CHEMISTRY</div>
@@ -584,10 +602,26 @@
         	height:350px; 
         	width:175px; 
         	position: absolute; 
-        	background: rgb(255,255,255); 
-        	z-index: 1; 
+        	background-color: white;
         	box-shadow: 5px 5px rgb(0,0,0,0.075); 
         	border: solid 1px #eeeeee;
+        	font-size: medium; 
+        	z-index: 1; 
+        }
+        
+        .myimg {
+        	min-width: 48%;
+        	font-size: 14px;
+        	align-items: center;
+        }
+        
+        .count {
+        	background: url('/static/questions.png') no-repeat; 
+        	height: 32px; 
+        	width: 32px;
+        	display: inline-block;
+        	text-align: center;
+        	vertical-align: middle;
         }
 
         @media screen and (max-width: 600px) {
@@ -650,7 +684,7 @@
             #sideinst {
                 border: 0.75px solid black;
                 max-height: 400px;
-                overflow-y: scroll;
+                overflow-y: auto;
             }
 
             #mfr, #cr, #san {
@@ -724,6 +758,8 @@
             qcolor_mfr = []
             qcolor_san = []
             
+            ques_status = []
+            
             Array.prototype.remove_by_value = function(val) {
 				for (var i = 0; i < this.length; i++) {
 					if (this[i] === val) {
@@ -749,6 +785,7 @@
                  'op3_choi': "{{ques.op3_choi}}", 'op4_choi': "{{ques.op4_choi}}",
                  'ans_status': "{{ques.ans_status}}"
             	})
+            	ques_status.push("{{ques.ans_status}}")
             {% endfor %}
             
             {% for sub in subList %}
@@ -833,7 +870,6 @@
             }
 
             function goto_ques(goto){
-            	console.log(goto)
             	ques = queslist[goto]
             	iter = goto
             	btn_qid = ques.question_id
@@ -888,25 +924,29 @@
             function aamfr() {
                 let tempBtn = document.getElementById("a"+iter);
                 tempBtn.style.backgroundPosition = "-9px -87px";
-                tempBtn.style.color = "white";               
+                tempBtn.style.color = "white";
+                ques_status[iter]="aamfr"               
             }
             
             function mfr() {
                 let tempBtn = document.getElementById("a"+iter);
                 tempBtn.style.backgroundPosition = "-75px -54px";
-                tempBtn.style.color = "white";              
+                tempBtn.style.color = "white";
+                ques_status[iter]="mfr"             
             }
             
             function san() {
                 let tempBtn = document.getElementById("a"+iter);
                 tempBtn.style.backgroundPosition = "-7px -55px";
-                tempBtn.style.color = "white";            
+                tempBtn.style.color = "white";
+                ques_status[iter]="san"            
             }
             
             function notans() {
                 let tempBtn = document.getElementById("a"+iter);
                 tempBtn.style.backgroundPosition = "-42px -56px";
-                tempBtn.style.color = "white";              
+                tempBtn.style.color = "white";
+                ques_status[iter]="nans"              
             }
             
             function colorCheck() {
@@ -995,8 +1035,6 @@
         function answer_post_mfr(question_id, input_name) {
             var exam_id = '{{exam_id}}';
             var answer_id = $('input[name=' + input_name + ']:checked').val();
-            console.log(exam_id);
-            console.log(answer_id);
             qcolor_mfr.push(iter)
             if (qcolor_san.includes(iter)){
             	qcolor_san.remove_by_value(iter)
@@ -1033,8 +1071,6 @@
         function answer_post_san(question_id, input_name) {
             var exam_id = '{{exam_id}}';
             var answer_id = $('input[name=' + input_name + ']:checked').val();
-            console.log(exam_id);
-            console.log(answer_id);
             qcolor_san.push(iter);
             if (qcolor_mfr.includes(iter)){
             	qcolor_mfr.remove_by_value(iter)
@@ -1105,12 +1141,7 @@
 		window.onload = function () {
             ele = document.documentElement;
             $("#main").click(function () {
-                try{
-                	openFullscreen(ele);
-                }
-                catch(e){
-                	console.log(e)
-                }
+                openFullscreen(ele);
             })
             
     		for(let xx = 0; xx < queslist.length; xx++){
@@ -1149,9 +1180,7 @@
             }
 
             if (document.hidden) {
-                console.log("Hidden");
                 num += 1;
-                //window.alert("Come back to exam man! Otherwise it will be submitted.")
                 Swal.fire({
                     title: '<h1 style="color: Red">Navigated Away Warning</h1>',
                     html: '<p style="text-align: center">{{ user.first_name }} {{ user.last_name }}, your test will be auto submitted, if you repeat this behaviour.</p>',
@@ -1160,20 +1189,21 @@
     				confirmButtonColor: 'green'
     			})
             }
-            else {
-                console.log("Visible");
-            }
         }
         function openFullscreen(ele) {
-            if (ele.requestFullscreen) {
-                ele.requestFullscreen();
-            }
-            else if (ele.webkitRequestFullscreen) {
-                ele.webkitRequestFullscreen();
-            }
-            else if (ele.msRequestFullscreen) {
-                ele.msRequestFullscreen();
-            }
+        	var isInFullScreen = (document.fullScreenElement && document.fullScreenElement !==     null) ||    // alternative standard method  
+            	(document.mozFullScreen || document.webkitIsFullScreen);
+			if (!isInFullScreen) {
+        		if (ele.requestFullscreen) {
+                	ele.requestFullscreen();
+            	}
+            	else if (ele.webkitRequestFullscreen) {
+                	ele.webkitRequestFullscreen();
+            	}
+            	else if (ele.msRequestFullscreen) {
+                	ele.msRequestFullscreen();
+            	}
+    		}
         }
     </script>
     <!-- End prevent cheating -->
