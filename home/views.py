@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
+from django.utils.timezone import localdate
+from exam.models import UserData
 
 # Create your views here.
 
@@ -34,18 +36,20 @@ def loginuser(request):
 	return render(request, "login.html")
 
 def signup(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('/')
-    else:
-        form = UserCreationForm()
-    return render(request, 'signup.html', {'form': form})
+	if request.method == 'POST':
+		last_username = int(User.objects.order_by("-username")[1].username[5:9])+1
+		firstName = request.POST.get('firstName')
+		lastName = request.POST.get('lastName')
+		email = request.POST.get('email')
+		username = str(localdate().year)[2:4]+"103"+str(f"{last_username:04}")
+		raw_password = "pass"+request.POST.get('phone')
+		user = User.objects.create_user(username=username, password=raw_password, first_name=firstName, last_name=lastName, email=email)
+		user = authenticate(username=username, password=raw_password)
+		login(request, user)
+		messages.add_message(request, messages.SUCCESS, 'Registered Successful')
+		userdata = UserData.objects.create(user_name=firstName, user_id=username)
+		return redirect('/')
+	return render(request, 'signup.html')
 
 def logoutuser(request):
 	logout(request)
