@@ -37,10 +37,10 @@ def loginuser(request):
 				login(request, user)
 				return redirect("/")
 			else:
-				messages.add_message(request, messages.WARNING, 'Invalid Username or Password')
+				messages.add_message(request, messages.WARNING, 'Please complete Verification')
 				return redirect("verify")
 		else:
-			messages.add_message(request, messages.WARNING, 'Invalid Username or Password')
+			messages.add_message(request, messages.ERROR, 'Invalid Username or Password')
 			return render(request, "login.html")
 	return render(request, "login.html")
 
@@ -72,7 +72,7 @@ def verify(request):
 			messages.add_message(request, messages.SUCCESS, 'User Verified Successfully')
 			return redirect('login')
 		else:
-			messages.add_message(request, messages.WARNING, 'OTP Incorrect')
+			messages.add_message(request, messages.ERROR, 'OTP Incorrect')
 			return render(request, 'verify.html')
 	return render(request, 'verify.html')
 
