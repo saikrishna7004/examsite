@@ -18,6 +18,8 @@ def index(request):
 	return render(request, "index.html")
 
 def loginuser(request):
+	if not request.user.is_anonymous:
+		return redirect("/")
 	if request.method=="POST":
 		if not request.POST.get('remember-me', None):
 			request.session.set_expiry(0)
@@ -51,8 +53,6 @@ def signup(request):
 		username = str(localdate().year)[2:4]+"103"+str(f"{last_username:04}")
 		raw_password = "pass"+request.POST.get('phone')
 		user = User.objects.create_user(username=username, password=raw_password, first_name=firstName, last_name=lastName, email=email)
-		user = authenticate(username=username, password=raw_password)
-		login(request, user)
 		messages.add_message(request, messages.SUCCESS, 'Registered Successful. Your username is '+str(username)+'. Verify your identity <a href="verify">Here</a>.')
 		userdata = UserData.objects.create(user_name=firstName, user_id=username)
 		userverifydata = UserVerifyData.objects.create(username=username, verified=False, otp=random.randint(100000, 999999))
