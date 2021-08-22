@@ -5,7 +5,9 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.timezone import localdate
+from .models import UserVerifyData
 from exam.models import UserData
+import random
 
 # Create your views here.
 
@@ -28,8 +30,13 @@ def loginuser(request):
 			request.session.set_expiry(86400)
 		user = authenticate(username=username, password=password)
 		if user is not None:
-			login(request, user)
-			return redirect("/")
+			verified = UserVerifyData.objects.filter(username=username)[0].verified
+			if verified:
+				login(request, user)
+				return redirect("/")
+			else:
+				messages.add_message(request, messages.WARNING, 'Invalid Username or Password')
+				return redirect("verify")
 		else:
 			messages.add_message(request, messages.WARNING, 'Invalid Username or Password')
 			return render(request, "login.html")
@@ -46,10 +53,28 @@ def signup(request):
 		user = User.objects.create_user(username=username, password=raw_password, first_name=firstName, last_name=lastName, email=email)
 		user = authenticate(username=username, password=raw_password)
 		login(request, user)
-		messages.add_message(request, messages.SUCCESS, 'Registered Successful')
+		messages.add_message(request, messages.SUCCESS, 'Registered Successful. Your username is '+str(username)+'. Verify your identity <a href="verify">Here</a>.')
 		userdata = UserData.objects.create(user_name=firstName, user_id=username)
-		return redirect('/')
+		userverifydata = UserVerifyData.objects.create(username=username, verified=False, otp=random.randint(100000, 999999))
+		return render(request, 'signup.html')
 	return render(request, 'signup.html')
+
+def verify(request):
+	if not request.user.is_anonymous:
+		return redirect("/")
+	if request.method == 'POST':
+		username = request.POST.get('username')
+		otp = request.POST.get('otp')
+		userverifydata = UserVerifyData.objects.filter(username=username)[0]
+		if int(otp) == int(userverifydata.otp):
+			userverifydata.verified=True
+			userverifydata.save()
+			messages.add_message(request, messages.SUCCESS, 'User Verified Successfully')
+			return redirect('login')
+		else:
+			messages.add_message(request, messages.WARNING, 'OTP Incorrect')
+			return render(request, 'verify.html')
+	return render(request, 'verify.html')
 
 def logoutuser(request):
 	logout(request)
