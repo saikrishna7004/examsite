@@ -43,12 +43,22 @@
 			<h2>Checkout form</h2>
 			<p class="lead">Below is an example form built entirely with Bootstrap’s form controls. Each required form group has a validation state that can be triggered by attempting to submit the form without completing it.</p>
 		</div>
-
+		{% if messages %}
+      {% for message in messages %}
+      <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible fade show" {% endif %}
+        role="alert">
+        {{ message }}
+        <button type="button" class="close py-3" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endfor %}
+      {% endif %}
 		<div class="row g-5">
 			
 			<div class="col-md-7 col-lg-8">
 				<h4 class="mb-3">Primary Details</h4>
-				<form method="POST" action="signup" class="needs-validation">
+				<form method="POST" action="signup" class="needs-validation" novalidate>
 					{% csrf_token %}
 					<div class="row g-3">
 						<div class="col-sm-6">
