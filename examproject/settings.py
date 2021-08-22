@@ -36,6 +36,7 @@ SECURE_SSL_REDIRECT = True
 
 INSTALLED_APPS = [
     'exam.apps.ExamConfig',
+    'home.apps.HomeConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
