@@ -80,3 +80,6 @@ def logoutuser(request):
 	logout(request)
 	messages.add_message(request, messages.SUCCESS, 'Logout Successful')
 	return redirect("/")
+
+def vcea(request):
+	return render(request, 'vcea.html')
