@@ -82,4 +82,4 @@ def logoutuser(request):
 	return redirect("/")
 
 def vcea(request):
-	return render(request, 'vcea.html')
+	return render(request, 'dad.html')
