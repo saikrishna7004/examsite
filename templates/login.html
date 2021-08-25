@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Login to Examsite by Sai Krishna">
   <meta name="author" content="Sai Krishna">
-  <meta name="keywords" content="herokuapp heroku examsite exam site sai krishna epizy infinity free"></meta>
   <title>Login</title>
 
   <!-- <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/"> -->
@@ -82,7 +81,7 @@
 <body class="text-center">
 
   <main class="form-signin">
-    <form method="post" action="login">
+    <form method="post" action="/login/">
       {% csrf_token %}
       <img class="mb-4" src="/static/home/logo.png" alt="Logo" width="72" height="72">
       <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
@@ -113,7 +112,7 @@
       </div>
       <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
       <div class="mt-4">
-        New User? <a href="signup" style="text-decoration: none;">Register Here.</a>
+        New User? <a href="/signup/" style="text-decoration: none;">Register Here.</a>
       </div>
       <p class="mt-3 mb-3 text-muted">&copy; 2020–2021</p>
     </form>
