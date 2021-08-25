@@ -13,7 +13,7 @@ import random
 
 def index(request):
 	if request.user.is_anonymous:
-		return redirect("login")
+		return redirect("/login/")
 	messages.add_message(request, messages.SUCCESS, 'Login Successful')
 	return render(request, "index.html")
 
@@ -38,7 +38,7 @@ def loginuser(request):
 				return redirect("/")
 			else:
 				messages.add_message(request, messages.WARNING, 'Please complete Verification')
-				return redirect("verify")
+				return redirect("/verify/")
 		else:
 			messages.add_message(request, messages.ERROR, 'Invalid Username or Password')
 			return render(request, "login.html")
@@ -53,7 +53,7 @@ def signup(request):
 		username = str(localdate().year)[2:4]+"103"+str(f"{last_username:04}")
 		raw_password = "pass"+request.POST.get('phone')
 		user = User.objects.create_user(username=username, password=raw_password, first_name=firstName, last_name=lastName, email=email)
-		messages.add_message(request, messages.SUCCESS, 'Registered Successful. Your username is '+str(username)+'. Verify your identity <a href="verify">Here</a>.')
+		messages.add_message(request, messages.SUCCESS, 'Registered Successful. Your username is '+str(username)+'. Verify your identity <a href="/verify/">Here</a>.')
 		userdata = UserData.objects.create(user_name=firstName, user_id=username)
 		userverifydata = UserVerifyData.objects.create(username=username, verified=False, otp=random.randint(100000, 999999))
 		return render(request, 'signup.html')
@@ -70,7 +70,7 @@ def verify(request):
 			userverifydata.verified=True
 			userverifydata.save()
 			messages.add_message(request, messages.SUCCESS, 'User Verified Successfully')
-			return redirect('login')
+			return redirect('/login/')
 		else:
 			messages.add_message(request, messages.ERROR, 'OTP Incorrect')
 			return render(request, 'verify.html')
