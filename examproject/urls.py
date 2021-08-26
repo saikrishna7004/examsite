@@ -24,4 +24,5 @@ urlpatterns = [
     path('exam/', include("exam.urls")),
     path('favicon.ico', RedirectView.as_view(url='/static/home/favicon.png')),
     path('sitemap.xml', RedirectView.as_view(url='/static/sitemap.xml')),
+    path('login/sitemap.xml', RedirectView.as_view(url='/static/sitemap.xml')),
 ]
