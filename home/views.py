@@ -19,7 +19,7 @@ def index(request):
 
 def loginuser(request):
 	if not request.user.is_anonymous:
-		return redirect("/")
+		return redirect(request.path_info)
 	if request.method=="POST":
 		if not request.POST.get('remember-me', None):
 			request.session.set_expiry(0)
@@ -35,7 +35,7 @@ def loginuser(request):
 			verified = UserVerifyData.objects.filter(username=username)[0].verified
 			if verified:
 				login(request, user)
-				return redirect("/")
+				return redirect(request.path_info)
 			else:
 				messages.add_message(request, messages.WARNING, 'Please complete Verification')
 				return redirect("/verify/")
@@ -61,7 +61,7 @@ def signup(request):
 
 def verify(request):
 	if not request.user.is_anonymous:
-		return redirect("/")
+		return redirect(request.path_info)
 	if request.method == 'POST':
 		username = request.POST.get('username')
 		otp = request.POST.get('otp')
@@ -79,7 +79,7 @@ def verify(request):
 def logoutuser(request):
 	logout(request)
 	messages.add_message(request, messages.SUCCESS, 'Logout Successful')
-	return redirect("/")
+	return redirect(request.path_info)
 
 def vcea(request):
 	return render(request, 'dad.html')
