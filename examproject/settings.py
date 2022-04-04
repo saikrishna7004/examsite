@@ -142,3 +142,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MESSAGE_TAGS = {
     message_constants.ERROR: 'danger',
 }
+
+try:
+    from examproject.local_settings import DEBUG, SECURE_SSL_REDIRECT, SECRET_KEY
+except ImportError:
+    pass
