@@ -204,10 +204,17 @@
                                 </div>
                                 <div class="col-md-4 col-sm-3">
                                     <div class="box-button">
+                                        {% if exams.status == "False" %}
                                         <button type="button" class="btn-guest pull-right"
                                             id="getStartExamButtonId{{exams.examid}}" style="border-radius: 0;"
                                             onclick="openInstructionsPage('{{exams.examid}}','getStartExamButtonId{{exams.examid}}','takeExamId{{exams.examid}}')">TAKE
                                             EXAM</button>
+                                        {% else %}
+                                        <button type="button" class="btn-guest pull-right" disabled
+                                            id="getStartExamButtonId{{exams.examid}}" style="border-radius: 0;">EXAM
+                                            COMPLETED</button>
+                                        {% endif %}
+                                        
                                     </div>
 
                                     <form id="formid{{exams.examid}}">

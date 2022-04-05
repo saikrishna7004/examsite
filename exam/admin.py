@@ -13,6 +13,14 @@ def change_date(modeladmin, request, queryset):
         examdata.save(update_fields=['date'])
 change_date.short_description = 'Change Date to Today'
 
+@transaction.atomic
+def turn_on(modeladmin, request, queryset):
+    for examdata in queryset:
+        examdata.date=localdate()
+        examdata.status = True
+        examdata.save(update_fields=['date', 'status'])
+turn_on.short_description = 'Turn on Test'
+
 
 class ChoiceInline(admin.StackedInline):
     model = Choice
@@ -50,12 +58,12 @@ class UserDataAdmin(admin.ModelAdmin):
 
 class ExamDataAdmin(admin.ModelAdmin):
     fieldsets = [
-        ('ExamData Description', {'fields': ['title', 'start_time', 'end_time', 'total_time', 'type', 'exam_id', 'date']}),
+        ('ExamData Description', {'fields': ['title', 'start_time', 'end_time', 'total_time', 'type', 'exam_id', 'date', "status"]}),
     ]
-    list_display = ('exam_id', 'title', 'date', 'type', 'start_time')
+    list_display = ('exam_id', 'title', 'date', 'type', 'start_time', 'status')
     list_filter = ['exam_id']
     search_fields = ['exam_id', 'title']
-    actions = [change_date]
+    actions = [change_date, turn_on]
 
 class ExamStatusAdmin(admin.ModelAdmin):
     fieldsets = [

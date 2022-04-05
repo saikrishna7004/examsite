@@ -1,22 +1,30 @@
 from django.shortcuts import render, HttpResponse, redirect
 import json, time, calendar
-from .models import Question, UserData, ExamData, PaperModel
+from .models import ExamStatus, Question, UserData, ExamData, PaperModel
 from django.db import transaction
 from django import template
 from django.utils.timezone import localdate
 
 # Create your views here.
 
+@transaction.atomic
 def index(request):
 	if request.user.is_anonymous:
 		return redirect("login")
 	allexams = []
-	examlist = ExamData.objects.filter(date=localdate()).order_by("exam_id")
+	examlist = ExamData.objects.filter(date=localdate(), status=True).order_by("exam_id")
 	for exam in examlist:
+		status = ExamStatus.objects.filter(user_id=request.user.username, exam_id=exam.exam_id)
+		if status.exists():
+			st = status[0].status=="completed"
+		else:
+			st = False
+		print(st)
 		allexams.append({
 			'title': exam.title, 'stime': exam.start_time, 'etime': exam.end_time, 
 			'ttime': exam.total_time, 'examid': int(exam.exam_id), 'type': exam.type,
-			'day': exam.date.day, 'month': calendar.month_name[exam.date.month], 'year': exam.date.year
+			'day': exam.date.day, 'month': calendar.month_name[exam.date.month], 'year': exam.date.year,
+			'status': str(st)
 		})
 	
 	content = {
@@ -30,6 +38,9 @@ def examInstructions(request):
 		return redirect("login")
 	if request.method == "POST":
 		scheduleVal = request.POST.get("scheduleVal")
+		if not ExamStatus.objects.filter(user_id=request.user.username, exam_id=scheduleVal).exists():
+			e = ExamStatus.objects.create(user_id=request.user.username, exam_id=scheduleVal, status='started', time_left="180")
+			print(e)
 		ourExam = request.POST.get("ourExam")
 		test = Question
 		qlist = test.objects.filter(exam_id=scheduleVal).order_by("question_id")  # [0].question_id
@@ -186,6 +197,13 @@ def upload(request):
 			end=time.time()
 			return HttpResponse(f"<meta name='viewport' content='width=device-width, initial-scale=1.0'><h1>Done 👍 in {end-start} seconds.</h1>The Exam ID is {exam_id}")
 	return render(request, "upload.html")
+
+def submit(request):
+	if request.method == "POST":
+		exam_id = request.POST.get("exam_id")
+		ExamStatus.objects.filter(user_id=request.user.username, exam_id=exam_id)
+		return HttpResponse(status=200)
+	return HttpResponse(status=400)
 
 def create(request):
 	if not request.user.is_staff:

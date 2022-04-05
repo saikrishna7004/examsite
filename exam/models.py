@@ -74,6 +74,7 @@ class ExamData(models.Model):
 	exam_id = models.IntegerField(unique=True)
 	type = models.CharField(max_length=10, default="custom-21")
 	date = models.DateField()
+	status = models.BooleanField(default=False)
 
 	class Meta:
 		verbose_name = "ExamData"
@@ -102,7 +103,7 @@ class ExamStatus(models.Model):
 		verbose_name_plural = "ExamStatuses"
 
 	def __str__(self):
-		return self.question_text
+		return self.status
 
 	def get_absolute_url(self):
 		return reverse("ExamStatus_detail", kwargs={"pk": self.pk})
