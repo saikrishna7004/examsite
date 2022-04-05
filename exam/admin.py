@@ -27,6 +27,14 @@ class QuestionAdmin(admin.ModelAdmin):
     list_filter = ['exam_id']
     search_fields = ['exam_id', 'question_text']
 
+class QuestionAnswerAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('Question Answer Description', {'fields': ['user', 'question_id', 'answer_id', 'exam_id', 'ans_status']}),
+    ]
+    list_display= ('user', 'question_id', 'answer_id', 'exam_id', 'ans_status')
+    list_filter = ['exam_id', 'user']
+    search_fields = ['exam_id', 'user']
+
 class QuestionAnswerInline(admin.StackedInline):
     model = QuestionAnswer
     extra = 1
@@ -71,7 +79,7 @@ class PaperModelAdmin(admin.ModelAdmin):
     search_fields = ['type']
 
 admin.site.register(Question, QuestionAdmin)
-admin.site.register(QuestionAnswer)
+admin.site.register(QuestionAnswer, QuestionAnswerAdmin)
 admin.site.register(UserData, UserDataAdmin)
 admin.site.register(ExamData, ExamDataAdmin)
 admin.site.register(ExamStatus, ExamStatusAdmin)
