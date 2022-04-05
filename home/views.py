@@ -7,6 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.utils.timezone import localdate
 from .models import UserVerifyData
 from exam.models import UserData
+from django.contrib.auth.hashers import make_password
 import random
 
 # Create your views here.
@@ -60,21 +61,39 @@ def signup(request):
 	return render(request, 'signup.html')
 
 def verify(request):
-	if not request.user.is_anonymous:
-		return redirect("/")
 	if request.method == 'POST':
 		username = request.POST.get('username')
 		otp = request.POST.get('otp')
 		userverifydata = UserVerifyData.objects.filter(username=username)[0]
+		if userverifydata.verified:
+			return render(request, "resetpass.html")
 		if int(otp) == int(userverifydata.otp):
 			userverifydata.verified=True
 			userverifydata.save()
 			messages.add_message(request, messages.SUCCESS, 'User Verified Successfully')
-			return redirect('/login/')
+			return redirect('/verify/')
 		else:
 			messages.add_message(request, messages.ERROR, 'OTP Incorrect')
 			return render(request, 'verify.html')
-	return render(request, 'verify.html')
+	if not request.user.is_anonymous:
+		return redirect("/")
+	return render(request, "verify.html")
+
+def reset(request):
+	username = request.POST.get("username")
+	pass1 = request.POST.get("password")
+	pass2 = request.POST.get("password2")
+	print(User.objects.filter(username=username)[0].last_login)
+	if pass1==pass2:
+		userdata = User.objects.filter(username=username)[0]
+		userdata.password = make_password(pass1)
+		userdata.save()
+		user = authenticate(username=username, password=pass1)
+		if user is not None:
+			login(request, user)
+			messages.add_message(request, messages.SUCCESS, 'Password Changed Successfully')
+			return redirect("/")
+	return HttpResponse(status=400)
 
 def logoutuser(request):
 	logout(request)

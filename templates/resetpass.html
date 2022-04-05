@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<title>Verify</title>
+
+		<meta name="theme-color" content="#7952b3">
+	
+	
+<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+		<link rel="stylesheet" href="/static/bootstrap-5.0.1/css/bootstrap.min.css"> 
+
+		<style>
+			.bd-placeholder-img {
+				font-size: 1.125rem;
+				text-anchor: middle;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				user-select: none;
+			}
+			
+			.container {
+				max-width: 960px;
+			}
+			
+			.form-signin {
+				width: 100%;
+				max-width: 330px;
+				padding: 15px;
+				margin: auto;
+			}
+
+			@media (min-width: 768px) {
+				.bd-placeholder-img-lg {
+					font-size: 3.5rem;
+				}
+			}
+		</style>
+
+	</head>
+	<body class="bg-light">
+		
+<div class="container">
+	<main class="form-signin">
+		<div class="py-2 text-center">
+			<img class="d-block mx-auto mb-4" src="/static/home/logo.png" alt="Logo" height="72" width="72">
+			<h2>Update password</h2>
+		</div>
+{% if messages %}
+			{% for message in messages %}
+			<div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible fade show" {% endif %}
+				role="alert">
+				{{ message }}
+				<button type="button" class="close py-3" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			{% endfor %}
+			{% endif %}
+		<div class="row">
+				<form method="POST" action="/reset-password/" class="needs-validation" novalidate>
+					{% csrf_token %}
+					<div class="row g-3">
+                        <div class="col-12">
+							<label for="username" class="form-label">Enter Username</label>
+							<input type="text" class="form-control" id="username" name="username" required>
+							<div class="invalid-feedback">
+								Valid username is required.
+							</div>
+						</div>
+						<div class="col-12">
+							<label for="password" class="form-label">Enter New Password</label>
+							<input type="password" class="form-control" id="password" name="password" required>
+							<div class="invalid-feedback">
+								Valid password is required.
+							</div>
+						</div>
+						<div class="col-12">
+							<label for="password2" class="form-label">Enter New Password</label>
+							<input type="password" class="form-control" id="password2" name="password2" required>
+							<div class="invalid-feedback">
+								Valid password is required.
+							</div>
+						</div>
+                        <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+                    </div>
+				</form>
+		</div>
+	</main>
+
+	<footer class="my-5 pt-5 text-muted text-center text-small">
+		<p class="mb-1">&copy; 2017–2021 Company Name</p>
+		<ul class="list-inline">
+			<li class="list-inline-item"><a href="#">Privacy</a></li>
+			<li class="list-inline-item"><a href="#">Terms</a></li>
+			<li class="list-inline-item"><a href="#">Support</a></li>
+		</ul>
+	</footer>
+</div>
+
+		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="/static/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+  
+	
+		<script>
+			// Example starter JavaScript for disabling form submissions if there are invalid fields
+			(function () {
+				'use strict'
+
+				// Fetch all the forms we want to apply custom Bootstrap validation styles to
+				var forms = document.querySelectorAll('.needs-validation')
+
+				// Loop over them and prevent submission
+				Array.prototype.slice.call(forms)
+					.forEach(function (form) {
+						form.addEventListener('submit', function (event) {
+							if (!form.checkValidity()) {
+								event.preventDefault()
+								event.stopPropagation()
+							}
+
+							form.classList.add('was-validated')
+						}, false)
+					})
+			})()
+		</script>
+	
+	</body>
+</html>

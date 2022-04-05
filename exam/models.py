@@ -1,5 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import truncatewords
+from django.urls import reverse
 
 # Create your models here.
 
@@ -56,7 +57,7 @@ class QuestionAnswer(models.Model):
 	)
 	
 	user = models.ForeignKey(UserData, on_delete=models.CASCADE)
-	question_id = models.IntegerField(unique=True)
+	question_id = models.IntegerField()
 	answer_id = models.IntegerField()
 	exam_id = models.IntegerField()
 	ans_status = models.CharField(max_length=10, choices=ANS_STATUS_CHOICES, default="aamfr")

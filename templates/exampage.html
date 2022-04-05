@@ -1020,8 +1020,9 @@
 	  		  		goto_ques(b);
 	  		  		colorCheck();
 	  		  		changeState1();
+					changeCount();
 	  		  	};
-					var t = document.createTextNode(i+1);
+				var t = document.createTextNode(i+1);
 	 		   	btn.appendChild(t);
 	  		  	document.getElementById("sub"+(tbtniter+1).toString()+"_btnset").appendChild(btn);
 	  		  	changeCount();
@@ -1047,14 +1048,14 @@
 				let tempBtn = document.getElementById("a"+iter);
 				tempBtn.style.backgroundPosition = "-7px -55px";
 				tempBtn.style.color = "white";
-				ques_status[iter]="san"			
+				ques_status[iter]="ans"			
 			}
 			
 			function notans() {
 				let tempBtn = document.getElementById("a"+iter);
 				tempBtn.style.backgroundPosition = "-42px -56px";
 				tempBtn.style.color = "white";
-				ques_status[iter]="nans"			  
+				ques_status[iter]="nans"
 			}
 			
 			function colorCheck() {
@@ -1303,7 +1304,7 @@
 	<script>
 		var num = 0;
 		function vis() {
-			if (num > 3) {
+			{% comment %} if (num > 3) {
 				window.close();
 			}
 
@@ -1316,10 +1317,10 @@
 					confirmButtonText: 'Continue Test',
 					confirmButtonColor: 'green'
 				})
-			}
+			} {% endcomment %}
 		}
 		function openFullscreen(ele) {
-			var isInFullScreen = (document.fullScreenElement && document.fullScreenElement !== null) || 
+			{% comment %} var isInFullScreen = (document.fullScreenElement && document.fullScreenElement !== null) || 
 				(document.mozFullScreen || document.webkitIsFullScreen);
 			if (!isInFullScreen) {
 				if (ele.requestFullscreen) {
@@ -1331,7 +1332,7 @@
 				else if (ele.msRequestFullscreen) {
 					ele.msRequestFullscreen();
 				}
-			}
+			} {% endcomment %}
 		}
 		
 	</script>

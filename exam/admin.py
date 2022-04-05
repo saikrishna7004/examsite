@@ -71,6 +71,7 @@ class PaperModelAdmin(admin.ModelAdmin):
     search_fields = ['type']
 
 admin.site.register(Question, QuestionAdmin)
+admin.site.register(QuestionAnswer)
 admin.site.register(UserData, UserDataAdmin)
 admin.site.register(ExamData, ExamDataAdmin)
 admin.site.register(ExamStatus, ExamStatusAdmin)

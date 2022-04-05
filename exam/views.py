@@ -37,7 +37,7 @@ def examInstructions(request):
 		for ques in qlist:
 			choi = ques.choice_set.all().order_by("choice_id")
 			y=5
-			current_ans_status = ""
+			current_ans_status = "na"
 			if UserData.objects.filter(user_id=request.user.username)[0].questionanswer_set.filter(question_id=ques.question_id).exists():
 				current_ans = UserData.objects.filter(user_id=request.user.username)[0].questionanswer_set.filter(
 					question_id=ques.question_id)[0].answer_id
@@ -61,7 +61,7 @@ def examInstructions(request):
 				 'op1_choi': op_choi[0], 'op2_choi': op_choi[1],
 				 'op3_choi': op_choi[2], 'op4_choi': op_choi[3],
 				 'ans_status': current_ans_status,
-				 }
+				}
 			)
 		
 		paperList = PaperModel.objects.filter(type=json.loads(ourExam)["type"])[0].subject_set.order_by("start")
@@ -95,7 +95,6 @@ def answer(request):
 
 		if answer_id == None:
 			return HttpResponse(status=400)
-
 		if not UserData.objects.filter(user_id=user_id)[0].questionanswer_set.filter(question_id=question_id).exists():
 			UserData.objects.filter(user_id=user_id)[0].questionanswer_set.create(
 				question_id=question_id, exam_id=exam_id, answer_id=answer_id, ans_status=ans_status)

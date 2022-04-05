@@ -8,5 +8,6 @@ urlpatterns = [
     path('logout/', views.logoutuser, name="logout"),
     path('signup/', views.signup, name="signup"),
     path('verify/', views.verify, name="verify"),
+    path('reset-password/', views.reset, name="resets"),
     path('vcea/', views.vcea, name="vcea"),
 ]
