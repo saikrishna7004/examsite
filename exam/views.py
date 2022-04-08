@@ -173,12 +173,12 @@ def resultView(request, exam_id):
 
 def upload(request):
 	if not request.user.is_staff:
-		return HttpResponse("<meta name='viewport' content='width=device-width, initial-scale=1.0'><h2>You are not permitted to access this page. Login as a Staff or SuperUser to access this page.</h2><br><a href='/login'>Click Here</a> to redirect to Login page.")
+		return HttpResponse("<meta name='viewport' content='width=device-width, initial-scale=1.0'><h2>You are not permitted to access this page. Login as a Staff or Super User to access this page.</h2><br><a href='/login'>Click Here</a> to redirect to the Login page.")
 	if request.method=="POST":
 			print(request.FILES)
-			start=time.time()
+			start = time.time()
 			question_paper = request.FILES['qpaperFile'].read().decode('UTF-8')
-			question_set = question_paper.split("\n__________\n")
+			question_set = question_paper.split("\r\n__________\r\n")
 			exam_id = request.POST.get("examId")
 			choice_id_inc = str(exam_id)+'000'
 			choice_id_inc = int(choice_id_inc)
