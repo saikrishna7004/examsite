@@ -1,13 +1,7 @@
-from django.http import Http404
 from django.shortcuts import render, HttpResponse, redirect
 import json, time, calendar
-
-from matplotlib.style import context
-
-import exam
 from .models import ExamStatus, Question, UserData, ExamData, PaperModel
 from django.db import transaction
-from django import template
 from django.utils.timezone import localdate
 
 # Create your views here.
