@@ -364,9 +364,11 @@
 				<!-- Subjects Bar -->
 				<div class="container-fluid p-0 m-0 row">
 					<div class="col-md-auto p-0">
+						{% for sub in subList %}
+						{% if sub.length != 0 %}
 						<div class="p-0" style="display: inline-block; position: relative;">
-							<button id="bt1" onclick="sub_bt(0); changeCount();" class="btn sub px-2 py-1">PHYSICS <i class="fa fa-info-circle"></i></button>
-							<div class="subinf px-3" id="subinf1">
+							<button class="bt btn sub px-2 py-1" id="bt{{sub.iter|add:"1"}}" onclick="sub_bt({{sub.iter}}); changeCount();" class="btn sub px-2 py-1">{{sub.name}} <i class="fa fa-info-circle"></i></button>
+							<div class="subinf px-3" id="subinf{{sub.iter|add:"1"}}">
 								<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: white; background-position: -7px -55px">5</span> <span class="col-8 mx-0 mx-0 p-0"> Answered</span> </div>
 								<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: white; background-position: -42px -56px">5</span> <span class="col-8 mx-0 p-0"> Not Answered</span> </div>
 								<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: black; background-position: -107px -56px">5</span> <span class="col-8 mx-0 p-0"> Not Visited</span> </div>
@@ -374,7 +376,9 @@
 								<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: white; background-position: -9px -87px">5</span> <span class="col-8 mx-0 p-0"> Answered & Marked for Review (will be considered for evaluation)</span> </div>
 							</div>
 						</div>
-						<div class="p-0" style="display: inline-block; position: relative;">
+						{% endif %}
+						{% endfor %}
+						{% comment %} <div class="p-0" style="display: inline-block; position: relative;">
 							<button id="bt2" onclick="sub_bt(1); changeCount();" class="btn sub px-2 py-1">CHEMISTRY <i class="fa fa-info-circle"></i></button>
 							<div class="subinf px-3" id="subinf2">
 								<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: white; background-position: -7px -55px">5</span> <span class="col-8 mx-0 mx-0 p-0"> Answered</span> </div>
@@ -393,7 +397,7 @@
 								<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: white; background-position: -75px -54px">5</span> <span class="col-8 mx-0 p-0"> Marked For Review</span> </div>
 								<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: white; background-position: -9px -87px">5</span> <span class="col-8 mx-0 p-0"> Answered & Marked for Review (will be considered for evaluation)</span> </div>
 							</div>
-						</div>
+						</div> {% endcomment %}
 					</div>
 					<div class="col"> </div>
 					<div class="col-md-auto p-1 timesDiv">
@@ -445,9 +449,7 @@
 				</div>
 				<div id="subheadbar">CHEMISTRY</div>
 				<div style="border: 0.75px solid black; min-height: 200px; max-height: 250px;" id="palette2">
-					<div class="sub_btnset" id="sub1_btnset"></div>
-					<div class="sub_btnset" id="sub2_btnset"></div>
-					<div class="sub_btnset" id="sub3_btnset"></div>
+					{% for c in countrange1 %}<div class="sub_btnset" id='sub{{c|add:"1"}}_btnset'></div>{% endfor %}
 					<div style="text-align: center;"><button id="subFinal2" class="btn col-4 mt-1 px-2" onclick="submitExam();">Submit</button></div>
 				</div>
 				
@@ -574,15 +576,17 @@
 			color: white;
 		}
 		
-		#bt1, #bt2, #bt3 {
+		{% for c in countrange %}
+		#bt{{c|add:"1"}} {
 			background-color: white;
 			color: #347ab7;
 		}
 		
-		#bt1.active, #bt2.active, #bt3.active {
+		#bt{{c|add:"1"}}.active {
 			background-color: #347ab7;
 			color: white;
 		}
+		{% endfor %}
 		
 		#mfr, #cr {
 			width: 48%; 
@@ -899,7 +903,7 @@
 				subList.push({name:"{{sub.name}}", length:"{{sub.length}}", start:"{{sub.start}}", end:"{{sub.end}}"})
 			{% endfor %}
 			
-			subState = [subList[0].start-1, subList[1].start-1, subList[2].start-1]
+			subState = [{% for c in countrange %}subList[{{c}}].start-1,{% endfor %}]
 			
 			
 				var iter = 0
@@ -1002,8 +1006,10 @@
 				MathJax.typesetPromise([palette]).then(() => {});
 			}
 			
-			for (var tbtniter = 0; tbtniter < 3; tbtniter++){
+			for (var tbtniter = 0; tbtniter < {{count}}; tbtniter++){
+				console.log("tbtitener = "+tbtniter)
 				for (var i = subList[tbtniter].start-1; i < subList[tbtniter].end; i++) {
+					console.log("i="+i)
 	  		  	var btn = document.createElement("button");
 	  		  	btn.style.height="30px";
 	  		  	btn.style.width="32px";
@@ -1014,7 +1020,8 @@
 	  		  	btn.style.background = "url('/static/questions.png') no-repeat";
 	  		  	btn.style.backgroundPosition = "-107px -56px"; 
 	  		  	btn.setAttribute("class", "paletteBtn");
-	  		  	btn.setAttribute("id", "a"+i.toString());
+	  		  	btn.setAttribute("id", "a"+i);
+					console.log(btn.id)
 	  		  	btn.onclick = function(e){
 	  		  		let b = parseInt(this.id.replace("a",""));
 	  		  		goto_ques(b);
@@ -1070,21 +1077,19 @@
 			}
 			
 			function changePalette() {
-				for (let titer=0; titer<3; titer++) {
+				for (let titer=0; titer<{{count}}; titer++) {
 					if (iter>=subList[titer].start-1 && iter<subList[titer].end) {
 						$(".sub_btnset").hide();
 						$("#sub"+(titer+1).toString()+"_btnset").show();
 						subheadbar.innerHTML = subList[titer].name.toUpperCase();
-						$("#bt1").removeClass("active");
-						$("#bt2").removeClass("active");
-						$("#bt3").removeClass("active");
+						{% for c in countrange1 %}$('#bt{{c|add:"1"}}').removeClass("active");{% endfor %}
 						$("#bt"+(titer+1).toString()).addClass("active");
 					}
 				}
 			}
 			
 			function changeState() {
-				for (let titer=0; titer<3; titer++) {
+				for (let titer=0; titer<{{count}}; titer++) {
 					if (iter+1>=subList[titer].start-1 && iter+1<subList[titer].end) {
 						subState[titer]=iter;	
 					}
@@ -1092,15 +1097,15 @@
 			}
 			
 			function changeState1() {
-				for (let titer=0; titer<3; titer++) {
+				for (let titer=0; titer<{{count}}; titer++) {
 					if (iter>=subList[titer].start-1 && iter<subList[titer].end) {
 						subState[titer]=iter;	
 					}
 				}	
 			}
-			
+
 			function changeCount() {
-				for (let titer1=0; titer1<3; titer1++) {
+				for (let titer1=0; titer1<{{count}}; titer1++) {
 					tarr = ques_status.slice(subList[titer1].start-1,subList[titer1].end)
 					document.getElementById("subinf"+(titer1+1).toString()).innerHTML=`
 						<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: white; background-position: -7px -55px">${tarr.count("ans")}</span> <span class="col-8 mx-0 mx-0 p-0"> Answered</span> </div>
@@ -1138,13 +1143,11 @@
 			})
 			
 			$("#bt1").addClass("active");
-			bt1.innerHTML = subList[0].name.toUpperCase()+' <i id="infohover1" class="fa fa-info-circle">'
-			bt2.innerHTML = subList[1].name.toUpperCase()+' <i id="infohover2" class="fa fa-info-circle">'
-			bt3.innerHTML = subList[2].name.toUpperCase()+' <i id="infohover3" class="fa fa-info-circle">'
 			$(".subinf").hide()
-			$("#infohover1").hover(()=>{$("#subinf1").slideDown(600)},()=>{$("#subinf1").slideUp(600)})
-			$("#infohover2").hover(()=>{$("#subinf2").slideDown(600)},()=>{$("#subinf2").slideUp(600)})
-			$("#infohover3").hover(()=>{$("#subinf3").slideDown(600)},()=>{$("#subinf3").slideUp(600)})
+			{% for c in countrange1 %}
+				bt{{c|add:"1"}}.innerHTML = subList[{{c}}].name.toUpperCase()+' <i id="infohover{{c}}" class="fa fa-info-circle">'
+				$("#infohover{{c}}").hover(()=>{$('#subinf{{c|add:"1"}}').slideDown(600)},()=>{$('#subinf{{c|add:"1"}}').slideUp(600)})
+			{% endfor %}
 			palette.style.height=pleft.style.height;
 			
 			let tempBtn1 = document.getElementById("a0");
@@ -1277,7 +1280,9 @@
 				ttemp = queslist[xx]
 				if(ttemp.ans_status=="aamfr"){
 					qcolor_mfr.push(xx)
+					console.log(xx)
 					let tempBtn = document.getElementById("a"+xx);
+					console.log(tempBtn)
 					tempBtn.style.backgroundPosition = "-9px -87px";
 					tempBtn.style.color = "white";
 				}
@@ -1337,9 +1342,9 @@
 		function submitFinal(){
 			$.ajax({
 				type: 'POST',
-				url: 'submit/',
+				url: '/exam/submit/',
 				dataType: 'json',
-				data: { exam_id: exam_id, csrfmiddlewaretoken: '{{ csrf_token }}' }
+				data: { exam_id: {{exam_id}}, csrfmiddlewaretoken: '{{ csrf_token }}' }
 			})
 		}
 		

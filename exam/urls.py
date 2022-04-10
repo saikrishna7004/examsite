@@ -9,9 +9,11 @@ urlpatterns = [
     path('examInstructions/delete/', views.delete, name="delete"),
     path('results/', views.results, name="results"),
     path('results/<int:exam_id>/', views.resultView, name="resultView"),
+    path('results/<int:exam_id>/details', views.resultdetails, name="resultDetails"),
     path('upload/', views.upload, name="upload"),
     path('create/', views.create, name="create"),
     path('maths/', views.matheditor, name="maths"),
+    path('submit/', views.submit, name="submit"),
     path('test/', views.test, name="test"),
 ]
 

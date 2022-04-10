@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="container" id="list">
+        {% for ques in queslist %}
+            <div class="quesMain my-2"><b>Question No. {{ques.i}}</b></div>
+            <hr>
+            <p class="my-1">{{ques.question_text|safe}}</p>
+            <b>(A) </b>{{ques.op1|safe}}<br>
+            <b>(B) </b>{{ques.op2|safe}}<br>
+            <b>(C) </b>{{ques.op3|safe}}<br>
+            <b>(D) </b>{{ques.op4|safe}}<br><br>
+            <div><input type="radio" class="inputlabel my-1" name="{{ques.question_id}}" id="{{ques.op1_id}}"
+                value="{{ques.op1_id}}" {{ques.op1_choi}}><label for="{{ques.op1_id}}">A</label></div>
+            <div><input type="radio" class="inputlabel my-1" name="{{ques.question_id}}" id="{{ques.op2_id}}"
+                value="{{ques.op2_id}}" {{ques.op2_choi}}><label for="{{ques.op2_id}}">B</label></div>
+            <div><input type="radio" class="inputlabel my-1" name="{{ques.question_id}}" id="{{ques.op3_id}}"
+                value="{{ques.op3_id}}" {{ques.op3_choi}}><label for="{{ques.op3_id}}">C</label></div>
+            <div><input type="radio" class="inputlabel my-1" name="{{ques.question_id}}" id="{{ques.op4_id}}"
+                value="{{ques.op4_id}}" {{ques.op4_choi}}><label for="{{ques.op4_id}}">D</label></div>
+            <div class="my-2">Answer: {{ ques.answer }}</div>
+        {% endfor %}
+    </div>
+    
+	<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			extensions: ["tex2jax.js"],
+			jax: ["input/TeX", "output/HTML-CSS"],
+			tex2jax: {
+				inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+				displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+				processEscapes: true
+			},
+			"HTML-CSS": { fonts: ["TeX"] }
+		});
+  
+	</script>
+	<script async src="/static/polyfill.min.js?features=es6"></script>
+	<script id="MathJax-script" async src="/static/mathjax/tex-mml-chtml.js"></script>
+	
+{% endblock body %}

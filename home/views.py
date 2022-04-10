@@ -16,7 +16,7 @@ def index(request):
 	if request.user.is_anonymous:
 		return redirect("/login/")
 	messages.add_message(request, messages.SUCCESS, 'Login Successful')
-	return render(request, "index.html")
+	return render(request, "index.html", {"active": "home"})
 
 def loginuser(request):
 	if not request.user.is_anonymous:

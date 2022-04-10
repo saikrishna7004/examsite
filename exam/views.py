@@ -1,5 +1,10 @@
+from django.http import Http404
 from django.shortcuts import render, HttpResponse, redirect
 import json, time, calendar
+
+from matplotlib.style import context
+
+import exam
 from .models import ExamStatus, Question, UserData, ExamData, PaperModel
 from django.db import transaction
 from django import template
@@ -15,10 +20,10 @@ def index(request):
 	examlist = ExamData.objects.filter(date=localdate(), status=True).order_by("exam_id")
 	for exam in examlist:
 		status = ExamStatus.objects.filter(user_id=request.user.username, exam_id=exam.exam_id)
+		st = "ns"
 		if status.exists():
-			st = status[0].status=="completed"
-		else:
-			st = False
+			st = status[0].status
+			print("Status ", status[0].status)
 		print(st)
 		allexams.append({
 			'title': exam.title, 'stime': exam.start_time, 'etime': exam.end_time, 
@@ -28,7 +33,8 @@ def index(request):
 		})
 	
 	content = {
-		'allexams': allexams
+		'allexams': allexams,
+		'active': 'exam'
 	}
 	return render(request, 'exam.html', content)
 
@@ -41,6 +47,9 @@ def examInstructions(request):
 		if not ExamStatus.objects.filter(user_id=request.user.username, exam_id=scheduleVal).exists():
 			e = ExamStatus.objects.create(user_id=request.user.username, exam_id=scheduleVal, status='started', time_left="180")
 			print(e)
+		else:
+			if ExamStatus.objects.filter(user_id=request.user.username, exam_id=scheduleVal)[0].status=="completed":
+				return HttpResponse(content="Exam Completed") 	
 		ourExam = request.POST.get("ourExam")
 		test = Question
 		qlist = test.objects.filter(exam_id=scheduleVal).order_by("question_id")  # [0].question_id
@@ -77,16 +86,26 @@ def examInstructions(request):
 		
 		paperList = PaperModel.objects.filter(type=json.loads(ourExam)["type"])[0].subject_set.order_by("start")
 		subList=[]
+		i=0
 		for tempSub in paperList:
-			subList.append({
-				"name":tempSub.name, "length":tempSub.length, "start": tempSub.start, "end": tempSub.end
-			})
+			if tempSub.length!=0:
+				subList.append({
+					"name":tempSub.name, "length":tempSub.length, "start": tempSub.start, "end": tempSub.end, "iter": i
+				})
+				i+=1
 		# return HttpResponse(scheduleVal)
+		count = 0
+		for x in subList:
+			if x["length"]!=0:
+				count+=1
 		content = {
 			'queslist': queslist,
 			'exam_id': scheduleVal,
 			'ourExam': json.loads(ourExam),
-			'subList': subList
+			'subList': subList,
+			'count': count,
+			'countrange': range(i),
+			'countrange1': range(i)
 		}
 		return render(request, 'exampage.html', content)
 
@@ -149,7 +168,8 @@ def results(request):
 			'day': exam.date.day, 'month': calendar.month_name[exam.date.month], 'year': exam.date.year
 		})
 	content = {
-		'allexams': allexams
+		'allexams': allexams,
+		'active': 'results'
 	}
 	return render(request, "results.html", content)
 
@@ -158,18 +178,76 @@ def resultView(request, exam_id):
 	if request.user.is_anonymous:
 		return redirect("login")
 	user_id = request.user.username
-	exam_list = UserData.objects.filter(user_id=user_id)[
-		0].questionanswer_set.filter(exam_id=exam_id).all()
-	y = 0
+	exam_list = UserData.objects.filter(user_id=user_id)[0].questionanswer_set.filter(exam_id=exam_id).all()
+	total = Question.objects.filter(exam_id=exam_id).count()
+	unatt = 0
+	correct = wrong = 0
 	for x in range(0, len(exam_list)):
 		qid = exam_list[x].question_id
 		aid = exam_list[x].answer_id
 		correct_id = Question.objects.filter(question_id=qid)[0].answer_id
+		print(aid, correct_id)
 		if int(aid) == int(correct_id):
-			y += 1
-		x += 1
-	#print("The no. of correct options is: ", y)
-	return HttpResponse("<meta name='viewport' content='width=device-width, initial-scale=1.0'><h1>The no. of correct answers is: "+str(y)+"</h1>")
+			correct += 1
+		else:
+			wrong += 1
+	unatt = total - wrong - correct
+	print(correct, wrong, total, unatt)
+	context = {
+		"wrong": wrong, "correct": correct, "unatt": unatt, "total": total, "exam_id": exam_id
+	}
+	return render(request, "resultview.html", context=context)
+
+def resultdetails(request, exam_id):
+	qlist = Question.objects.filter(exam_id=exam_id).order_by("question_id")  # [0].question_id
+	queslist = []
+	i = 0
+	for ques in qlist:
+		choi = ques.choice_set.all().order_by("choice_id")
+		y=5
+		current_ans_status = "na"
+		if UserData.objects.filter(user_id=request.user.username)[0].questionanswer_set.filter(question_id=ques.question_id).exists():
+			current_ans = UserData.objects.filter(user_id=request.user.username)[0].questionanswer_set.filter(
+				question_id=ques.question_id)[0].answer_id
+			current_ans_status = UserData.objects.filter(user_id=request.user.username)[0].questionanswer_set.filter(
+				question_id=ques.question_id)[0].ans_status
+			for x in range(4):
+				if current_ans == choi[x].choice_id:
+					y = x
+		op_choi = ["", "", "", ""]
+		try:
+			op_choi[y] = "checked"
+		except:
+			pass
+		i = i + 1
+		queslist.append(
+			{'question_id': ques.question_id, 'question_text': ques.question_text.replace("\\\\", "\\"),
+				'op1': choi[0].choice_text.replace("\\\\", "\\"), 'op2': choi[1].choice_text.replace("\\\\", "\\"),
+				'op3': choi[2].choice_text.replace("\\\\", "\\"), 'op4': choi[3].choice_text.replace("\\\\", "\\"),
+				'op1_id': choi[0].choice_id, 'op2_id': choi[1].choice_id,
+				'op3_id': choi[2].choice_id, 'op4_id': choi[3].choice_id,
+				'op1_choi': op_choi[0], 'op2_choi': op_choi[1],
+				'op3_choi': op_choi[2], 'op4_choi': op_choi[3],
+				'ans_status': current_ans_status, 'i': i, "answer": ques.answer_id%4 if ques.answer_id%4!=0 else 4
+			}
+		)
+	
+	subList=[]
+	i=0
+	# return HttpResponse(scheduleVal)
+	count = 0
+	for x in subList:
+		if x["length"]!=0:
+			count+=1
+	content = {
+		'queslist': queslist,
+		'exam_id': exam_id,
+		'subList': subList
+	}
+	return render(request, 'resultdetails.html', content)
+
+def generateResults(request):
+	pass
 
 def upload(request):
 	if not request.user.is_staff:
@@ -201,7 +279,10 @@ def upload(request):
 def submit(request):
 	if request.method == "POST":
 		exam_id = request.POST.get("exam_id")
-		ExamStatus.objects.filter(user_id=request.user.username, exam_id=exam_id)
+		ex = ExamStatus.objects.filter(user_id=request.user.username, exam_id=exam_id)[0]
+		ex.status = "completed"
+		ex.save()
+		print(ex)
 		return HttpResponse(status=200)
 	return HttpResponse(status=400)
 

@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block title %}Result{% endblock title %}
+{% load customtags %}
+{% block body %}
+    <div class="container">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Maximum</th>
+                <th scope="col">Correct</th>
+                <th scope="col">Wrong</th>
+                <th scope="col">Unattempted</th>
+                <th scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Count</th>
+                <td>{{total}}</td>
+                <td>{{correct}}</td>
+                <td>{{wrong}}</td>
+                <td>{{unatt}}</td>
+                <td>{{correct|add:wrong}}</td>
+              </tr>
+            </tbody>
+            <tbody>
+              <tr>
+                <th scope="row">Marks</th>
+                <td>{% widthratio total 1 4 %}</td>
+                <td>{% widthratio correct 1 4 %}</td>
+                <td>{% widthratio wrong 1 -1 %}</td>
+                <td>0</td>
+                <td>{{ correct|total_func:wrong }}</td>
+              </tr>
+            </tbody>
+        </table>
+        <div class="flex row">
+            <div class="col-lg-6">
+                <div class="card-header">
+                    <h3 class="card-title">Count</h3>
+                </div>
+                <div class="card text-white bg-success" style="border: 0;">
+                    <div class="card-body bg-white text-dark" id="mychartdiv">
+                        <canvas id="mychart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 349px;" width="314" height="224" class="chartjs-render-monitor"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card-header">
+                    <h3 class="card-title">Marks</h3>
+                </div>
+                <div class="card text-white bg-success" style="border: 0;">
+                    <div class="card-body bg-white text-dark" id="mychartdiv1">
+                        <canvas id="mychart1" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 349px;" width="314" height="224" class="chartjs-render-monitor"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="container"><a type="button" class="btn btn-primary my-3" href="/exam/results/{{exam_id}}/details">View Details</a></div>
+        </div>
+    </div>
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="/static/jquery-3.6.0.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.js"></script>
+    <script>
+        const config = {
+            type: 'pie',
+            data: {
+                labels: ['Correct', 'Wrong', 'Unattempted'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [{{correct}}, {{wrong}}, {{unatt}}],
+                    backgroundColor: [
+                        'green',
+                        'red',
+                        'blue'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                legend: {
+                    position: 'top',
+                }
+                }
+            },
+        }
+        var mychartvar = new Chart(mychart, config)
+        const config1 = {
+            type: 'pie',
+            data: {
+                labels: ['Correct', 'Wrong', 'Unattempted'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [{% widthratio correct 1 4 %}, {% widthratio wrong 1 -1 %}, 0],
+                    backgroundColor: [
+                        'green',
+                        'red',
+                        'blue'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                legend: {
+                    position: 'top',
+                }
+                }
+            },
+        }
+        var mychartvar1 = new Chart(mychart1, config1)
+        function collapse() {
+            $(".left").toggleClass("navhide")
+            $(".main").toggleClass("navhide")
+        }
+        (()=>{$("body").removeClass("preload")});
+        (
+            $("#left").on("hover", ()=>{
+                $(".left").toggleClass("navhide")
+                console.log("object")
+            })
+        )
+    </script>
+
+{% endblock body %}

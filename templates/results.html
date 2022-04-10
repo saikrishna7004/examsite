@@ -1,18 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exam Site</title>
-    
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/static/bootstrap-5.0.1/css/bootstrap.min.css">
-
-</head>
-
-<body>
+{% extends 'base.html' %}
+{% block title %}Results{% endblock title %}
+{% block body %}
     <style>
         @media screen and (max-width: 700px) {
             .brr {
@@ -126,17 +114,9 @@
             list-style: none
         }
     </style>
-</body>
 
-<body>
     <div class="container my-3">
-        <h1>This is results site from exam.html</h1>
-        <hr>
-        {{ request.user.first_name }} {{ request.user.last_name }}
-        <br>
-        <a class="btn btn-outline-primary" href="/" role="button">Home Site</a>
-        <a class="btn btn-outline-primary" href="/exam" role="button">Exam Site</a>
-        <a class="btn btn-outline-primary" href="/logout" role="button">Logout</a>
+        <h1>Select exam to view result</h1>
     </div>
     
     <div class="container border p-0">
@@ -231,7 +211,4 @@
         	location.href = "/exam/results/"+exam_id;
         }
     </script>
-
-</body>
-
-</html>
+{% endblock body %}

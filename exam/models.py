@@ -1,6 +1,11 @@
 from django.db import models
+from django.dispatch import receiver
+from django.db.models import signals
 from django.template.defaultfilters import truncatewords
 from django.urls import reverse
+from django.contrib.auth.models import User
+
+from home.models import UserVerifyData
 
 # Create your models here.
 
@@ -132,3 +137,30 @@ class Subject(models.Model):
 
 	def __str__(self):
 		return self.name
+
+class Result(models.Model):
+
+	user_id = models.IntegerField()
+	exam_id = models.IntegerField()
+	correct = models.IntegerField()
+	wrong = models.IntegerField()
+	unattempted = models.IntegerField()
+
+
+	class Meta:
+		verbose_name = "Result"
+		verbose_name_plural = "Results"
+
+	def __str__(self):
+		return self.user_id
+
+	def get_absolute_url(self):
+		return reverse("Result_detail", kwargs={"pk": self.pk})
+
+@receiver(signals.post_save, sender=User)
+def create_user_details(sender, instance, **kwargs):
+	print(instance.first_name, instance.username )
+	if UserData.objects.filter(user_id=instance.username).exists() or UserVerifyData.objects.filter(username=instance.username).exists():
+		return
+	UserData.objects.create(user_name=instance.first_name, user_id=instance.username)
+	UserVerifyData.objects.create(username=instance.username, verified=True, otp=0)
