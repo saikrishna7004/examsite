@@ -21,6 +21,13 @@ def turn_on(modeladmin, request, queryset):
         examdata.save(update_fields=['date', 'status'])
 turn_on.short_description = 'Turn on Test'
 
+@transaction.atomic
+def turn_off(modeladmin, request, queryset):
+    for examdata in queryset:
+        examdata.status = True
+        examdata.save(update_fields=['status'])
+turn_on.short_description = 'Turn offTest'
+
 
 class ChoiceInline(admin.StackedInline):
     model = Choice
@@ -63,7 +70,7 @@ class ExamDataAdmin(admin.ModelAdmin):
     list_display = ('exam_id', 'title', 'date', 'type', 'start_time', 'status')
     list_filter = ['exam_id']
     search_fields = ['exam_id', 'title']
-    actions = [change_date, turn_on]
+    actions = [change_date, turn_on, turn_off]
 
 class ExamStatusAdmin(admin.ModelAdmin):
     fieldsets = [

@@ -192,6 +192,7 @@ def resultView(request, exam_id):
 	}
 	return render(request, "resultview.html", context=context)
 
+@transaction.atomic
 def resultdetails(request, exam_id):
 	qlist = Question.objects.filter(exam_id=exam_id).order_by("question_id")  # [0].question_id
 	queslist = []
