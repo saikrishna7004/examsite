@@ -1,15 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}Exam Site{% endblock title %}
 {% block body %}
-    {% for message in messages %}
-      <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible fade show" {% endif %}
-        role="alert">
-        {{ message }}
-        <button type="button" class="close py-3" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      {% endfor %}
     <div class="container my-3">
         <h1>Welcome to index.html from templates </h1>
         <hr>
