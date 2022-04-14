@@ -4,7 +4,7 @@ from django.db import transaction
 
 # Register your models here.
 
-from .models import DescAnswer, Question, Choice, Result, UserData, QuestionAnswer, ExamData, ExamStatus, PaperModel, Subject
+from .models import DescAnswer, DescResult, DescResultStatus, Question, Choice, Result, UserData, QuestionAnswer, ExamData, ExamStatus, PaperModel, Subject
 
 @transaction.atomic
 def change_date(modeladmin, request, queryset):
@@ -104,6 +104,8 @@ class ResultAdmin(admin.ModelAdmin):
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(QuestionAnswer, QuestionAnswerAdmin)
 admin.site.register(DescAnswer)
+admin.site.register(DescResult)
+admin.site.register(DescResultStatus)
 admin.site.register(Result, ResultAdmin)
 admin.site.register(UserData, UserDataAdmin)
 admin.site.register(ExamData, ExamDataAdmin)

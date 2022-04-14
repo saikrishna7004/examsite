@@ -10,13 +10,13 @@
             <b>(C) </b>{{ques.op3|safe}}<br>
             <b>(D) </b>{{ques.op4|safe}}<br><br>
             <div><input type="radio" class="inputlabel my-1" name="{{ques.question_id}}" id="{{ques.op1_id}}"
-                value="{{ques.op1_id}}" {{ques.op1_choi}}><label for="{{ques.op1_id}}">A</label></div>
+                value="{{ques.op1_id}}" {{ques.op1_choi}} disabled><label for="{{ques.op1_id}}">A</label></div>
             <div><input type="radio" class="inputlabel my-1" name="{{ques.question_id}}" id="{{ques.op2_id}}"
-                value="{{ques.op2_id}}" {{ques.op2_choi}}><label for="{{ques.op2_id}}">B</label></div>
+                value="{{ques.op2_id}}" {{ques.op2_choi}} disabled><label for="{{ques.op2_id}}">B</label></div>
             <div><input type="radio" class="inputlabel my-1" name="{{ques.question_id}}" id="{{ques.op3_id}}"
-                value="{{ques.op3_id}}" {{ques.op3_choi}}><label for="{{ques.op3_id}}">C</label></div>
+                value="{{ques.op3_id}}" {{ques.op3_choi}} disabled><label for="{{ques.op3_id}}">C</label></div>
             <div><input type="radio" class="inputlabel my-1" name="{{ques.question_id}}" id="{{ques.op4_id}}"
-                value="{{ques.op4_id}}" {{ques.op4_choi}}><label for="{{ques.op4_id}}">D</label></div>
+                value="{{ques.op4_id}}" {{ques.op4_choi}} disabled><label for="{{ques.op4_id}}">D</label></div>
             <div class="my-2">Answer: {{ ques.answer }}</div>
         {% endfor %}
     </div>

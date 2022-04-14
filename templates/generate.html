@@ -116,7 +116,7 @@
     </style>
 
     <div class="container my-3">
-        <h1>Select exam to view result</h1>
+        <h1>Select exam to Generate Result</h1>
     </div>
     
     <div class="container border p-0">
@@ -134,6 +134,7 @@
             </ul>
         </div>
 		
+        {% if allexams|length %}
         <div class="container p-3">
 			
             <!-- Tabs List -->
@@ -194,6 +195,12 @@
                 </div>
             </div>
         </div>
+        
+        {% else %}
+    	<div class="alert alert-primary" role="alert">
+        	No Exam left to Generate Result
+    	</div>
+    	{% endif %}
     
     </div>
 

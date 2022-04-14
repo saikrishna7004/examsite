@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Result{% endblock title %}
+{% block body %}
+
+<div class="container">
+    <h4 class="my-3">List of all Questions attempted and awarded marks</h4>
+    {% for ques in allques %}
+    <div class="quesMain my-3"><b style="color: red">Question {{forloop.counter0|add:1}}</b></div>
+    <hr>
+    <p class="my-1">{{ques.question_text|safe}}</p>
+    <div class="my-2"><b style="color: green">Answer: </b><br>{{ ques.answer|safe }}</div>
+    <div><b>Marks Awarded: </b> {{ques.marks}}</div>
+    <div><b>Max Marks: </b> {{ques.max_marks}}</div>
+    {% endfor %}
+</div>
+
+{% endblock body %}

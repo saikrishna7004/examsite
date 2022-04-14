@@ -1,8 +1,10 @@
-from django import http
+from django import http, urls
 from django.contrib import messages
 from django.shortcuts import render, HttpResponse, redirect
 import json, time, calendar
-from .models import DescAnswer, ExamStatus, Question, QuestionAnswer, Result, UserData, ExamData, PaperModel
+
+import exam
+from .models import DescAnswer, DescResult, DescResultStatus, ExamStatus, Question, QuestionAnswer, Result, UserData, ExamData, PaperModel
 from django.db import transaction
 from django.utils.timezone import localdate
 
@@ -219,6 +221,36 @@ def resultView(request, exam_id):
 	user_id = request.user.username
 	exam_list = UserData.objects.filter(user_id=user_id)[0].questionanswer_set.filter(exam_id=exam_id).all()
 	total = Question.objects.filter(exam_id=exam_id).count()
+	if ExamData.objects.filter(exam_id=exam_id)[0].type == 'descriptive':
+		if DescResultStatus.objects.filter(exam_id=exam_id)[0].status!="corrected":
+			return HttpResponse("Correction not completed")
+		allques = []
+		for user in UserData.objects.filter(user_id=user_id)[0].descanswer_set.filter(exam_id=exam_id).order_by('question_id'):
+			ques = Question.objects.filter(question_id=user.question_id)[0]
+			allques.append({
+				"question_id": ques.question_id, "question_text": ques.question_text, "answer": user.answer, "max_marks": user.max_marks, "marks": user.marks
+			})
+		for ques in Question.objects.filter(exam_id=exam_id):
+			flag = False
+			for i in allques:
+				if ques.question_id==i['question_id']:
+					flag = True
+					break
+			if not flag:
+				allques.append({
+					"question_id": ques.question_id, "question_text": ques.question_text, "answer": "<b>No Answer</b>", "max_marks": 0, "marks": 0
+				})
+		allques = sorted(allques, key=lambda d: d['question_id'])
+		print(allques)
+		print(exam_id)
+		content = {
+			'allques': allques,
+			'active': 'results',
+			'exam_id': exam_id,
+			'user_id': user_id,
+			'exam_id': exam_id
+		}
+		return render(request, "descresults.html", content)
 	unatt = 0
 	correct = wrong = 0
 	for x in range(0, len(exam_list)):
@@ -282,19 +314,20 @@ def resultdetails(request, exam_id):
 	content = {
 		'queslist': queslist,
 		'exam_id': exam_id,
-		'subList': subList
+		'subList': subList,
+		'active': 'results'
 	}
 	return render(request, 'resultdetails.html', content)
 
 def generateResults(request):
 	if not request.user.is_staff:
 		return HttpResponse("Not permitted")
-	
+	desc_result_exam = DescResult.objects.all().values('exam_id').distinct()
 	result_exam = Result.objects.all().values('exam_id').distinct()
 	status_exam = ExamStatus.objects.all().values('exam_id').distinct()
 	final_list = []
 	for status in status_exam:
-		if not result_exam.filter(exam_id=status['exam_id']).exists():
+		if not result_exam.filter(exam_id=status['exam_id']).exists() and not desc_result_exam.filter(exam_id=status['exam_id']).exists():
 			final_list.append(status['exam_id'])
 	allexams = []
 	for exam_id in final_list:
@@ -314,10 +347,23 @@ def generateResultsView(request, exam_id):
 	if not request.user.is_staff:
 		return HttpResponse("Not permitted")
 	print( ExamStatus.objects.filter(exam_id=exam_id).values('user_id').distinct())
-	if ExamData.objects.filter(exam_id=exam_id)[0].type == 'descriptive':
-		return  HttpResponse("Descriptive")
+	
 	for user_set in ExamStatus.objects.filter(exam_id=exam_id).values('user_id').distinct():
 		user_id = user_set['user_id']
+		if ExamData.objects.filter(exam_id=exam_id)[0].type == 'descriptive':
+			marks = 0
+			max_marks = 0
+			attempted = 0
+			total = Question.objects.filter(exam_id=exam_id).count()
+			for user in UserData.objects.filter(user_id=user_id)[0].descanswer_set.filter(exam_id=exam_id).order_by('question_id'):
+				marks += user.marks
+				max_marks += user.max_marks
+				if user.ans_status!="na":
+					attempted += 1
+			if not DescResult.objects.filter(exam_id=exam_id, user_id=user_id).exists():
+				DescResult.objects.create(exam_id=exam_id, user_id=user_id, max_marks=max_marks, marks=marks, attempted=attempted, unattempted=total-attempted, total=total)
+				messages.add_message(request, messages.SUCCESS, 'Result generated Successfully')
+			return redirect("/exam/results/generate")
 		exam_list = UserData.objects.filter(user_id=user_id)[0].questionanswer_set.filter(exam_id=exam_id).all()
 		total = Question.objects.filter(exam_id=exam_id).count()
 		unatt = 0
@@ -361,6 +407,9 @@ def evaluatelist(request, exam_id):
 		return HttpResponse("Not permitted")
 	if ExamData.objects.get(exam_id=exam_id).type=="descriptive":
 		users_list=[]
+		status = DescResultStatus.objects.filter(exam_id=exam_id)
+		if not status.exists():
+			DescResultStatus.objects.create(exam_id=exam_id, status="started")
 		for user in DescAnswer.objects.filter(exam_id=exam_id):
 			# ques = Question.objects.filter(question_id=user.question_id)[0]
 			# allexams.append({
@@ -370,10 +419,22 @@ def evaluatelist(request, exam_id):
 		users_list = list(set(users_list))
 		content = {
 			'users_list': users_list,
-			'active': 'generate',
+			'active': 'evaluate',
 			'exam_id': exam_id
 		}
 		return render(request, "evaluatelist.html", content)
+
+def doneEvaluate(request):
+	if not request.user.is_staff:
+		return HttpResponse("Not permitted")
+	if request.method=="POST":
+		exam_id = request.POST.get("exam_id")
+		status = DescResultStatus.objects.filter(exam_id=exam_id)[0]
+		status.status = "corrected"
+		status.save()
+		print(status)
+		return HttpResponse(status=200)
+	return HttpResponse(status=500)
 
 @transaction.atomic
 def evaluateview(request, exam_id, user_id):
@@ -386,12 +447,24 @@ def evaluateview(request, exam_id, user_id):
 			allques.append({
 				"question_id": ques.question_id, "question_text": ques.question_text, "answer": user.answer, "max_marks": user.max_marks, "marks": user.marks
 			})
-		print(allques)
+		for ques in Question.objects.filter(exam_id=exam_id):
+			flag = False
+			for i in allques:
+				if ques.question_id==i['question_id']:
+					flag = True
+					break
+			if not flag:
+				allques.append({
+					"question_id": ques.question_id, "question_text": ques.question_text, "answer": "<b>No Answer</b>", "max_marks": 0, "marks": 0
+				})
+		allques = sorted(allques, key=lambda d: d['question_id'])
+		print(exam_id)
 		content = {
 			'allques': allques,
-			'active': 'generate',
+			'active': 'evaluate',
 			'exam_id': exam_id,
-			'user_id': user_id
+			'user_id': user_id,
+			'exam_id': exam_id
 		}
 		return render(request, "evaluateview.html", content)
 
@@ -403,14 +476,15 @@ def savemarks(request):
 		marks = request.POST.get("marks")
 		question_id = request.POST.get("question_id")
 		user_id = request.POST.get("user_id")
-		ans = UserData.objects.filter(user_id=user_id)[0].descanswer_set.filter(question_id=question_id)[0]
-		if ans:
-			print(ans)
+		exam_id = request.POST.get("exam_id")
+		answer = UserData.objects.filter(user_id=user_id)
+		if answer[0].descanswer_set.filter(question_id=question_id).exists():
+			ans = answer[0].descanswer_set.filter(question_id=question_id)[0]
 			ans.max_marks = max_marks
 			ans.marks = marks
 			ans.save()
 			print(ans.marks)
-		return HttpResponse("done")
+		return redirect("/exam/results/evaluate/"+exam_id+"/"+user_id)
 
 @transaction.atomic
 def upload(request):
@@ -512,6 +586,12 @@ def studentresults(request):
 			'title': exam.title, 'examid': int(exam.exam_id), 
 			'day': exam.date.day, 'month': calendar.month_name[exam.date.month], 'year': exam.date.year
 		})
+	for exam_id in DescResultStatus.objects.all():
+		exam = ExamData.objects.filter(exam_id=exam_id.exam_id)[0]
+		allexams.append({
+			'title': exam.title, 'examid': int(exam.exam_id), 
+			'day': exam.date.day, 'month': calendar.month_name[exam.date.month], 'year': exam.date.year
+		})
 	content = {
 		'allexams': allexams,
 		'active': 'results',
@@ -522,9 +602,30 @@ def studentresults(request):
 def studentresultsview(request, exam_id):
 	print( ExamStatus.objects.filter(exam_id=exam_id).values('user_id').distinct())
 	list = []
-	t = c = w = u = m = strength = 0
+	t = c = w = u = m = st = 0
 	if ExamData.objects.filter(exam_id=exam_id)[0].type == 'descriptive':
-		return  HttpResponse("Descriptive")
+		if DescResultStatus.objects.filter(exam_id=exam_id)[0].status!="corrected":
+			return HttpResponse("Correction not completed")
+		allresults = []
+		m = at = ua = mm = st = 0
+		for result in DescResult.objects.filter(exam_id=exam_id):
+			allresults.append({
+				"user_id": result.user_id, "max_marks": result.max_marks, "marks": result.marks, "attempted": result.attempted, "unattempted": result.unattempted, "total": result.total
+			})
+			m += result.marks
+			at += result.attempted
+			ua += result.unattempted
+			st += 1
+		print(allresults)
+		context = {
+			"allresults": allresults,
+			"exam_id": exam_id,
+			"active": "results",
+			"marks": m//st if st!=0 else 0,
+			"attempted": at//st if st!=0 else 0,
+			"unattempted": ua//st if st!=0 else 0
+		}
+		return render(request, "studentsdescresult.html", context)
 	for result_id in Result.objects.filter(exam_id=exam_id).values('user_id').distinct():
 		user_id = result_id['user_id']
 		result = Result.objects.filter(exam_id=exam_id, user_id=user_id)[0]
@@ -538,7 +639,7 @@ def studentresultsview(request, exam_id):
 		u+=unatt
 		t+=total-unatt
 		m+=marks
-		strength+=1
+		st+=1
 		if marks>(total*4)/2:
 			color = "success"
 		elif marks<(total*4)/2 and marks>(total*4)/4:
@@ -549,7 +650,7 @@ def studentresultsview(request, exam_id):
 			"wrong": wrong, "correct": correct, "unatt": unatt, "total": total-unatt, "marks": marks, "user_id": user_id, "color": color
 		})
 	context = {
-		"allresults": list, "correct": c//strength, "wrong": w//strength, "unatt": u//strength, "total": t//strength, "marks": m//strength
+		"allresults": list, "correct": c//st if st!=0 else 0, "wrong": w//st if st!=0 else 0, "unatt": u//st if st!=0 else 0, "total": t//st if st!=0 else 0, "marks": m//st if st!=0 else 0
 	}
 	return render(request, "studentresultsview.html", context)
 

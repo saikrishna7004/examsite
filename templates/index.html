@@ -1,19 +1,34 @@
 {% extends 'base.html' %}
 {% block title %}Exam Site{% endblock title %}
 {% block body %}
-    <div class="container my-3">
-        <h1>Welcome to index.html from templates </h1>
-        <hr>
-        {{ request.user.first_name }} {{ request.user.last_name }}
-        <br>
-        <a class="btn btn-outline-primary" href="/exam" role="button">Exam Site</a>
-        <a class="btn btn-outline-primary" href="/exam/results" role="button">Results Page</a>
-        <a class="btn btn-outline-primary" href="/logout" role="button">Logout</a>
+<div class="flex bg-white container my-3">
+    <div class="flex items-center text-center ">
+        <div>
+            <h2 class="my-3">Welcome to <span class="text-indigo-600" style="color: indigo;">KMIT</span></h2>
+            <p class="my-3">Confused on which course to take? I have got you covered.
+                Browse courses and find out the best course for you. Its free! Code With Harry is my attempt to teach
+                basics and those coding techniques to people in short time which took me ages to learn.</p>
+            <div class="flex justify-center mt-6">
+                <button class="btn btn-secondary mx-2">Explore Blog</button></div>
+                <button class="btn btn-primary mx-2">Online Exams &nbsp;<i class="fa fa-hand-o-right" style="font-size: 20px; margin-right: 10px;"></i></button>
+            </div>
     </div>
+    <div class=" " style="clip-path:polygon(10% 0, 100% 0%, 100% 100%, 0 100%)">
+        <div class="h-full object-cover" 
+            style="object-fit: cover; background-image:url(https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1352&amp;q=80)">
+            <div class="h-full bg-black opacity-25"></div>
+        </div>
+    </div>
+</div>
 
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="/static/bootstrap-5.0.1/js/bootstrap.min.js"></script>  
-    <script src="/static/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script> 
-  {% endblock body %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- Bootstrap Bundle with Popper -->
+<script src="/static/bootstrap-5.0.1/js/bootstrap.min.js"></script>
+<script src="/static/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+    crossorigin="anonymous"></script>
+{% endblock body %}

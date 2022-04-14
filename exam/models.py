@@ -57,6 +57,7 @@ class UserData(models.Model):
 class DescAnswer(models.Model):
 
 	ANS_STATUS_CHOICES = (
+		('na','Not Answered'),
 		('aamfr','Answered and Marked for Review'),
 		('ans', 'Answered and Saved'),
 	)
@@ -65,7 +66,7 @@ class DescAnswer(models.Model):
 	question_id = models.IntegerField()
 	answer = models.TextField()
 	exam_id = models.IntegerField()
-	ans_status = models.CharField(max_length=10, choices=ANS_STATUS_CHOICES, default="aamfr")
+	ans_status = models.CharField(max_length=10, choices=ANS_STATUS_CHOICES, default="na")
 	max_marks = models.IntegerField()
 	marks = models.IntegerField()
 
@@ -78,7 +79,6 @@ class DescAnswer(models.Model):
 
 	def get_absolute_url(self):
 		return reverse("descanswer_detail", kwargs={"pk": self.pk})
-
 
 class QuestionAnswer(models.Model):
 	
@@ -139,6 +139,26 @@ class ExamStatus(models.Model):
 	def get_absolute_url(self):
 		return reverse("ExamStatus_detail", kwargs={"pk": self.pk})
 
+class DescResultStatus(models.Model):
+
+	STATUS_CHOICES = (
+		('corrected','Corrected'),
+		('started', 'Started'),
+	)
+	
+	exam_id = models.IntegerField()
+	status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="started")
+
+	class Meta:
+		verbose_name = "descresultstatus"
+		verbose_name_plural = "descresultstatuses"
+
+	def __str__(self):
+		return self.status
+
+	def get_absolute_url(self):
+		return reverse("descresultstatus_detail", kwargs={"pk": self.pk})
+
 class PaperModel(models.Model):
 
 	type = models.CharField(max_length=100, unique=True)
@@ -184,6 +204,26 @@ class Result(models.Model):
 
 	def get_absolute_url(self):
 		return reverse("Result_detail", kwargs={"pk": self.pk})
+
+class DescResult(models.Model):
+
+	user_id = models.IntegerField()
+	exam_id = models.IntegerField()
+	marks = models.IntegerField()
+	max_marks = models.IntegerField()
+	attempted = models.IntegerField()
+	unattempted = models.IntegerField()
+	total = models.IntegerField()
+
+	class Meta:
+		verbose_name = "DescResult"
+		verbose_name_plural = "DescResults"
+
+	def __str__(self):
+		return str(self.user_id)
+
+	def get_absolute_url(self):
+		return reverse("DescResult_detail", kwargs={"pk": self.pk})
 
 @receiver(signals.post_save, sender=User)
 def create_user_details(sender, instance, **kwargs):

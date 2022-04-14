@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Students Results{% endblock title %}
+{% block body %}
+
+<div class="container">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">S. NO</th>
+            <th scope="col">Student ID</th>
+            <th scope="col">Total</th>
+            <th scope="col">Max Marks</th>
+            <th scope="col">Marks</th>
+            <th scope="col">Total Attempted</th>
+            <th scope="col">Unattempted</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for result in allresults %}
+          <tr class="table-{{result.color}}">
+            <th scope="row">{{forloop.counter0|add:1}}</th>
+            <td>{{result.user_id}}</td>
+            <td>{{result.total}}</td>
+            <td>{{result.max_marks}}</td>
+            <td>{{result.marks}}</td>
+            <td>{{result.attempted}}</td>
+            <td>{{result.unattempted}}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="3"></td>
+            <th>Average</th>
+            <td>{{marks}}</td>
+            <td>{{attempted}}</td>
+            <td>{{unattempted}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="container">
+        <p>For more detailed view, go to the admin panel</p>
+    </div>
+</div>
+
+{% endblock body %}
