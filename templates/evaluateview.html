@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Evaluate{% endblock title %}
+{% block body %}
+{% for ques in allques %}
+<div class="container">
+    <div class="quesMain my-2"><b>Question {{forloop.counter0|add:1}}</b></div>
+    <hr>
+    <p class="my-1">{{ques.question_text|safe}}</p>
+    <div class="my-2">Answer: <br>{{ ques.answer|safe }}</div>
+    <form method="post" action="/exam/results/evaluate/save" class="row g-3">
+        {% csrf_token %}
+        <input type="hidden" name="user_id" value="{{user_id}}">
+        <input type="hidden" name="question_id" value="{{ques.question_id}}">
+        <div class="col-auto">
+          <input type="number" class="form-control" id="marks" name="marks" placeholder="Marks" value="{{ques.marks}}">
+        </div>
+        <div class="col-auto">
+          <input type="number" class="form-control" id="max_marks" name="max_marks" placeholder="Max Marks" value="{{ques.max_marks}}">
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary mb-3">Save</button>
+        </div>
+      </form>
+</div>
+{% endfor %}
+{% endblock body %}

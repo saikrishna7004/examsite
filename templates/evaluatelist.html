@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Result{% endblock title %}
+{% load customtags %}
+{% block body %}
+    <div class="container">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">S. No</th>
+                <th scope="col">Student ID</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            {% for user in users_list %}
+            <tbody>
+              <tr>
+                <th scope="row">{{forloop.counter0|add:1}}</th>
+                <td>{{user}}</td>
+                <td><button class="btn btn-primary" onclick="evaluate('{{exam_id}}', {{user|safe}})">Evaluate</button></td>
+              </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="/static/jquery-3.6.0.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.js"></script>
+    <script>
+        function evaluate (exam_id, user_id) {
+        	location.href = "/exam/results/evaluate/"+exam_id+'/'+user_id;
+        }
+    </script>
+
+{% endblock body %}

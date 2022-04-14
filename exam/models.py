@@ -54,6 +54,32 @@ class UserData(models.Model):
 	def get_absolute_url(self):
 		return reverse("User_detail", kwargs={"pk": self.pk})
 
+class DescAnswer(models.Model):
+
+	ANS_STATUS_CHOICES = (
+		('aamfr','Answered and Marked for Review'),
+		('ans', 'Answered and Saved'),
+	)
+	
+	user = models.ForeignKey(UserData, on_delete=models.CASCADE)
+	question_id = models.IntegerField()
+	answer = models.TextField()
+	exam_id = models.IntegerField()
+	ans_status = models.CharField(max_length=10, choices=ANS_STATUS_CHOICES, default="aamfr")
+	max_marks = models.IntegerField()
+	marks = models.IntegerField()
+
+	class Meta:
+		verbose_name = "descanswer"
+		verbose_name_plural = "descanswers"
+
+	def __str__(self):
+		return self.answer
+
+	def get_absolute_url(self):
+		return reverse("descanswer_detail", kwargs={"pk": self.pk})
+
+
 class QuestionAnswer(models.Model):
 	
 	ANS_STATUS_CHOICES = (
@@ -77,7 +103,7 @@ class ExamData(models.Model):
 	end_time = models.CharField(max_length=10)
 	total_time = models.CharField(max_length=10)
 	exam_id = models.IntegerField(unique=True)
-	type = models.CharField(max_length=10, default="custom-21")
+	type = models.CharField(max_length=100, default="custom-21")
 	date = models.DateField()
 	status = models.BooleanField(default=False)
 
@@ -115,7 +141,7 @@ class ExamStatus(models.Model):
 
 class PaperModel(models.Model):
 
-	type = models.CharField(max_length=10, unique=True)
+	type = models.CharField(max_length=100, unique=True)
 	
 	class Meta:
 		verbose_name = "PaperModel"
@@ -145,14 +171,16 @@ class Result(models.Model):
 	correct = models.IntegerField()
 	wrong = models.IntegerField()
 	unattempted = models.IntegerField()
-
+	correct_marks = models.IntegerField()
+	wrong_marks = models.IntegerField()
+	total = models.IntegerField()
 
 	class Meta:
 		verbose_name = "Result"
 		verbose_name_plural = "Results"
 
 	def __str__(self):
-		return self.user_id
+		return str(self.user_id)
 
 	def get_absolute_url(self):
 		return reverse("Result_detail", kwargs={"pk": self.pk})

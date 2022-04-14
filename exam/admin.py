@@ -4,7 +4,7 @@ from django.db import transaction
 
 # Register your models here.
 
-from .models import Question, Choice, UserData, QuestionAnswer, ExamData, ExamStatus, PaperModel, Subject
+from .models import DescAnswer, Question, Choice, Result, UserData, QuestionAnswer, ExamData, ExamStatus, PaperModel, Subject
 
 @transaction.atomic
 def change_date(modeladmin, request, queryset):
@@ -26,7 +26,7 @@ def turn_off(modeladmin, request, queryset):
     for examdata in queryset:
         examdata.status = True
         examdata.save(update_fields=['status'])
-turn_on.short_description = 'Turn offTest'
+turn_off.short_description = 'Turn off Test'
 
 
 class ChoiceInline(admin.StackedInline):
@@ -93,8 +93,18 @@ class PaperModelAdmin(admin.ModelAdmin):
     list_filter = ['type']
     search_fields = ['type']
 
+class ResultAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('Result Description', {'fields': ['user_id', 'exam_id', 'correct', 'wrong', 'unattempted', 'correct_marks', 'wrong_marks', 'total']}),
+    ]
+    list_display = ('user_id', 'exam_id', 'correct', 'wrong', 'unattempted', 'total')
+    list_filter = ['user_id', 'exam_id']
+    search_fields = ['user_id', 'exam_id']
+
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(QuestionAnswer, QuestionAnswerAdmin)
+admin.site.register(DescAnswer)
+admin.site.register(Result, ResultAdmin)
 admin.site.register(UserData, UserDataAdmin)
 admin.site.register(ExamData, ExamDataAdmin)
 admin.site.register(ExamStatus, ExamStatusAdmin)

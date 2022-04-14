@@ -32,8 +32,16 @@
                         <a class="nav-link {% if active == 'exam' %}active{% endif %}" href="/exam">Exam Page</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if active == 'results' %}active{% endif %}" href="/exam/results">Results</a>
+                        <a class="nav-link {% if active == 'results' %}active{% endif %}" href="/exam/results{% if user.is_staff %}/students{% endif %}">Results</a>
                     </li>
+                    {% if user.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if active == 'generate' %}active{% endif %}" href="/exam/results/generate">Generate Results</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if active == 'evaluate' %}active{% endif %}" href="/exam/results/evaluate">Evaluate Results</a>
+                    </li>
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="/logout">Logout</a>
                     </li>
