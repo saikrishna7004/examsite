@@ -1,0 +1,13 @@
+Credentials:
+
+Student
+221030005
+Kmit@123
+
+Admin
+211030006
+Kmit@123
+
+To run code:
+
+python manage.py runserver
