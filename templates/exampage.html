@@ -865,9 +865,9 @@
 			}
 			
 			for (var tbtniter = 0; tbtniter < {{count}}; tbtniter++){
-				console.log("tbtitener = "+tbtniter)
+				// console.log("tbtitener = "+tbtniter)
 				for (var i = subList[tbtniter].start-1; i < subList[tbtniter].end; i++) {
-					console.log("i="+i)
+					// console.log("i="+i)
 	  		  	var btn = document.createElement("button");
 	  		  	btn.style.height="30px";
 	  		  	btn.style.width="32px";
@@ -879,7 +879,7 @@
 	  		  	btn.style.backgroundPosition = "-107px -56px"; 
 	  		  	btn.setAttribute("class", "paletteBtn");
 	  		  	btn.setAttribute("id", "a"+i);
-					console.log(btn.id)
+					// console.log(btn.id)
 	  		  	btn.onclick = function(e){
 	  		  		let b = parseInt(this.id.replace("a",""));
 	  		  		goto_ques(b);
@@ -1019,7 +1019,8 @@
 			tempBtn1.style.backgroundPosition = "-42px -56px";
 			tempBtn1.style.color = "white";
 
-			$('#qp').hover(()=>{alert("Instructions")})
+			$('#qp').click(()=>{alert("This is {{ourExam.title}} exam")})
+			$('#instructions').click(()=>{alert("Don't try to escape from the site, otherwise your exam will be closed")})
 	</script>
 	<!-- End Question Formatting -->
 
@@ -1147,9 +1148,9 @@
 				ttemp = queslist[xx]
 				if(ttemp.ans_status=="aamfr"){
 					qcolor_mfr.push(xx)
-					console.log(xx)
+					// console.log(xx)
 					let tempBtn = document.getElementById("a"+xx);
-					console.log(tempBtn)
+					// console.log(tempBtn)
 					tempBtn.style.backgroundPosition = "-9px -87px";
 					tempBtn.style.color = "white";
 				}

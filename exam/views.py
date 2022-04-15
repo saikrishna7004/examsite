@@ -246,8 +246,8 @@ def resultView(request, exam_id):
 					"question_id": ques.question_id, "question_text": ques.question_text, "answer": "<b>No Answer</b>", "max_marks": 0, "marks": 0
 				})
 		allques = sorted(allques, key=lambda d: d['question_id'])
-		# print(allques)
-		# print(exam_id)
+		print(allques)
+		print(exam_id)
 		content = {
 			'allques': allques,
 			'active': 'results',

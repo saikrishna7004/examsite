@@ -228,14 +228,14 @@
 		<!-- Top Black Bar -->
 		<div id="blackBar" class="px-3" style="background-color: #4d4d4d; width: 100%; height: 35px; display: flex;">
 			<div style="width: 50%;">
-				<a href="#" style="text-decoration: none; color: white;">
+				<a id="qp" href="#" style="text-decoration: none; color: white;">
 					Question Paper 
 				</a>
 				<span style="background: url(/static/Icon-sprite.png) -188px -6px; height: 70px; width: 70px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 			</div>
 			<div style="width: 50%; text-align: right;">
 				<span style="background: url(/static/Icon-sprite.png) -140px -6px; height: 70px; width: 70px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-				<a href="#" style="text-decoration: none; color: white;">
+				<a id="instructions" href="#" style="text-decoration: none; color: white;">
 					Instructions 
 				</a>
 			</div>
@@ -286,7 +286,7 @@
 				<div style="display: block; text-align:right;">
 					<img onclick="toBottom()" src="/static/Up.png" id="downBtn" alt="Down">
 				</div>
-				<button id="mfr" class="btn col-4 mt-1 px-0" onclick="alert(btn_qid); mfrcheck(btn_qid); answer_post_mfr(btn_qid, btn_qid); changeState(); next_ques(); changePalette(); changeCount();">Mark For Review & Next</button>
+				<button id="mfr" class="btn col-4 mt-1 px-0" onclick="mfrcheck(btn_qid); answer_post_mfr(btn_qid, btn_qid); changeState(); next_ques(); changePalette(); changeCount();">Mark For Review & Next</button>
 				<button id="cr" class="btn col-4 mt-1 px-2" onclick="notans(); clear_resp(btn_qid); answer_delete(btn_qid, btn_qid); changeCount();">Clear Response</button>
 				<span id="sandiv"></span>
 				<button id="san" class="btn col-4 mt-1 px-2" onclick="sancheck(btn_qid); answer_post_san(btn_qid, btn_qid); changeState(); next_ques(); changePalette(); changeCount();">Save & Next</button>
@@ -753,7 +753,7 @@
 				 'question_id': "{{ques.question_id}}", 'question_text': `{{ques.question_text |safe}}`,
 				 'ans_status': "{{ques.ans_status}}", 'answer': `{{ques.answer |safe}}`
 				})
-				console.log(queslist)
+				// console.log(queslist)
 				ques_status.push("{{ques.ans_status}}")
 			{% endfor %}
 			
@@ -800,7 +800,7 @@
 			
 			function mfrcheck(qid) {
 				var answer = tinyMCE.activeEditor.getContent();
-				console.log(answer)
+				// console.log(answer)
 				if (answer!="") {
 					aamfr();
 				}
@@ -811,7 +811,7 @@
 			
 			function sancheck(qid) {
 				var answer = tinyMCE.activeEditor.getContent();
-				console.log(answer);
+				// console.log(answer);
 				if (answer!="") {
 					san();
 				}
@@ -837,9 +837,9 @@
 			}
 			
 			for (var tbtniter = 0; tbtniter < 1; tbtniter++){
-				console.log("tbtitener = "+tbtniter)
+				// console.log("tbtitener = "+tbtniter)
 				for (var i = subList[tbtniter].start-1; i < subList[tbtniter].end; i++) {
-					console.log("i="+i)
+					// console.log("i="+i)
 	  		  	var btn = document.createElement("button");
 	  		  	btn.style.height="30px";
 	  		  	btn.style.width="32px";
@@ -851,7 +851,7 @@
 	  		  	btn.style.backgroundPosition = "-107px -56px"; 
 	  		  	btn.setAttribute("class", "paletteBtn");
 	  		  	btn.setAttribute("id", "a"+i);
-					console.log(btn.id)
+					// console.log(btn.id)
 	  		  	btn.onclick = function(e){
 	  		  		let b = parseInt(this.id.replace("a",""));
 	  		  		goto_ques(b);
@@ -989,6 +989,10 @@
 			let tempBtn1 = document.getElementById("a0");
 			tempBtn1.style.backgroundPosition = "-42px -56px";
 			tempBtn1.style.color = "white";
+
+			
+			$('#qp').click(()=>{alert("This is {{ourExam.title}} exam")})
+			$('#instructions').click(()=>{alert("Don't try to escape from the site, otherwise your exam will be closed")})
 	</script>
 	<!-- End Question Formatting -->
 
@@ -1079,9 +1083,9 @@
 				ttemp = queslist[xx]
 				if(ttemp.ans_status=="aamfr"){
 					qcolor_mfr.push(xx)
-					console.log(xx)
+					// console.log(xx)
 					let tempBtn = document.getElementById("a"+xx);
-					console.log(tempBtn)
+					// console.log(tempBtn)
 					tempBtn.style.backgroundPosition = "-9px -87px";
 					tempBtn.style.color = "white";
 				}
