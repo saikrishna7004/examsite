@@ -50,7 +50,7 @@ def examInstructions(request):
 				return HttpResponse(content="Exam Completed")
 		ourExam = request.POST.get("ourExam")
 		type = PaperModel.objects.filter(type=json.loads(ourExam)["type"])[0].type
-		if type=="descriptive":
+		if "descriptive" in type:
 			test = Question
 			qlist = test.objects.filter(exam_id=scheduleVal).order_by("question_id")  # [0].question_id
 			queslist = []
@@ -226,7 +226,7 @@ def resultView(request, exam_id):
 	user_id = request.user.username
 	exam_list = UserData.objects.filter(user_id=user_id)[0].questionanswer_set.filter(exam_id=exam_id).all()
 	total = Question.objects.filter(exam_id=exam_id).count()
-	if ExamData.objects.filter(exam_id=exam_id)[0].type == 'descriptive':
+	if 'descriptive' in ExamData.objects.filter(exam_id=exam_id)[0].type:
 		if DescResultStatus.objects.filter(exam_id=exam_id)[0].status!="corrected":
 			return HttpResponse("Correction not completed")
 		allques = []
@@ -355,7 +355,7 @@ def generateResultsView(request, exam_id):
 	
 	for user_set in ExamStatus.objects.filter(exam_id=exam_id).values('user_id').distinct():
 		user_id = user_set['user_id']
-		if ExamData.objects.filter(exam_id=exam_id)[0].type == 'descriptive':
+		if 'descriptive' in ExamData.objects.filter(exam_id=exam_id)[0].type:
 			marks = 0
 			max_marks = 0
 			attempted = 0
@@ -393,7 +393,7 @@ def evaluatedesc(request):
 	if not request.user.is_staff:
 		return HttpResponse("Not allowed")
 	allexams = []
-	examlist = ExamData.objects.filter(type="descriptive").order_by('-date')
+	examlist = ExamData.objects.filter(type__contains="descriptive").order_by('-date')
 	print(examlist)
 	for exam in examlist:
 		allexams.append({
@@ -410,7 +410,7 @@ def evaluatedesc(request):
 def evaluatelist(request, exam_id):
 	if not request.user.is_staff:
 		return HttpResponse("Not permitted")
-	if ExamData.objects.get(exam_id=exam_id).type=="descriptive":
+	if 'descriptive' in ExamData.objects.get(exam_id=exam_id).type:
 		users_list=[]
 		status = DescResultStatus.objects.filter(exam_id=exam_id)
 		if not status.exists():
@@ -445,7 +445,7 @@ def doneEvaluate(request):
 def evaluateview(request, exam_id, user_id):
 	if not request.user.is_staff:
 		return HttpResponse("Not permitted")
-	if ExamData.objects.get(exam_id=exam_id).type=="descriptive":
+	if 'descriptive' in ExamData.objects.get(exam_id=exam_id).type:
 		allques = []
 		for user in UserData.objects.filter(user_id=user_id)[0].descanswer_set.filter(exam_id=exam_id).order_by('question_id'):
 			ques = Question.objects.filter(question_id=user.question_id)[0]
