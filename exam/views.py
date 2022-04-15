@@ -489,6 +489,8 @@ def savemarks(request):
 			ans.marks = marks
 			ans.save()
 			print(ans.marks)
+		else:
+			answer[0].descanswer_set.create(question_id=question_id, answer="<b>Not Answered</b>", exam_id=exam_id, ans_status="na", max_marks=max_marks, marks=0)
 		return redirect("/exam/results/evaluate/"+exam_id+"/"+user_id)
 
 @transaction.atomic
