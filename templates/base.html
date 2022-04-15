@@ -10,12 +10,12 @@
     <meta name="google-site-verification" content="QPpx_X4D6z_u0GWRFQUbTqS4zHUoYBDNoXkM-2oWZdc" />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/static/bootstrap-5.0.1/css/bootstrap.min.css">
-    {% comment %} <link rel="stylesheet" href="/static/fontawesome-free/css/all.min.css"> {% endcomment %}
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"  type='text/css'>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">College Exam</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -36,19 +36,35 @@
                     </li>
                     {% if user.is_staff %}
                     <li class="nav-item">
+                        <a class="nav-link {% if active == 'upload' %}active{% endif %}" href="/exam/upload/">Upload QA</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {% if active == 'generate' %}active{% endif %}" href="/exam/results/generate">Generate Results</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if active == 'evaluate' %}active{% endif %}" href="/exam/results/evaluate">Evaluate Results</a>
                     </li>
-                    {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/logout">Logout</a>
+                        <a class="nav-link" href="/admin">Admin</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+                            <i class="fas fa-cog"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="/" class="dropdown-item">
+                                <i class="fas fa-user-edit mr-2"></i>{{ request.user.first_name }} {{ request.user.last_name }}
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="/logout" class="dropdown-item">
+                                <i class="fas fa-power-off mr-2"></i> Logout
+                            </a>
+                        </div>
                     </li>
                 </ul>
-                
-                {{ request.user.first_name }} {{ request.user.last_name }}
-                
             </div>
         </div>
     </nav>

@@ -54,6 +54,7 @@ def examInstructions(request):
 			test = Question
 			qlist = test.objects.filter(exam_id=scheduleVal).order_by("question_id")  # [0].question_id
 			queslist = []
+			m=0
 			for ques in qlist:
 				current_ans_status = "na"
 				ans = UserData.objects.filter(user_id=request.user.username)[0].descanswer_set.filter(question_id=ques.question_id)#.filter(question_id=ques.question_id)
@@ -68,6 +69,7 @@ def examInstructions(request):
 					'question_id': ques.question_id, 'question_text': ques.question_text,
 					'ans_status': current_ans_status, 'answer': answer
 				})
+				m+=1
 			print(queslist)
 			paperList = PaperModel.objects.filter(type=json.loads(ourExam)["type"])[0].subject_set.order_by("start")
 			subList=[]
@@ -89,12 +91,14 @@ def examInstructions(request):
 				'exam_id': scheduleVal,
 				'ourExam': json.loads(ourExam),
 				'subList': subList,
-				'countrange1': range(i)
+				'countrange1': range(i),
+				'totallength': m
 			}
 			return render(request, "exampage2.html", content)
 		test = Question
 		qlist = test.objects.filter(exam_id=scheduleVal).order_by("question_id")  # [0].question_id
 		queslist = []
+		m=0
 		for ques in qlist:
 			choi = ques.choice_set.all().order_by("choice_id")
 			y=5
@@ -112,7 +116,7 @@ def examInstructions(request):
 				op_choi[y] = "checked"
 			except:
 				pass
-			
+			m+=4
 			queslist.append(
 				{'question_id': ques.question_id, 'question_text': ques.question_text,
 				 'op1': choi[0].choice_text, 'op2': choi[1].choice_text,
@@ -146,7 +150,8 @@ def examInstructions(request):
 			'subList': subList,
 			'count': count,
 			'countrange': range(i),
-			'countrange1': range(i)
+			'countrange1': range(i),
+			'marks': m
 		}
 		return render(request, 'exampage.html', content)
 
@@ -241,8 +246,8 @@ def resultView(request, exam_id):
 					"question_id": ques.question_id, "question_text": ques.question_text, "answer": "<b>No Answer</b>", "max_marks": 0, "marks": 0
 				})
 		allques = sorted(allques, key=lambda d: d['question_id'])
-		print(allques)
-		print(exam_id)
+		# print(allques)
+		# print(exam_id)
 		content = {
 			'allques': allques,
 			'active': 'results',
@@ -265,7 +270,7 @@ def resultView(request, exam_id):
 	unatt = total - wrong - correct
 	print(correct, wrong, total, unatt)
 	context = {
-		"wrong": wrong, "correct": correct, "unatt": unatt, "total": total, "exam_id": exam_id
+		"wrong": wrong, "correct": correct, "unatt": unatt, "total": total, "exam_id": exam_id, "active": "results"
 	}
 	return render(request, "resultview.html", context=context)
 
@@ -512,7 +517,7 @@ def upload(request):
 						Question.objects.filter(question_id=question_id_inc)[0].choice_set.create(choice_text=queset[y],choice_id=choice_id_inc)
 			end=time.time()
 			return HttpResponse(f"<meta name='viewport' content='width=device-width, initial-scale=1.0'><h1>Done 👍 in {end-start} seconds.</h1>The Exam ID is {exam_id}")
-	return render(request, "upload.html")
+	return render(request, "upload.html", {"active": "upload"})
 
 def submit(request):
 	if request.method == "POST":
@@ -650,7 +655,7 @@ def studentresultsview(request, exam_id):
 			"wrong": wrong, "correct": correct, "unatt": unatt, "total": total-unatt, "marks": marks, "user_id": user_id, "color": color
 		})
 	context = {
-		"allresults": list, "correct": c//st if st!=0 else 0, "wrong": w//st if st!=0 else 0, "unatt": u//st if st!=0 else 0, "total": t//st if st!=0 else 0, "marks": m//st if st!=0 else 0
+		"allresults": list, "correct": c//st if st!=0 else 0, "wrong": w//st if st!=0 else 0, "unatt": u//st if st!=0 else 0, "total": t//st if st!=0 else 0, "marks": m//st if st!=0 else 0, "active": "results"
 	}
 	return render(request, "studentresultsview.html", context)
 

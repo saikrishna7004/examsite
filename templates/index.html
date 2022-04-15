@@ -1,26 +1,172 @@
 {% extends 'base.html' %}
 {% block title %}Exam Site{% endblock title %}
 {% block body %}
-<div class="flex bg-white container my-3">
-    <div class="flex items-center text-center ">
-        <div>
-            <h2 class="my-3">Welcome to <span class="text-indigo-600" style="color: indigo;">KMIT</span></h2>
-            <p class="my-3">Confused on which course to take? I have got you covered.
-                Browse courses and find out the best course for you. Its free! Code With Harry is my attempt to teach
-                basics and those coding techniques to people in short time which took me ages to learn.</p>
-            <div class="flex justify-center mt-6">
-                <button class="btn btn-secondary mx-2">Explore Blog</button></div>
-                <button class="btn btn-primary mx-2">Online Exams &nbsp;<i class="fa fa-hand-o-right" style="font-size: 20px; margin-right: 10px;"></i></button>
-            </div>
+<link 
+  href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" 
+  rel="stylesheet"  type='text/css'>
+<div class="p-3">
+    <div class="px-3 pt-1" style="background: #ffa135; color: #fff; width: 100%; font-weight: bold;">
+        <marquee direction="left">In order to provide you a better experience, this site may go under maintenance during
+            10:00PM-11:30PM everyday. Appreciate your cooperation.</marquee>
     </div>
-    <div class=" " style="clip-path:polygon(10% 0, 100% 0%, 100% 100%, 0 100%)">
-        <div class="h-full object-cover" 
-            style="object-fit: cover; background-image:url(https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1352&amp;q=80)">
-            <div class="h-full bg-black opacity-25"></div>
+    <div class="align-middle">
+        <div class="flex bg-white container my-3">
+            <div class="flex items-center text-center py-2">
+                <div>
+                    <h2 class="my-4">Welcome to <span class="text-indigo-600" style="color: indigo;">KMIT</span></h2>
+                    <p class="my-3">Confused on which platform to ? We have got you a wonderful platform for making your exams done easily. <br>
+                        And the best part is, it's <b>Free</b>! You need not pay single Penny towards this.
+                    </p>
+                    <div class="row justify-content-center my-6" style="position: relative;">
+                        <button type="button" class="btn col-3 btn-secondary mx-2 my-3" onclick="location.href='/exam/results'">Show Results</button>
+                        <button type="button" class="btn col-3 btn-primary mx-2 my-3" onclick="location.href='/exam/'">Online Exams &nbsp;
+                            <i class="fa fa-hand-o-right" style="font-size: 20px; margin-right: 10px;"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class=" " style="clip-path:polygon(10% 0, 100% 0%, 100% 100%, 0 100%)">
+                    <div class=" object-cover"
+                        style="object-fit: cover; height: max-content; background-image:url(https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1352&amp;q=80)">
+                        <div class="h-full bg-black opacity-25"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<div class="container">
+    <div class="col-md-9" style="padding:0px;">
+        <ul class="nav nav-pills newsandbulletins border">
+            <li class="border"><a data-toggle="tab" href="#menu1" class="show active"><b style="font-size:0.75em;">NEWS &amp; EVENTS</b></a></li>
+        </ul>
+        <div class="tab-content  newsandbulletinstabcontent border">
+            <div id="menu1" class="tab-pane fade active show">
+                <div class="outer" id="sc1" style="height:320px;">
+                    <ul class="data-list inner">
+                        <li style="padding: 4px; margin: 0px; box-sizing: unset; border-bottom: 1px dotted rgb(85, 85, 85);margin-right:20px;"
+                            class="news-item">
+                            <img src="static/calendar.png" style="width:20px;">27-01-2022
+                            <p> One Week Online Workshop on "Privacy and Cyber Security" from 31-01-2022 to 5-02-2022, in
+                                association with CSI. To know more <a
+                                    href="https://kmit.in/assets/Privacy%20and%20CyberSecurity%20Workshop%20(Dept.%20of%20CSE_KMIT).pdf"
+                                    target="_blank">click here</a>
+                            </p>
+                        </li>
+                        <li style="padding: 4px; margin: 0px; box-sizing: unset; border-bottom: 1px dotted rgb(85, 85, 85);margin-right:20px;"
+                            class="news-item">
+                            <img src="static/calendar.png" style="width:20px;">01-01-2022
+                            <p> NBA has accredited CSE UG Program for 3 academic years 2021-22 to 2023-24. <img
+                                    src="https://kmit.in/assets/csenba.jpeg" height="100px"> </p>
+                        </li>
+                        <li style="padding: 4px; margin: 0px; box-sizing: unset; border-bottom: 1px dotted rgb(85, 85, 85);margin-right:20px;"
+                            class="news-item">
+                            <img src="static/calendar.png" style="width:20px;">01-12-2021
+                            <p> Induction Programme for First-year Batch- 2021 is scheduled from 02-12-2021 to 10-12-2021.
+                                <br><a
+                                    href="https://kmit.in/adminpanel/json_data/download/Induction%20-%202021%20schedule.xlsx"
+                                    target="_blank">Click Here</a> for the detailed schedule. </p>
+                        </li>
+                        <li style="padding: 4px; margin: 0px; box-sizing: unset; border-bottom: 1px dotted rgb(85, 85, 85);margin-right:20px;"
+                            class="news-item">
+                            <img src="static/calendar.png" style="width:20px;">01-12-2021
+                            <p> First Year Orientation 2021 scheduled on 1 Dec 2021<br>
+                                <img src="https://kmit.in/adminpanel/json_data/uploadImages/assets/banner/IMG-20211125-WA0017.jpg"
+                                    alt="Orientation-2021" width="100%">
+                            </p>
+                        </li>
+                        <li style="padding: 4px; margin: 0px; box-sizing: unset; border-bottom: 1px dotted rgb(85, 85, 85);margin-right:20px;"
+                            class="news-item">
+                            <img src="static/calendar.png" style="width:20px;">23-11-2021
+                            <p> One time CBT starts from 27th Nov. Candidates applied for CBT have to come and collect hall
+                                tickets from exam branch </p>
+                        </li>
+                        <li style="padding: 4px; margin: 0px; box-sizing: unset; border-bottom: 1px dotted rgb(85, 85, 85);margin-right:20px;"
+                            class="news-item">
+                            <img src="static/calendar.png" style="width:20px;">01-10-2021
+                            <p> JNTUH has revised 1-2 regular exam, 27th exam is rescheduled to 5th October and 29 th exam
+                                is rescheduled to 8 th October 2021 </p>
+                        </li>
+                        <li style="padding: 4px; margin: 0px; box-sizing: unset; border-bottom: 1px dotted rgb(85, 85, 85);margin-right:20px;"
+                            class="news-item">
+                            <img src="static/calendar.png" style="width:20px;">24-09-2021
+                            <p> KMIT KR20 B.Tech I Year I Sem Regular Examination Results Jul-2021 are out. To check your
+                                results <a href="http://student.kmit.in/exam/resultshome" target="_blank">Click Here</a>
+                            </p>
+                        </li>
+                        <li style="padding: 4px; margin: 0px; box-sizing: unset; border-bottom: 1px dotted rgb(85, 85, 85);margin-right:20px;"
+                            class="news-item">
+                            <img src="static/calendar.png" style="width:20px;">20-09-2021
+                            <p> KMIT KR20 B.Tech I Year II Sem Regular Examination Hall Tickets. Please <a
+                                    href="http://student.kmit.in/" target="_blank">Click Here</a> to Download Hall Ticket.
+                            </p>
+                        </li>
+                        <li style="padding: 4px; margin: 0px; box-sizing: unset; border-bottom: 1px dotted rgb(85, 85, 85);margin-right:20px;"
+                            class="news-item">
+                            <img src="static/calendar.png" style="width:20px;">14-09-2021
+                            <p> KMIT is proud to announce it's third college Keshav Memorial Engineering college @NGIT
+                                campus Uppal,
+                                EAMCET code <b>KMEC</b><br>
+                                CSE - 180, CSE AIML - 120 </p>
+                        </li>
+                        <li style="padding: 4px; margin: 0px; box-sizing: unset; border-bottom: 1px dotted rgb(85, 85, 85);margin-right:20px;"
+                            class="news-item">
+                            <img src="static/calendar.png" style="width:20px;">14-08-2021
+                            <p> Projects Driven Technology Teaching for II year students
+                            </p>
+                            <p></p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="b-example-divider"></div>
 
+<div class="container">
+  <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    <div class="col-md-4 d-flex align-items-center">
+      <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+        <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
+      </a>
+      <span class="text-muted">&copy; 2021-22 Sai Krishna Karnati</span>
+    </div>
+
+    <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+      <li class="ms-3"><a class="text-muted" href="#"><i class="fa fa-twitter"></i></a></li>
+      <li class="ms-3"><a class="text-muted" href="#"><i class="fa fa-instagram"></i></a></li>
+      <li class="ms-3"><a class="text-muted" href="#"><i class="fa fa-facebook"></i></a></li>
+    </ul>
+  </footer>
+</div>
+<style>
+    .inner{
+        position:relative;
+        top:0px;
+    }
+    .outer{
+        overflow:hidden;
+    }
+    .fa, .far, .fas {
+        font-family: 'FontAwesome' !important;
+    }
+</style>
+<script src="/static/jquery-3.6.0.min.js"></script>
+<script>
+    function autoScrollDown(){
+        $(".inner").css({top:-$(".inner").outerHeight()}) // jump back
+                .animate({top:0},100000,"linear", autoScrollDown); // and animate
+    }
+    function autoScrollUp(){
+        $(".inner").css({top:0}) // jump back
+                .animate({top:-$(".inner").outerHeight()},100000,"linear", autoScrollUp); // and animate
+    }
+    // fix hight of outer:
+    $('.outer').css({maxHeight: $('.inner').height()});
+    // duplicate content of inner:
+    $('.inner').html($('.inner').html() + $('.inner').html());
+    autoScrollUp();
+</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <!-- Bootstrap Bundle with Popper -->
 <script src="/static/bootstrap-5.0.1/js/bootstrap.min.js"></script>

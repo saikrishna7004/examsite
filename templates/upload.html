@@ -1,25 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Site</title>
-
-    
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/static/bootstrap-5.0.1/css/bootstrap.min.css">
-    
-</head>
-<body>
-    <div class="container my-3">
-        <h1>Welcome to create.html from templates </h1>
-        <hr>
-        {{ request.user.first_name }} {{ request.user.last_name }}
-        <br>
-        <a class="btn btn-outline-primary" href="/" role="button">Home</a>
-        <a class="btn btn-outline-primary" href="/logout" role="button">Logout</a>
-    </div>
+{% extends 'base.html' %}
+{% block title %}Upload QA{% endblock title %}
+{% block body %}
     <form action="" method="post" enctype="multipart/form-data">
     	
     	{% csrf_token %}
@@ -41,8 +22,4 @@
     	</div>
     	
     </form>
-
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="/static/bootstrap-5.0.1/js/bootstrap.min.js"></script>    
-</body>
-</html>
+{% endblock body %}

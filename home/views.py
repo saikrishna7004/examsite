@@ -15,7 +15,6 @@ import random
 def index(request):
 	if request.user.is_anonymous:
 		return redirect("/login/")
-	messages.add_message(request, messages.SUCCESS, 'Login Successful')
 	return render(request, "index.html", {"active": "home"})
 
 def loginuser(request):
@@ -36,6 +35,7 @@ def loginuser(request):
 			verified = UserVerifyData.objects.filter(username=username)[0].verified
 			if verified:
 				login(request, user)
+				messages.add_message(request, messages.SUCCESS, 'Login Successful')
 				return redirect("/")
 			else:
 				messages.add_message(request, messages.WARNING, 'Please complete Verification')

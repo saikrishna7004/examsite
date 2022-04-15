@@ -29,148 +29,42 @@
 				<h1 class="text-center">JEE-ADVANCE-2017-P2-Model</h1>
 				<table class="table table-bordered">
 					<tr>
-						<th>Time: 2:00PM to 5:30PM</th>
-						<th>Max Marks: 183</th>
+						<th>Time: {{ourExam.stime}} to {{ourExam.etime}}</th>
+						<th>Max Marks: {{marks}}</th>
 					</tr>
 				</table>
-				<!-- Physics -->
-				<h5 class="text-center"><u>Physics:</u></h5>
-				<table class="table table-bordered border-secondary">
-					<thead class="table-active">
-						<tr>
-							<th scope="col">Section</th>
-							<th scope="col">Question Type</th>
-							<th scope="col">+Ve Marks</th>
-							<th scope="col">-Ve Marks</th>
-							<th scope="col">No. Of Qs</th>
-							<th scope="col">Total Marks</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>Sec -1(Q:1-7)</td>
-							<td>Questions with Single answer type</td>
-							<td>+3</td>
-							<td>-1</td>
-							<td>7</td>
-							<td>21</td>
-						</tr>
-						<tr>
-							<td>Sec -1(Q:1-7)</td>
-							<td>Questions with Single answer type</td>
-							<td>+3</td>
-							<td>-1</td>
-							<td>7</td>
-							<td>21</td>
-						</tr>
-						<tr>
-							<td>Sec -1(Q:1-7)</td>
-							<td>Questions with Single answer type</td>
-							<td>+3</td>
-							<td>-1</td>
-							<td>7</td>
-							<td>21</td>
-						</tr>
-						<tr class="table-active">
-							<td colspan="4">Total</td>
-							<td>18</td>
-							<td>61</td>
-						</tr>
-					</tbody>
-				</table>
-				<!-- End Physics -->
-				<!-- Chemistry -->
-				<h5 class="text-center"><u>Chemistry:</u></h5>
-				<table class="table table-bordered border-secondary">
-					<thead class="table-active">
-						<tr>
-							<th scope="col">Section</th>
-							<th scope="col">Question Type</th>
-							<th scope="col">+Ve Marks</th>
-							<th scope="col">-Ve Marks</th>
-							<th scope="col">No. Of Qs</th>
-							<th scope="col">Total Marks</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>Sec -1(Q:1-7)</td>
-							<td>Questions with Single answer type</td>
-							<td>+3</td>
-							<td>-1</td>
-							<td>7</td>
-							<td>21</td>
-						</tr>
-						<tr>
-							<td>Sec -1(Q:1-7)</td>
-							<td>Questions with Single answer type</td>
-							<td>+3</td>
-							<td>-1</td>
-							<td>7</td>
-							<td>21</td>
-						</tr>
-						<tr>
-							<td>Sec -1(Q:1-7)</td>
-							<td>Questions with Single answer type</td>
-							<td>+3</td>
-							<td>-1</td>
-							<td>7</td>
-							<td>21</td>
-						</tr>
-						<tr class="table-active">
-							<td colspan="4">Total</td>
-							<td>18</td>
-							<td>61</td>
-						</tr>
-					</tbody>
-				</table>
-				<!-- End Chemistry -->
-				<!-- Maths -->
-				<h5 class="text-center"><u>Maths:</u></h5>
-				<table class="table table-bordered border-secondary">
-					<thead class="table-active">
-						<tr>
-							<th scope="col">Section</th>
-							<th scope="col">Question Type</th>
-							<th scope="col">+Ve Marks</th>
-							<th scope="col">-Ve Marks</th>
-							<th scope="col">No. Of Qs</th>
-							<th scope="col">Total Marks</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>Sec -1(Q:1-7)</td>
-							<td>Questions with Single answer type</td>
-							<td>+3</td>
-							<td>-1</td>
-							<td>7</td>
-							<td>21</td>
-						</tr>
-						<tr>
-							<td>Sec -1(Q:1-7)</td>
-							<td>Questions with Single answer type</td>
-							<td>+3</td>
-							<td>-1</td>
-							<td>7</td>
-							<td>21</td>
-						</tr>
-						<tr>
-							<td>Sec -1(Q:1-7)</td>
-							<td>Questions with Single answer type</td>
-							<td>+3</td>
-							<td>-1</td>
-							<td>7</td>
-							<td>21</td>
-						</tr>
-						<tr class="table-active">
-							<td colspan="4">Total</td>
-							<td>18</td>
-							<td>61</td>
-						</tr>
-					</tbody>
-				</table>
-				<!-- End Maths -->
+				{% for sub in subList %}
+					{% if sub.length != 0 %}
+					<h5 class="text-center"><u>{{sub.name}}</u></h5>
+					<table class="table table-bordered border-secondary">
+						<thead class="table-active">
+							<tr>
+								<th scope="col">Section</th>
+								<th scope="col">Question Type</th>
+								<th scope="col">+Ve Marks</th>
+								<th scope="col">-Ve Marks</th>
+								<th scope="col">No. Of Qs</th>
+								<th scope="col">Total Marks</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Sec -1(Q:{{sub.start}}-{{sub.end}})</td>
+								<td>Questions with Single answer type</td>
+								<td>+4</td>
+								<td>-1</td>
+								<td>{{sub.length}}</td>
+								<td>{% widthratio sub.length 1 4 %}</td>
+							</tr>
+							<tr class="table-active">
+								<td colspan="4">Total</td>
+								<td>{{sub.length}}</td>
+								<td>{% widthratio sub.length 1 4 %}</td>
+							</tr>
+						</tbody>
+					</table>
+					{% endif %}
+				{% endfor %}
 				<div class="row">
 					<div class="col"></div>
 					<button class="btn col my-3" onclick="chdiv12();"
@@ -319,7 +213,7 @@
 					<hr class="mt-4 mb-2">
 					<div class="row justify-content-between">
 						<button class="btn col-4 my-3 px-1 py-2" id="buttonid2" onclick="chdiv21();"
-							style="width: 48%; background-color: #347ab7; color: white; border-radius: 0; border-color: #cccccc; font-size: small">Previous</button>
+							style="width: 48%; background-color: #347ab7; color: white; border-radius: 0; border-color: #cccccc; font-size: small">&ltPrevious</button>
 						<button class="btn col-4 my-3 px-0 py-2" id="buttonid3" onclick="chdiv23();"
 							style="width: 48%; background-color: #347ab7; color: white; border-radius: 0; border-color: #cccccc; font-size: small" disabled>I am ready to begin</button>
 					</div>
@@ -341,14 +235,14 @@
 		<!-- Top Black Bar -->
 		<div id="blackBar" class="px-3" style="background-color: #4d4d4d; width: 100%; height: 35px; display: flex;">
 			<div style="width: 50%;">
-				<a href="#" style="text-decoration: none; color: white;">
+				<a id="qp" href="#" style="text-decoration: none; color: white;">
 					Question Paper 
 				</a>
 				<span style="background: url(/static/Icon-sprite.png) -188px -6px; height: 70px; width: 70px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 			</div>
 			<div style="width: 50%; text-align: right;">
 				<span style="background: url(/static/Icon-sprite.png) -140px -6px; height: 70px; width: 70px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-				<a href="#" style="text-decoration: none; color: white;">
+				<a id="instructions" href="#" style="text-decoration: none; color: white;">
 					Instructions 
 				</a>
 			</div>
@@ -378,26 +272,6 @@
 						</div>
 						{% endif %}
 						{% endfor %}
-						{% comment %} <div class="p-0" style="display: inline-block; position: relative;">
-							<button id="bt2" onclick="sub_bt(1); changeCount();" class="btn sub px-2 py-1">CHEMISTRY <i class="fa fa-info-circle"></i></button>
-							<div class="subinf px-3" id="subinf2">
-								<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: white; background-position: -7px -55px">5</span> <span class="col-8 mx-0 mx-0 p-0"> Answered</span> </div>
-								<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: white; background-position: -42px -56px">5</span> <span class="col-8 mx-0 p-0"> Not Answered</span> </div>
-								<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: black; background-position: -107px -56px">5</span> <span class="col-8 mx-0 p-0"> Not Visited</span> </div>
-								<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: white; background-position: -75px -54px">5</span> <span class="col-8 mx-0 p-0"> Marked For Review</span> </div>
-								<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: white; background-position: -9px -87px">5</span> <span class="col-8 mx-0 p-0"> Answered & Marked for Review (will be considered for evaluation)</span> </div>
-							</div>
-						</div>
-						<div class="p-0" style="display: inline-block; position: relative;">
-							<button id="bt3" onclick="sub_bt(2); changeCount();" class="btn sub px-2 py-1">MATHEMATICS <i class="fa fa-info-circle"></i></button>
-							<div class="subinf px-3" id="subinf3">
-								<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: white; background-position: -7px -55px">5</span> <span class="col-8 mx-0 mx-0 p-0"> Answered</span> </div>
-								<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: white; background-position: -42px -56px">5</span> <span class="col-8 mx-0 p-0"> Not Answered</span> </div>
-								<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: black; background-position: -107px -56px">5</span> <span class="col-8 mx-0 p-0"> Not Visited</span> </div>
-								<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: white; background-position: -75px -54px">5</span> <span class="col-8 mx-0 p-0"> Marked For Review</span> </div>
-								<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: white; background-position: -9px -87px">5</span> <span class="col-8 mx-0 p-0"> Answered & Marked for Review (will be considered for evaluation)</span> </div>
-							</div>
-						</div> {% endcomment %}
 					</div>
 					<div class="col"> </div>
 					<div class="col-md-auto p-1 timesDiv">
@@ -480,34 +354,18 @@
 							<th scope="col">Answered</th>
 							<th scope="col">Not Answered</th>
 							<th scope="col">Not Attempted</th>
-							<th scope="col">Total Questions</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>PHYSICS</td>
-							<td>30</td>
-							<td>3</td>
-							<td>1</td>
-							<td>7</td>
-							<td>21</td>
-						</tr>
-						<tr>
+						{% for sub in subList %}
+						<tr id="finalsublist{{forloop.counter0|add:1}}">
 							<td>CHEMISTRY</td>
-							<td>30</td>
+							<td>11</td>
 							<td>3</td>
 							<td>1</td>
 							<td>7</td>
-							<td>21</td>
 						</tr>
-						<tr>
-							<td>MATHEMATICS</td>
-							<td>30</td>
-							<td>3</td>
-							<td>1</td>
-							<td>7</td>
-							<td>21</td>
-						</tr>
+						{% endfor %}
 					</tbody>
 				</table>
 			</div>
@@ -1114,6 +972,13 @@
 						<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: white; background-position: -75px -54px">${tarr.count("mfr")}</span> <span class="col-8 mx-0 p-0"> Marked For Review</span> </div>
 						<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: white; background-position: -9px -87px">${tarr.count("aamfr")}</span> <span class="col-8 mx-0 p-0"> Answered & Marked for Review (will be considered for evaluation)</span> </div>
 					`
+					document.getElementById("finalsublist"+(titer1+1).toString()).innerHTML=`<td>CHEMISTRY</td>
+					<td>${tarr.length}</td>
+					<td>${tarr.length-tarr.count("nans")-tarr.count("na")}</td>
+					<td>${tarr.count("nans")}</td>
+					<td>${tarr.count("na")}</td>
+					`
+
 				}
 				subTotal.innerHTML=`
 					<div class="myimg row my-2"><span class="count col-4 m-2 p-0" style="color: white; background-position: -7px -55px">${ques_status.count("ans")}</span> <span class="col-8 mx-0 mx-0 p-0"> Answered</span> </div>
@@ -1153,6 +1018,8 @@
 			let tempBtn1 = document.getElementById("a0");
 			tempBtn1.style.backgroundPosition = "-42px -56px";
 			tempBtn1.style.color = "white";
+
+			$('#qp').hover(()=>{alert("Instructions")})
 	</script>
 	<!-- End Question Formatting -->
 
