@@ -3,7 +3,14 @@ var cacheName = 'examsitecache';
 var filesToCache = [
     '/static/manifest.json',
     '/offline',
-    '/static/home/logo.png'
+    '/static/home/logo.png',
+    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css',
+    '/static/jquery-3.6.0.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
+    'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js',
+    'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js',
+    '/static/bootstrap-5.0.1/js/bootstrap.bundle.min.js',
+    '/static/a076d05399.js'
 ];
 
 
