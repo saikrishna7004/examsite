@@ -38,7 +38,7 @@
             type: 'POST',
             url: '/exam/results/evaluate/done/',
             dataType: 'json',
-            data: { exam_id: {{exam_id}}, csrfmiddlewaretoken: '{{ csrf_token }}' }
+            data: { exam_id: '{{exam_id}}', csrfmiddlewaretoken: '{{ csrf_token }}' }
           })
           location.href = "/exam/results/evaluate/"
         } 

@@ -134,6 +134,8 @@
             </ul>
         </div>
 		
+        {% if allexams|length %}
+
         <div class="container p-3">
 			
             <!-- Tabs List -->
@@ -194,6 +196,12 @@
                 </div>
             </div>
         </div>
+
+        {% else %}
+    	<div class="alert alert-primary" role="alert">
+        	No Exams left to Evaluate
+    	</div>
+    	{% endif %}
     
     </div>
 

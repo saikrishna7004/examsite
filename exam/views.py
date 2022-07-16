@@ -1,3 +1,4 @@
+from urllib import response
 from django import http, urls
 from django.contrib import messages
 from django.shortcuts import render, HttpResponse, redirect
@@ -394,8 +395,9 @@ def evaluatedesc(request):
 		return HttpResponse("Not allowed")
 	allexams = []
 	examlist = ExamData.objects.filter(type__contains="descriptive").order_by('-date')
-	print(examlist)
 	for exam in examlist:
+		if DescResultStatus.objects.filter(exam_id=exam.exam_id)[0].status == "corrected":
+			continue
 		allexams.append({
 			'title': exam.title, 'examid': int(exam.exam_id), 
 			'day': exam.date.day, 'month': calendar.month_name[exam.date.month], 'year': exam.date.year
@@ -450,7 +452,7 @@ def evaluateview(request, exam_id, user_id):
 		for user in UserData.objects.filter(user_id=user_id)[0].descanswer_set.filter(exam_id=exam_id).order_by('question_id'):
 			ques = Question.objects.filter(question_id=user.question_id)[0]
 			allques.append({
-				"question_id": ques.question_id, "question_text": ques.question_text, "answer": user.answer, "max_marks": user.max_marks, "marks": user.marks
+				"question_id": ques.question_id, "question_text": ques.question_text, "answer": user.answer, "readonly": "" if user.answer!="<b>Not Answered</b>" else "readonly", "max_marks": ques.answer_id, "marks": user.marks
 			})
 		for ques in Question.objects.filter(exam_id=exam_id):
 			flag = False
@@ -460,7 +462,7 @@ def evaluateview(request, exam_id, user_id):
 					break
 			if not flag:
 				allques.append({
-					"question_id": ques.question_id, "question_text": ques.question_text, "answer": "<b>No Answer</b>", "max_marks": 0, "marks": 0
+					"question_id": ques.question_id, "question_text": ques.question_text, "answer": "<b>Not Answered</b>", "readonly": "readonly", "max_marks": 0, "marks": 0
 				})
 		allques = sorted(allques, key=lambda d: d['question_id'])
 		print(exam_id)
@@ -473,25 +475,30 @@ def evaluateview(request, exam_id, user_id):
 		}
 		return render(request, "evaluateview.html", content)
 
+@transaction.atomic
 def savemarks(request):
 	if not request.user.is_staff:
 		return HttpResponse("Not permitted")
 	if request.method=="POST":
-		max_marks = request.POST.get("max_marks")
-		marks = request.POST.get("marks")
-		question_id = request.POST.get("question_id")
-		user_id = request.POST.get("user_id")
-		exam_id = request.POST.get("exam_id")
-		answer = UserData.objects.filter(user_id=user_id)
-		if answer[0].descanswer_set.filter(question_id=question_id).exists():
-			ans = answer[0].descanswer_set.filter(question_id=question_id)[0]
-			ans.max_marks = max_marks
-			ans.marks = marks
-			ans.save()
-			print(ans.marks)
-		else:
-			answer[0].descanswer_set.create(question_id=question_id, answer="<b>Not Answered</b>", exam_id=exam_id, ans_status="na", max_marks=max_marks, marks=0)
-		return redirect("/exam/results/evaluate/"+exam_id+"/"+user_id)
+		try:
+			max_marks = request.POST.get("max_marks")
+			marks = request.POST.get("marks")
+			question_id = request.POST.get("question_id")
+			user_id = request.POST.get("user_id")
+			exam_id = request.POST.get("exam_id")
+			answer = UserData.objects.filter(user_id=user_id)
+			if answer[0].descanswer_set.filter(question_id=question_id).exists():
+				ans = answer[0].descanswer_set.filter(question_id=question_id)[0]
+				ans.max_marks = max_marks
+				ans.marks = marks
+				ans.save()
+				print(ans.marks)
+			else:
+				answer[0].descanswer_set.create(question_id=question_id, answer="<b>Not Answered</b>", exam_id=exam_id, ans_status="na", max_marks=max_marks, marks=0)
+			return HttpResponse(status=200)
+		except Exception as e:
+			print(e)
+			return HttpResponse(status=500)
 
 @transaction.atomic
 def upload(request):
@@ -610,9 +617,10 @@ def studentresultsview(request, exam_id):
 	print( ExamStatus.objects.filter(exam_id=exam_id).values('user_id').distinct())
 	list = []
 	t = c = w = u = m = st = 0
-	if ExamData.objects.filter(exam_id=exam_id)[0].type == 'descriptive':
+	if "descriptive" in ExamData.objects.filter(exam_id=exam_id)[0].type:
 		if DescResultStatus.objects.filter(exam_id=exam_id)[0].status!="corrected":
-			return HttpResponse("Correction not completed")
+			messages.add_message(request, messages.ERROR, 'Correction not done yet!')
+			return redirect("/exam/results/students")
 		allresults = []
 		m = at = ua = mm = st = 0
 		for result in DescResult.objects.filter(exam_id=exam_id):
@@ -623,7 +631,7 @@ def studentresultsview(request, exam_id):
 			at += result.attempted
 			ua += result.unattempted
 			st += 1
-		print(allresults)
+		print(allresults, m, at, ua, st)
 		context = {
 			"allresults": allresults,
 			"exam_id": exam_id,

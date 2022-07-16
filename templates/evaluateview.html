@@ -1,27 +1,66 @@
 {% extends 'base.html' %}
 {% block title %}Evaluate{% endblock title %}
 {% block body %}
+
+<div class="container my-3">
+	<button type="button" onclick="window.history.back()" class="btn btn-light">
+		<i class="fas fa-arrow-left"></i>
+		Go Back
+	</button>
+</div>
+
 {% for ques in allques %}
-<div class="container">
-    <div class="quesMain my-2"><b style="color: red">Question {{forloop.counter0|add:1}}</b></div>
-    <hr>
-    <p class="my-1">{{ques.question_text|safe}}</p>
-    <div class="my-2"><b style="color: green">Answer: </b> <br>{{ ques.answer|safe }}</div>
-    <form method="post" action="/exam/results/evaluate/save/" class="row g-3">
-        {% csrf_token %}
-        <input type="hidden" name="user_id" value="{{user_id}}">
-        <input type="hidden" name="question_id" value="{{ques.question_id}}">
-        <input type="hidden" name="exam_id" value="{{exam_id}}">
-        <div class="col-auto">
-          <input type="number" class="form-control" id="marks" name="marks" placeholder="Marks" value="{{ques.marks}}">
-        </div>
-        <div class="col-auto">
-          <input type="number" class="form-control" id="max_marks" name="max_marks" placeholder="Max Marks" value="{{ques.max_marks}}">
-        </div>
-        <div class="col-auto">
-          <button type="submit" class="btn btn-primary mb-3">Save</button>
-        </div>
-      </form>
+<div class="container mb-4">
+	<div class="quesMain my-2"><b style="color: red">Question {{forloop.counter0|add:1}}</b></div>
+	<hr>
+	<p class="my-1">{{ques.question_text|safe}}</p>
+	<div class="my-2"><b style="color: green">Answer: </b> <br>{{ ques.answer|safe }}</div>
+	<input type="hidden" name="user_id" value="{{user_id}}">
+	<input type="hidden" name="question_id" value="{{ques.question_id}}">
+	<input type="hidden" name="exam_id" value="{{exam_id}}">
+	<form class="row g-3" onsubmit="event.preventDefault()">
+		<div class="col-auto">
+			<label class="form-label" for="marks">Marks</label>
+			<input type="number" class="form-control" id="marks{{forloop.counter0|add:1}}"
+				name="marks{{forloop.counter0|add:1}}" placeholder="Marks" value="{{ques.marks}}" {{ques.readonly}}>
+		</div>
+		<div class="col-auto">
+			<label class="form-label" for="max_marks">Max Marks</label>
+			<input type="number" class="form-control" id="max_marks{{forloop.counter0|add:1}}"
+			name="max_marks{{forloop.counter0|add:1}}" placeholder="Max Marks" value="{{ques.max_marks}}" readonly>
+		</div>
+		<div class="col-auto d-flex align-items-md-end">
+			<label class="form-label"></label>
+			{% if ques.readonly != "readonly" %}
+			<button onclick="award('{{ques.question_id}}', '{{forloop.counter0|add:1}}')"
+				class="btn btn-primary" style="margin-top: 34px;">Save</button>
+			<div class="d-inline-block ml-2 mb-2" style="margin-top: 40px;" id="inf{{forloop.counter0|add:1}}"></div>
+			{% endif %}
+		</div>
+	</form>
 </div>
 {% endfor %}
+<script>
+	function award(question_id, num) {
+		let marks = document.getElementById('marks' + num).value
+		let max_marks = document.getElementById('max_marks' + num).value
+		if (parseInt(marks) > parseInt(max_marks) || marks < 0) return alert("Awarded marks out of range")
+		$.ajax({
+			type: 'POST',
+			url: '/exam/results/evaluate/save/',
+			dataType: 'json',
+			data: { exam_id: '{{exam_id}}', question_id: question_id, user_id: '{{user_id}}', 'marks': marks, 'max_marks': max_marks, csrfmiddlewaretoken: '{{ csrf_token }}' },
+			success: (res) => {
+				document.getElementById('inf' + num).innerHTML = `<b>Success</b>`
+			},
+			error: (r, s, e) => {
+				if (r.status == 200)
+					document.getElementById('inf' + num).innerHTML = `<b style="color: green;">Success</b>`
+				else
+					document.getElementById('inf' + num).innerHTML = `<b>Failed</b>`
+
+			}
+		})
+	}
+</script>
 {% endblock body %}
