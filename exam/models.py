@@ -62,13 +62,14 @@ class DescAnswer(models.Model):
 		('ans', 'Answered and Saved'),
 	)
 	
-	user = models.ForeignKey(UserData, on_delete=models.CASCADE)
+	# Changed user to user_id
+	user_id = models.IntegerField()
 	question_id = models.IntegerField()
 	answer = models.TextField()
 	exam_id = models.IntegerField()
 	ans_status = models.CharField(max_length=10, choices=ANS_STATUS_CHOICES, default="na")
-	max_marks = models.IntegerField()
-	marks = models.IntegerField()
+	max_marks = models.IntegerField(default=0)
+	marks = models.IntegerField(default=0)
 
 	class Meta:
 		verbose_name = "descanswer"

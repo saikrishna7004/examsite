@@ -58,7 +58,7 @@ def examInstructions(request):
 			m=0
 			for ques in qlist:
 				current_ans_status = "na"
-				ans = UserData.objects.filter(user_id=request.user.username)[0].descanswer_set.filter(question_id=ques.question_id)#.filter(question_id=ques.question_id)
+				ans = DescAnswer.objects.filter(user_id=request.user.username, question_id=ques.question_id)#.filter(question_id=ques.question_id)
 				answer = ""
 				print(ans)
 				if ans.exists():
@@ -208,8 +208,9 @@ def results(request):
 	if request.user.is_anonymous:
 		return redirect("login")
 	allexams = []
-	examlist = ExamData.objects.all()
-	for exam in examlist:
+	result_exam = Result.objects.filter(user_id=request.user.username)
+	for exam_id in result_exam:
+		exam = ExamData.objects.filter(exam_id=exam_id.exam_id).first()
 		allexams.append({
 			'title': exam.title, 'examid': int(exam.exam_id), 
 			'day': exam.date.day, 'month': calendar.month_name[exam.date.month], 'year': exam.date.year
@@ -228,10 +229,11 @@ def resultView(request, exam_id):
 	exam_list = UserData.objects.filter(user_id=user_id)[0].questionanswer_set.filter(exam_id=exam_id).all()
 	total = Question.objects.filter(exam_id=exam_id).count()
 	if 'descriptive' in ExamData.objects.filter(exam_id=exam_id)[0].type:
-		if DescResultStatus.objects.filter(exam_id=exam_id)[0].status!="corrected":
+		desc = DescResultStatus.objects.filter(exam_id=exam_id)
+		if desc.exists() and desc[0].status!="corrected":
 			return HttpResponse("Correction not completed")
 		allques = []
-		for user in UserData.objects.filter(user_id=user_id)[0].descanswer_set.filter(exam_id=exam_id).order_by('question_id'):
+		for user in DescAnswer.objects.filter(user_id=user_id, exam_id=exam_id)[0].order_by('question_id'):
 			ques = Question.objects.filter(question_id=user.question_id)[0]
 			allques.append({
 				"question_id": ques.question_id, "question_text": ques.question_text, "answer": user.answer, "max_marks": user.max_marks, "marks": user.marks
@@ -353,39 +355,55 @@ def generateResultsView(request, exam_id):
 	if not request.user.is_staff:
 		return HttpResponse("Not permitted")
 	print( ExamStatus.objects.filter(exam_id=exam_id).values('user_id').distinct())
-	
+			
+	if 'descriptive' not in ExamData.objects.filter(exam_id=exam_id)[0].type:
+		for user_set in ExamStatus.objects.filter(exam_id=exam_id).values('user_id').distinct():
+			user_id = user_set['user_id']
+			print('descriptive' in ExamData.objects.filter(exam_id=exam_id)[0].type)
+			exam_list = UserData.objects.filter(user_id=user_id)[0].questionanswer_set.filter(exam_id=exam_id).all()
+			total = Question.objects.filter(exam_id=exam_id).count()
+			unatt = 0
+			correct = wrong = 0
+			for x in range(0, len(exam_list)):
+				qid = exam_list[x].question_id
+				aid = exam_list[x].answer_id
+				correct_id = Question.objects.filter(question_id=qid)[0].answer_id
+				print(aid, correct_id)
+				if int(aid) == int(correct_id):
+					correct += 1
+				else:
+					wrong += 1
+			unatt = total - wrong - correct
+			if not Result.objects.filter(user_id=user_id, exam_id=exam_id).exists():
+				Result.objects.create(exam_id=exam_id, user_id=user_id, correct=correct, wrong=wrong, unattempted=unatt, total=total, correct_marks=4, wrong_marks=-1)
+		messages.add_message(request, messages.SUCCESS, 'Result generated Successfully')
+		return redirect("/exam/results/generate")
 	for user_set in ExamStatus.objects.filter(exam_id=exam_id).values('user_id').distinct():
 		user_id = user_set['user_id']
-		if 'descriptive' in ExamData.objects.filter(exam_id=exam_id)[0].type:
-			marks = 0
-			max_marks = 0
-			attempted = 0
-			total = Question.objects.filter(exam_id=exam_id).count()
-			for user in UserData.objects.filter(user_id=user_id)[0].descanswer_set.filter(exam_id=exam_id).order_by('question_id'):
-				marks += user.marks
-				max_marks += user.max_marks
-				if user.ans_status!="na":
-					attempted += 1
-			if not DescResult.objects.filter(exam_id=exam_id, user_id=user_id).exists():
-				DescResult.objects.create(exam_id=exam_id, user_id=user_id, max_marks=max_marks, marks=marks, attempted=attempted, unattempted=total-attempted, total=total)
-				messages.add_message(request, messages.SUCCESS, 'Result generated Successfully')
+		stat = DescResultStatus.objects.filter(exam_id=exam_id)
+		if stat.exists() and stat[0].status=="started":
+			messages.add_message(request, messages.WARNING, 'Correction started, wait until it\'s done.')
 			return redirect("/exam/results/generate")
-		exam_list = UserData.objects.filter(user_id=user_id)[0].questionanswer_set.filter(exam_id=exam_id).all()
+		elif not stat.exists():
+			messages.add_message(request, messages.WARNING, 'Correction is not started, wait until it\'s done.')
+			return redirect("/exam/results/generate")
+		print("Hello")
+		marks = 0
+		max_marks = 0
+		attempted = 0
 		total = Question.objects.filter(exam_id=exam_id).count()
-		unatt = 0
-		correct = wrong = 0
-		for x in range(0, len(exam_list)):
-			qid = exam_list[x].question_id
-			aid = exam_list[x].answer_id
-			correct_id = Question.objects.filter(question_id=qid)[0].answer_id
-			print(aid, correct_id)
-			if int(aid) == int(correct_id):
-				correct += 1
-			else:
-				wrong += 1
-		unatt = total - wrong - correct
-		if not Result.objects.filter(user_id=user_id, exam_id=exam_id).exists():
-			Result.objects.create(exam_id=exam_id, user_id=user_id, correct=correct, wrong=wrong, unattempted=unatt, total=total, correct_marks=4, wrong_marks=-1)
+		print(DescAnswer.objects.filter(user_id=int(user_id), exam_id=int(exam_id)).order_by('question_id'))
+		for q in DescAnswer.objects.filter(user_id=int(user_id), exam_id=int(exam_id)).order_by('question_id'):
+			print(q)
+			marks += q.marks
+			max_marks += q.max_marks
+			if q.ans_status!="na":
+				attempted += 1
+		print(marks, max_marks)
+		if not DescResult.objects.filter(exam_id=exam_id, user_id=user_id).exists():
+			DescResult.objects.create(exam_id=exam_id, user_id=user_id, max_marks=max_marks, marks=marks, attempted=attempted, unattempted=total-attempted, total=total)
+		# 	messages.add_message(request, messages.SUCCESS, 'Result generated Successfully')
+		# return redirect("/exam/results/generate")
 	messages.add_message(request, messages.SUCCESS, 'Result generated Successfully')
 	return redirect("/exam/results/generate")
 
@@ -396,7 +414,8 @@ def evaluatedesc(request):
 	allexams = []
 	examlist = ExamData.objects.filter(type__contains="descriptive").order_by('-date')
 	for exam in examlist:
-		if DescResultStatus.objects.filter(exam_id=exam.exam_id)[0].status == "corrected":
+		desc = DescResultStatus.objects.filter(exam_id=exam.exam_id)
+		if desc.exists() and desc[0].status == "corrected":
 			continue
 		allexams.append({
 			'title': exam.title, 'examid': int(exam.exam_id), 
@@ -422,7 +441,7 @@ def evaluatelist(request, exam_id):
 			# allexams.append({
 			# 	"question_id": ques.question_id, "question_text": ques.question_text, "answer": user.answer
 			# })
-			users_list.append(user.user.user_id)
+			users_list.append(user.user_id)
 		users_list = list(set(users_list))
 		content = {
 			'users_list': users_list,
@@ -449,7 +468,7 @@ def evaluateview(request, exam_id, user_id):
 		return HttpResponse("Not permitted")
 	if 'descriptive' in ExamData.objects.get(exam_id=exam_id).type:
 		allques = []
-		for user in UserData.objects.filter(user_id=user_id)[0].descanswer_set.filter(exam_id=exam_id).order_by('question_id'):
+		for user in DescAnswer.objects.filter(user_id=user_id, exam_id=exam_id).order_by('question_id'):
 			ques = Question.objects.filter(question_id=user.question_id)[0]
 			allques.append({
 				"question_id": ques.question_id, "question_text": ques.question_text, "answer": user.answer, "readonly": "" if user.answer!="<b>Not Answered</b>" else "readonly", "max_marks": ques.answer_id, "marks": user.marks
@@ -486,15 +505,14 @@ def savemarks(request):
 			question_id = request.POST.get("question_id")
 			user_id = request.POST.get("user_id")
 			exam_id = request.POST.get("exam_id")
-			answer = UserData.objects.filter(user_id=user_id)
-			if answer[0].descanswer_set.filter(question_id=question_id).exists():
-				ans = answer[0].descanswer_set.filter(question_id=question_id)[0]
+			if DescAnswer.objects.filter(user_id=user_id).filter(question_id=question_id).exists():
+				ans = DescAnswer.objects.filter(user_id=user_id).filter(question_id=question_id)[0]
 				ans.max_marks = max_marks
 				ans.marks = marks
 				ans.save()
 				print(ans.marks)
 			else:
-				answer[0].descanswer_set.create(question_id=question_id, answer="<b>Not Answered</b>", exam_id=exam_id, ans_status="na", max_marks=max_marks, marks=0)
+				DescAnswer.objects.filter(user_id=user_id).create(question_id=question_id, answer="<b>Not Answered</b>", exam_id=exam_id, ans_status="na", max_marks=max_marks, marks=0)
 			return HttpResponse(status=200)
 		except Exception as e:
 			print(e)
@@ -557,16 +575,13 @@ def answertext(request):
 
 		if answer == None:
 			return HttpResponse(status=400)
-		if not UserData.objects.filter(user_id=user_id)[0].descanswer_set.filter(question_id=question_id).exists():
-			UserData.objects.filter(user_id=user_id)[0].descanswer_set.create(
-				question_id=question_id, exam_id=exam_id, answer=answer, ans_status=ans_status)
+		if not DescAnswer.objects.filter(user_id=user_id, question_id=question_id).exists():
+			DescAnswer.objects.create(user_id=user_id, question_id=question_id, exam_id=exam_id, answer=answer, ans_status=ans_status)
 		else:
-			question_details = UserData.objects.filter(
-				user_id=user_id)[0].descanswer_set.filter(question_id=question_id)
-			for x in range(0, len(question_details)):
+			question_details = DescAnswer.objects.filter(user_id=user_id, question_id=question_id)
+			if question_details.exists():
 				question_details[0].delete()
-			UserData.objects.filter(user_id=user_id)[0].descanswer_set.create(
-				question_id=question_id, exam_id=exam_id, answer=answer, ans_status=ans_status)
+			DescAnswer.objects.create(user_id=user_id, question_id=question_id, exam_id=exam_id, answer=answer, ans_status=ans_status)
 			# update(question_id=question_id,exam_id=exam_id,answer_id=answer_id)
 		return HttpResponse(status=200)
 
@@ -580,9 +595,9 @@ def deletetext(request):
 		user_id = request.user.username
 		exam_id = request.POST.get("exam_id")
 		question_id = request.POST.get("question_id")
-		if UserData.objects.filter(user_id=user_id)[0].descanswer_set.filter(question_id=question_id).exists():
-			UserData.objects.filter(user_id=user_id)[0].descanswer_set.filter(question_id=question_id).delete()
-		print(UserData.objects.filter(user_id=user_id)[0].descanswer_set.filter(question_id=question_id))
+		if UserData.objects.filter(user_id=user_id, question_id=question_id).exists():
+			UserData.objects.filter(user_id=user_id, question_id=question_id).delete()
+		print(UserData.objects.filter(user_id=user_id, question_id=question_id))
 		return HttpResponse(status=200)
 	
 	return HttpResponse("This is answer page, later this will be modified")
@@ -618,9 +633,14 @@ def studentresultsview(request, exam_id):
 	list = []
 	t = c = w = u = m = st = 0
 	if "descriptive" in ExamData.objects.filter(exam_id=exam_id)[0].type:
-		if DescResultStatus.objects.filter(exam_id=exam_id)[0].status!="corrected":
-			messages.add_message(request, messages.ERROR, 'Correction not done yet!')
-			return redirect("/exam/results/students")
+		stat = DescResultStatus.objects.filter(exam_id=exam_id)
+		if stat.exists() and stat[0].status=="started":
+			messages.add_message(request, messages.WARNING, 'Correction started, wait until it\'s done.')
+			print(request.path_info)
+			return redirect("/exam/results/students/")
+		elif not stat.exists():
+			messages.add_message(request, messages.WARNING, 'Correction is not started, wait until it\'s done.')
+			return redirect("/exam/results/students/")
 		allresults = []
 		m = at = ua = mm = st = 0
 		for result in DescResult.objects.filter(exam_id=exam_id):

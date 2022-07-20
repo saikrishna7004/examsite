@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
 {% block body %}
+    <div class="container my-3">
+        <button type="button" onclick="window.history.back()" class="btn btn-light">
+            <i class="fas fa-arrow-left"></i>
+            Go Back
+        </button>
+    </div>
     <div class="container" id="list">
         {% for ques in queslist %}
             <div class="quesMain my-2"><b>Question No. {{ques.i}}</b></div>

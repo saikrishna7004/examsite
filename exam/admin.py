@@ -101,11 +101,35 @@ class ResultAdmin(admin.ModelAdmin):
     list_filter = ['user_id', 'exam_id']
     search_fields = ['user_id', 'exam_id']
 
+class DescResultAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('DescResult Description', {'fields': ['user_id', 'exam_id', 'marks', 'max_marks', 'attempted', 'unattempted', 'total']}),
+    ]
+    list_display = ('user_id', 'exam_id', 'marks', 'max_marks', 'total')
+    list_filter = ['user_id', 'exam_id']
+    search_fields = ['user_id', 'exam_id']
+
+class DescResultStatusAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('DescResult Description', {'fields': ['exam_id', 'status']}),
+    ]
+    list_display = ('exam_id', 'status')
+    list_filter = ['exam_id', 'status']
+    search_fields = ['exam_id', 'status']
+
+class DescAnswerAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('DescAnswer Description', {'fields': ['user_id', 'question_id', 'answer', 'exam_id', 'ans_status', 'max_marks', 'marks']}),
+    ]
+    list_display = ('user_id', 'exam_id')
+    list_filter = ['user_id', 'exam_id']
+    search_fields = ['user_id', 'exam_id']
+
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(QuestionAnswer, QuestionAnswerAdmin)
-admin.site.register(DescAnswer)
-admin.site.register(DescResult)
-admin.site.register(DescResultStatus)
+admin.site.register(DescAnswer, DescAnswerAdmin)
+admin.site.register(DescResult, DescResultAdmin)
+admin.site.register(DescResultStatus, DescResultStatusAdmin)
 admin.site.register(Result, ResultAdmin)
 admin.site.register(UserData, UserDataAdmin)
 admin.site.register(ExamData, ExamDataAdmin)
