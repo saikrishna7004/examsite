@@ -2,8 +2,4 @@
 python manage.py collectstatic --no-input
 python manage.py migrate
 
-python manage.py createsuperuser
-admin
-admin@admin.com
-admin
-admin
+from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'admin')
