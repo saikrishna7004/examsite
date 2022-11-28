@@ -209,7 +209,14 @@ def results(request):
 		return redirect("login")
 	allexams = []
 	result_exam = Result.objects.filter(user_id=request.user.username)
+	desc_result = DescResult.objects.filter(user_id=request.user.username)
 	for exam_id in result_exam:
+		exam = ExamData.objects.filter(exam_id=exam_id.exam_id).first()
+		allexams.append({
+			'title': exam.title, 'examid': int(exam.exam_id), 
+			'day': exam.date.day, 'month': calendar.month_name[exam.date.month], 'year': exam.date.year
+		})
+	for exam_id in desc_result:
 		exam = ExamData.objects.filter(exam_id=exam_id.exam_id).first()
 		allexams.append({
 			'title': exam.title, 'examid': int(exam.exam_id), 
@@ -233,7 +240,7 @@ def resultView(request, exam_id):
 		if desc.exists() and desc[0].status!="corrected":
 			return HttpResponse("Correction not completed")
 		allques = []
-		for user in DescAnswer.objects.filter(user_id=user_id, exam_id=exam_id)[0].order_by('question_id'):
+		for user in DescAnswer.objects.filter(user_id=user_id, exam_id=exam_id).order_by('question_id'):
 			ques = Question.objects.filter(question_id=user.question_id)[0]
 			allques.append({
 				"question_id": ques.question_id, "question_text": ques.question_text, "answer": user.answer, "max_marks": user.max_marks, "marks": user.marks

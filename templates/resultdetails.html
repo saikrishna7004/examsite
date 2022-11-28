@@ -8,6 +8,7 @@
     </div>
     <div class="container" id="list">
         {% for ques in queslist %}
+        <div class="container my-4">
             <div class="quesMain my-2"><b>Question No. {{ques.i}}</b></div>
             <hr>
             <p class="my-1">{{ques.question_text|safe}}</p>
@@ -24,6 +25,7 @@
             <div><input type="radio" class="inputlabel my-1" name="{{ques.question_id}}" id="{{ques.op4_id}}"
                 value="{{ques.op4_id}}" {{ques.op4_choi}} disabled><label for="{{ques.op4_id}}">D</label></div>
             <div class="my-2">Answer: {{ ques.answer }}</div>
+        </div>
         {% endfor %}
     </div>
     
