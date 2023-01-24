@@ -8,6 +8,7 @@ import exam
 from .models import DescAnswer, DescResult, DescResultStatus, ExamStatus, Question, QuestionAnswer, Result, UserData, ExamData, PaperModel
 from django.db import transaction
 from django.utils.timezone import localdate
+from datetime import date
 
 # Create your views here.
 
@@ -341,18 +342,29 @@ def generateResults(request):
 	result_exam = Result.objects.all().values('exam_id').distinct()
 	status_exam = ExamStatus.objects.all().values('exam_id').distinct()
 	final_list = []
+	other_list = []
 	for status in status_exam:
 		if not result_exam.filter(exam_id=status['exam_id']).exists() and not desc_result_exam.filter(exam_id=status['exam_id']).exists():
 			final_list.append(status['exam_id'])
+		else:
+			other_list.append(status['exam_id'])
 	allexams = []
+	otherExams = []
 	for exam_id in final_list:
 		exam = ExamData.objects.filter(exam_id=exam_id)[0]
 		allexams.append({
 			'title': exam.title, 'examid': int(exam.exam_id), 
 			'day': exam.date.day, 'month': calendar.month_name[exam.date.month], 'year': exam.date.year
 		})
+	for exam_id in other_list:
+		exam = ExamData.objects.filter(exam_id=exam_id)[0]
+		otherExams.append({
+			'title': exam.title, 'examid': int(exam.exam_id), 
+			'day': exam.date.day, 'month': calendar.month_name[exam.date.month], 'year': exam.date.year
+		})
 	content = {
 		'allexams': allexams,
+		'otherexams': otherExams,
 		'active': 'generate',
 	}
 	return render(request, "generate.html", content)
@@ -381,7 +393,11 @@ def generateResultsView(request, exam_id):
 				else:
 					wrong += 1
 			unatt = total - wrong - correct
-			if not Result.objects.filter(user_id=user_id, exam_id=exam_id).exists():
+			t = Result.objects.filter(user_id=user_id, exam_id=exam_id)
+			if not t.exists():
+				Result.objects.create(exam_id=exam_id, user_id=user_id, correct=correct, wrong=wrong, unattempted=unatt, total=total, correct_marks=4, wrong_marks=-1)
+			else:
+				t.delete()
 				Result.objects.create(exam_id=exam_id, user_id=user_id, correct=correct, wrong=wrong, unattempted=unatt, total=total, correct_marks=4, wrong_marks=-1)
 		messages.add_message(request, messages.SUCCESS, 'Result generated Successfully')
 		return redirect("/exam/results/generate")
@@ -500,6 +516,7 @@ def evaluateview(request, exam_id, user_id):
 			'exam_id': exam_id
 		}
 		return render(request, "evaluateview.html", content)
+	return HttpResponse("Invalid exam")
 
 @transaction.atomic
 def savemarks(request):
@@ -704,3 +721,57 @@ def matheditor(request):
 
 def test(request):
 	return render(request, "test.html")
+
+def examListTurnOn(request):
+	if request.user.is_anonymous:
+		return redirect("login")
+	l = ExamData.objects.all()[:10]
+	allexams = []
+	i = 1
+	for exam in l:
+		allexams.append({
+			'title': exam.title, 'examid': int(exam.exam_id), 
+			'day': exam.date.day, 'month': calendar.month_name[exam.date.month], 'year': exam.date.year,
+			'index': i, 'status': str(exam.status and exam.date==date.today())
+		})
+		i+=1
+	content = {
+		'allexams': allexams,
+		'active': 'examList',
+	}
+	return render(request, "examListTurnOn.html", content)
+
+def examTurnOn(request, exam_id):
+	if request.user.is_anonymous:
+		return redirect("login")
+	exam = ExamData.objects.get(exam_id=exam_id)
+	exam.status = True
+	exam.date = str(date.today())
+	exam.save(update_fields=['date', 'status'])
+	messages.add_message(request, messages.SUCCESS, f'Exam {exam.title} turned on Successfully')
+	return redirect("/exam/all")
+
+def examTurnOff(request, exam_id):
+	if request.user.is_anonymous:
+		return redirect("login")
+	exam = ExamData.objects.get(exam_id=exam_id)
+	exam.status = False
+	exam.save(update_fields=['status'])
+	messages.add_message(request, messages.SUCCESS, f'Exam {exam.title} turned off Successfully')
+	return redirect("/exam/all")
+
+@transaction.atomic
+def rollbackResults(request, exam_id):
+	if not request.user.is_staff:
+		return HttpResponse("Not permitted")
+	print( ExamStatus.objects.filter(exam_id=exam_id).values('user_id').distinct())
+			
+	if 'descriptive' not in ExamData.objects.filter(exam_id=exam_id)[0].type:
+		Result.objects.filter(exam_id=exam_id).delete()
+		messages.add_message(request, messages.SUCCESS, 'Result rolled back Successfully')
+		return redirect("/exam/results/generate")
+	DescResult.objects.filter(exam_id=exam_id).delete()
+	status = DescResultStatus.objects.filter(exam_id=exam_id)[0]
+	status.delete()
+	messages.add_message(request, messages.SUCCESS, 'Result rolled back Successfully')
+	return redirect("/exam/results/generate")

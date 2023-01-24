@@ -52,12 +52,16 @@ def signup(request):
 		lastName = request.POST.get('lastName')
 		email = request.POST.get('email')
 		username = str(localdate().year)[2:4]+"103"+str(f"{last_username:04}")
-		raw_password = "pass"+request.POST.get('phone')
-		user = User.objects.create_user(username=username, password=raw_password, first_name=firstName, last_name=lastName, email=email)
+		raw_password = "Kmit@1234"
+		print(User.objects.order_by("-username")[1].username, last_username, username)
+		print(firstName, lastName, email, username)
+		User.objects.create_user(username=username, password=raw_password, first_name=firstName, last_name=lastName, email=email)
 		messages.add_message(request, messages.SUCCESS, 'Registered Successful. Your username is '+str(username)+'. Verify your identity <a href="/verify/">Here</a>.')
-		userdata = UserData.objects.create(user_name=firstName, user_id=username)
-		userverifydata = UserVerifyData.objects.create(username=username, verified=False, otp=random.randint(100000, 999999))
-		return render(request, 'signup.html')
+		userverify = UserVerifyData.objects.get(username=username)
+		userverify.verified = False
+		userverify.otp = random.randint(100000, 999999)
+		userverify.save()
+		return redirect('/verify')
 	return render(request, 'signup.html')
 
 def verify(request):
@@ -71,7 +75,7 @@ def verify(request):
 			userverifydata.verified=True
 			userverifydata.save()
 			messages.add_message(request, messages.SUCCESS, 'User Verified Successfully')
-			return redirect('/verify/')
+			return redirect('/')
 		else:
 			messages.add_message(request, messages.ERROR, 'OTP Incorrect')
 			return render(request, 'verify.html')

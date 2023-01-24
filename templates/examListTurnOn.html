@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% block title %}Exams List{% endblock title %}
+{% block body %}
+    <style>
+        @media screen and (max-width: 700px) {
+            .brr {
+                display: none;
+            }
+        }
+
+        .hovernow {
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+            transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+            margin-bottom: 20px;
+            padding: 15px;
+        }
+
+        .hovernow:hover {
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+        }
+
+        .box-card {
+            background: #fff;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+            transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+            margin-bottom: 20px;
+            padding: 15px;
+        }
+
+        .box-card:hover {
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+        }
+
+        .box-date {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px
+        }
+
+        .t-date {
+            color: #0a96ee;
+            font-size: 20px;
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .t-month {
+            color: #444444;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding-top: 10px;
+        }
+
+        .box-subject {
+            padding: 20px 0;
+        }
+
+        .box-subject li {
+            padding: 5px 0
+        }
+
+        .t-subject {
+            font-size: 16px;
+            font-weight: bold;
+            color: #444444
+        }
+
+        .t-time {
+            font-size: 14px;
+            color: #666666;
+        }
+
+        .box-button {
+            padding: 20px 0
+        }
+
+        .btn-guest {
+            border: 1px solid #0a96ee;
+            border-radius: 6px;
+            background: #fff;
+            color: #0a96ee;
+            padding: 10px 20px;
+            font-weight: bold;
+            margin-top: 10px
+        }
+
+        .btn-guestResume {
+            border: 1px solid #0a96ee;
+            border-radius: 6px;
+            background: #fff;
+            color: #0a96ee;
+            padding: 10px 20px;
+            font-weight: bold;
+            margin-top: 10px
+        }
+
+        .btn-guestResume1 {
+            margin-left: 45%;
+            font-size: 14px;
+            color: red;
+            font-style: bold;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0
+        }
+
+        li {
+            list-style: none
+        }
+    </style>
+
+    <div class="container my-3">
+        <h1>Select exam to Turn them On or Off</h1>
+    </div>
+    
+    <div class="container border p-0">
+        {% if allexams|length %}
+        <div class="container p-3 bg-white">
+            <!-- Tabs List -->
+            <div class="container p-0" style="overflow-x: auto">
+
+                    <table class="table table-hover" style="min-width: 600px;">
+                        <thead>
+                            <tr>
+                                <th scope="col">S.No.</th>
+                                <th scope="col">Select</th>
+                                <th scope="col">Exam Name</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for exams in allexams %}
+                            <tr>
+                                <th scope="row">{{exams.index}}</th>
+                                <td style="text-align: center"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></td>
+                                <td>{{exams.title |safe}}</td>
+                                <td>{{exams.day}} {{exams.month}} {{exams.year}}</td>
+                                <td>
+                                    <button class="btn btn-success m-1" style="border-radius: 0" onclick="turnOn('{{exams.examid}}')" {% if exams.status == 'True' %}disabled{% endif %}>Turn On</button>
+                                    <button class="btn btn-danger m-1" style="border-radius: 0" onclick="turnOff('{{exams.examid}}')" {% if exams.status == 'False' %}disabled{% endif %}>Turn Off</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+        
+        {% else %}
+    	<div class="alert alert-primary" role="alert">
+        	No Exam to show
+    	</div>
+    	{% endif %}
+    
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="/static/bootstrap-5.0.1/js/bootstrap.bundle.js"></script>
+
+    <!-- jQuery JS -->
+    <script src="/static/jquery-3.6.0.slim.min.js"></script>
+
+    <!-- W3Schools icons pack -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script>
+        function turnOn(exam_id) {
+            let sure = confirm("Are you sure to turn on the exam?")
+        	if(sure){
+                location.href = "/exam/turnon/"+exam_id;
+            }
+        }
+        function turnOff(exam_id) {
+            let sure = confirm("Are you sure to turn off the exam?")
+        	if(sure){
+                location.href = "/exam/turnoff/"+exam_id;
+            }
+        }
+    </script>
+{% endblock body %}
